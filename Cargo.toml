@@ -5,6 +5,7 @@ authors = ["Haobo Gu <haobogu@outlook.com>"]
 edition = "2018"
 readme = "README.md"
 license = "MIT OR Apache-2.0"
+description = "ors"
 
 [dependencies]
 ors-core = { version = "0.0.1", path = "ors-core"}
