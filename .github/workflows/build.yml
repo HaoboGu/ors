@@ -3,8 +3,17 @@ name: Rust
 on:
   push:
     branches: [ main ]
+    paths:
+    - ors-core/onnxruntime/*
+    - ors-core/wrapper.h
+    - ors-core/build.rs
   pull_request:
-    branches: [ main ]
+    branches: [ main ]    
+    paths:
+    - ors-core/onnxruntime/*
+    - ors-core/wrapper.h
+    - ors-core/build.rs
+
 
 env:
   CARGO_TERM_COLOR: always
