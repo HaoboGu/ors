@@ -4,6 +4,7 @@ version = "0.0.1"
 authors = ["Haobo Gu <haobogu@outlook.com>"]
 edition = "2018"
 license = "MIT OR Apache-2.0"
-description = "ors"
+description = "ors-core"
 
-[dependencies]
+[build-dependencies]
+bindgen = "0.58"
