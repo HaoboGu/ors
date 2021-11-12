@@ -1,0 +1,12 @@
+[package]
+name = "ors-sys"
+edition = "2018"
+version = "0.0.1"
+authors = ["Haobo Gu <haobogu@outlook.com>"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[build-dependencies]
+bindgen = "0.59.1"
+
+[dependencies]
