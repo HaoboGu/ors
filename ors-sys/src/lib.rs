@@ -4,7 +4,6 @@
 // Disable clippy and `u128` not being FFI-safe (see #1)
 #![allow(clippy::all)]
 #![allow(improper_ctypes)]
-#[cfg(all(target_os = "windows", target_arch = "x86_64"))]
 include!(concat!(
     env!("CARGO_MANIFEST_DIR"),
     "/src/bindings/bindings.rs"
@@ -14,3 +13,14 @@ include!(concat!(
 pub type OnnxEnumInt = i32;
 #[cfg(not(target_os = "windows"))]
 pub type OnnxEnumInt = u32;
+
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn it_works() {
+        assert_eq!(8, ORT_API_VERSION);
+    }
+}

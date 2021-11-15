@@ -1,0 +1,35 @@
+name: Rust
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+    - ors-sys/onnxruntime_c_api.h
+    - ors-sys/build.rs
+  pull_request:
+    branches: [ main ]    
+    paths:
+    - ors-sys/onnxruntime_c_api.h
+    - ors-sys/build.rs
+
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    name: build ors on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build
+      run: |
+        cd ors-sys
+        cargo build --verbose
+    - name: Run tests
+      run: cargo test --verbose
+      
