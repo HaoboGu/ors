@@ -10,5 +10,5 @@ links = "onnxruntime"
 bindgen = "0.59.1"
 
 [dependencies]
-libloading = "*"
-lazy_static = "*"
+libloading = "0.7.1"
+lazy_static = "1.4.0"
