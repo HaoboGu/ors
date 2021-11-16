@@ -12,8 +12,8 @@
 				"args": [
 					"test",
 					"--lib",
-					// "--package=ors",
-					"--release",
+					"--workspace",
+					"--release"
 				],
 				"filter": {
 					"kind": "lib"
