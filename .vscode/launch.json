@@ -12,7 +12,8 @@
 				"args": [
 					"test",
 					"--lib",
-					"--workspace",
+					"--package",
+					"ors",
 					"--release"
 				],
 				"filter": {
