@@ -6,13 +6,13 @@ mod error;
 
 #[cfg(test)]
 mod tests {
-    use std::sync::{Arc, Mutex, atomic::AtomicPtr};
+    use std::{convert::TryInto, sync::{Arc, Mutex, atomic::AtomicPtr}};
     use ors_sys as sys;
     use std::ptr::null;
 
     // Make functions `extern "C"` for normal targets.
     // This behaviors like `extern "system"`.
-    #[cfg(not(all(target_os = "windows", target_arch = "x85")))]
+    #[cfg(not(all(target_os = "windows", target_arch = "x86")))]
     macro_rules! extern_system_fn {
         ($(#[$meta:meta])* fn $($tt:tt)*) => ($(#[$meta])* extern "C" fn $($tt)*);
         ($(#[$meta:meta])* $vis:vis fn $($tt:tt)*) => ($(#[$meta])* $vis extern "C" fn $($tt)*);
@@ -43,11 +43,11 @@ mod tests {
         // Suppose that onnxruntime's dynamic library has already added in PATH
         assert_eq!(8, ors_sys::ORT_API_VERSION);
         println!("onnxruntime api verseion: {}", ors_sys::ORT_API_VERSION);
-        let error_code:i32 = 1;
+        let error_code = 1;
         let msg_ptr: *const i8 = std::ptr::null_mut();
         let create_status_fn = g_ort().CreateStatus.unwrap();
         let status_ptr = unsafe { 
-            create_status_fn(error_code, msg_ptr)
+            create_status_fn(error_code.try_into().unwrap(), msg_ptr)
         };
         assert_ne!(null(), status_ptr);
         println!("{:?}", status_ptr);
