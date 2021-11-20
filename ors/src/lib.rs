@@ -3,6 +3,7 @@ mod session;
 mod tensor;
 mod status;
 mod error;
+mod value;
 
 #[cfg(test)]
 mod tests {
