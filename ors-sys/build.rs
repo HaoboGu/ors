@@ -1,8 +1,8 @@
 extern crate bindgen;
 
 use std::env;
-use std::path::PathBuf;
 use std::fs;
+use std::path::PathBuf;
 
 fn main() {
     // Tell cargo to invalidate the built crate whenever the wrapper changes
@@ -39,8 +39,7 @@ fn main() {
     bindings
         .write_to_file(out_path.join("bindings.rs"))
         .expect("Couldn't write bindings!");
-    
+
     // Link to onnxruntime
     println!("cargo:rustc-link-lib=dylib=onnxruntime");
-
 }

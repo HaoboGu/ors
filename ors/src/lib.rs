@@ -1,15 +1,18 @@
 mod env;
-mod session;
-mod tensor;
-mod status;
 mod error;
+mod session;
+mod status;
+mod tensor;
 mod value;
 
 #[cfg(test)]
 mod tests {
-    use std::{convert::TryInto, sync::{Arc, Mutex, atomic::AtomicPtr}};
     use ors_sys as sys;
     use std::ptr::null;
+    use std::{
+        convert::TryInto,
+        sync::{atomic::AtomicPtr, Arc, Mutex},
+    };
 
     // Make functions `extern "C"` for normal targets.
     // This behaviors like `extern "system"`.
@@ -25,7 +28,7 @@ mod tests {
         let g_ort_api: Arc<Mutex<AtomicPtr<sys::OrtApi>>> = {
             let base: *const sys::OrtApiBase = unsafe { sys::OrtGetApiBase() };
             assert_ne!(base, std::ptr::null());
-            let get_api: extern_system_fn!{ unsafe fn(u32) -> *const sys::OrtApi } =
+            let get_api: extern_system_fn! { unsafe fn(u32) -> *const sys::OrtApi } =
                 unsafe { (*base).GetApi.unwrap() };
             let api: *const sys::OrtApi = unsafe { get_api(sys::ORT_API_VERSION) };
             Arc::new(Mutex::new(AtomicPtr::new(api as *mut sys::OrtApi)))
@@ -47,9 +50,7 @@ mod tests {
         let error_code = 1;
         let msg_ptr: *const i8 = std::ptr::null_mut();
         let create_status_fn = g_ort().CreateStatus.unwrap();
-        let status_ptr = unsafe { 
-            create_status_fn(error_code.try_into().unwrap(), msg_ptr)
-        };
+        let status_ptr = unsafe { create_status_fn(error_code.try_into().unwrap(), msg_ptr) };
         assert_ne!(null(), status_ptr);
         println!("{:?}", status_ptr);
     }
