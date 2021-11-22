@@ -9,3 +9,8 @@ include!(concat!(
     env!("CARGO_MANIFEST_DIR"),
     "/src/bindings/bindings.rs"
 ));
+
+#[cfg(target_os = "windows")]
+pub type OnnxEnumInt = i32;
+#[cfg(not(target_os = "windows"))]
+pub type OnnxEnumInt = u32;

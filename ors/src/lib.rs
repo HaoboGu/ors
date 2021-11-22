@@ -1,6 +1,7 @@
 mod api;
 mod env;
 mod error;
+mod log;
 mod session;
 mod status;
 mod tensor;
