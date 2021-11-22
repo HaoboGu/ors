@@ -10,7 +10,7 @@ env:
 jobs:
   rustfmt:
     name: Run rustfmt
-    runs-on: ubuntu-last
+    runs-on: ubuntu-lastest
     steps:
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
