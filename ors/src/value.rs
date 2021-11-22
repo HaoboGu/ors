@@ -13,6 +13,7 @@ impl OrtValue {
         println!("version: {}", version);
     }
 }
+
 #[cfg(test)]
 mod test {
     use super::*;
