@@ -1,7 +1,8 @@
-use std::sync::{atomic::AtomicPtr, Arc, Mutex};
-
 use lazy_static::lazy_static;
 use ors_sys::*;
+use std::sync::{atomic::AtomicPtr, Arc, Mutex};
+
+// The entry of onnxruntime api
 lazy_static! {
     static ref API: Arc<Mutex<AtomicPtr<OrtApi>>> = {
         let api_base = unsafe { OrtGetApiBase() };
