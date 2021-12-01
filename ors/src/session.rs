@@ -1,15 +1,16 @@
 use std::{
-    ffi::{CStr, CString},
+    ffi::{CStr, OsStr},
+    os::windows::prelude::OsStrExt,
     ptr::{null, null_mut},
 };
 
 use ors_sys::{
-    OrtAllocator, OrtEnv, OrtSession, OrtSessionOptions, OrtTensorTypeAndShapeInfo, OrtTypeInfo,
+    OrtAllocator, OrtEnv, OrtSession, OrtSessionOptions, OrtTypeInfo,
 };
 
 use crate::{
     api::get_api,
-    status::{self, assert_status},
+    status::assert_status,
 };
 
 fn create_session(
@@ -18,7 +19,15 @@ fn create_session(
     options: *const OrtSessionOptions,
 ) -> *mut OrtSession {
     let mut session_ptr = null_mut();
+
+    #[cfg(target_family = "windows")]
+    let c_model_path = OsStr::new(model_path)
+        .encode_wide()
+        .chain(Some(0)) // add NULL termination
+        .collect::<Vec<_>>();
+    #[cfg(not(target_family = "windows"))]
     let c_model_path = CString::new(model_path).unwrap();
+
     let status = unsafe {
         get_api().CreateSession.unwrap()(env, c_model_path.as_ptr(), options, &mut session_ptr)
     };
@@ -88,9 +97,15 @@ mod test {
     fn test_session() {
         let start = SystemTime::now();
         let env = create_env(LoggingLevel::Warning, "log_name".to_string());
+        #[cfg(target_family = "windows")]
+        let path = "D:\\Projects\\Rust\\ors\\gpt2.onnx";
+        #[cfg(not(target_family = "windows"))]
+        let path = "/Users/haobogu/Projects/rust/cosy-local-tools/model/model.onnx";
+
         let session = create_session(
             env as *const OrtEnv,
-            "/Users/haobogu/Projects/rust/cosy-local-tools/model/model.onnx",
+            //
+            path,
             std::ptr::null(),
         );
         let allocator = get_allocator();
