@@ -1,8 +1,16 @@
 use std::{
-    ffi::{CStr, OsStr},
-    os::windows::prelude::OsStrExt,
+    ffi::CStr,
     ptr::{null, null_mut},
 };
+
+#[cfg(target_family = "windows")]
+use std::{
+	ffi::OsStr,
+	os::windows::prelude::OsStrExt,
+};
+
+#[cfg(not(target_family = "windows"))]
+use std::ffi::CString;
 
 use ors_sys::{
     OrtAllocator, OrtEnv, OrtSession, OrtSessionOptions, OrtTypeInfo,
