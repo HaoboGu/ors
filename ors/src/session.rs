@@ -10,10 +10,18 @@ use std::{ffi::OsStr, os::windows::prelude::OsStrExt};
 use std::ffi::CString;
 
 use ors_sys::{
-    OrtAllocator, OrtEnv, OrtSession, OrtSessionOptions, OrtTensorTypeAndShapeInfo, OrtTypeInfo,
+    OrtAllocator, OrtEnv, OrtSession, OrtSessionOptions, OrtTensorTypeAndShapeInfo, OrtTypeInfo, OrtRunOptions, OrtValue, OrtMemoryInfo,
 };
 
-use crate::{api::get_api, status::assert_status};
+use crate::{api::get_api, status::{assert_status, self}};
+
+// TODO: get all parameters of a single session run
+// 
+fn session_run(session: *mut OrtSession, run_options: *const OrtRunOptions, input_names: Vec<String>, inputs: Vec<OrtValue>, input_len: usize, output_names: Vec<String>, output_names_len: usize) -> Vec<OrtValue> {
+
+
+    vec![]
+}
 
 fn create_session(
     env: *const OrtEnv,
@@ -37,9 +45,23 @@ fn create_session(
     return session_ptr;
 }
 
-fn get_allocator() -> *mut OrtAllocator {
+fn get_default_allocator() -> *mut OrtAllocator {
     let mut allocator_ptr = null_mut();
     let status = unsafe { get_api().GetAllocatorWithDefaultOptions.unwrap()(&mut allocator_ptr) };
+    assert_status(status);
+    return allocator_ptr;
+}
+
+fn create_and_register_allocator(env: *mut OrtEnv, mem_info: *const OrtMemoryInfo) -> *mut OrtAllocator {
+    let mut allocator_ptr = null_mut();
+    let arena_cfg = null();
+    let status = unsafe {
+        get_api().CreateAndRegisterAllocator.unwrap()(
+            env,
+            mem_info,
+            arena_cfg,
+        )
+    };
     assert_status(status);
     return allocator_ptr;
 }
@@ -103,7 +125,7 @@ mod test {
     use crate::{
         env::create_env,
         log::LoggingLevel,
-        tensor::{get_dimension_count, get_dimensions},
+        tensor::{get_dimension_count, get_dimensions}, value::create_tensor_with_data,
     };
 
     #[test]
@@ -116,7 +138,7 @@ mod test {
         let path = "/Users/haobogu/Projects/rust/cosy-local-tools/model/model.onnx";
 
         let session = create_session(env as *const OrtEnv, path, std::ptr::null());
-        let allocator = get_allocator();
+        let allocator = get_default_allocator();
         println!("init costs: {:?}", SystemTime::now().duration_since(start));
         let input_cnt = get_input_count(session);
         for i in 0..input_cnt {
