@@ -1,3 +1,4 @@
+#[allow(dead_code)]
 mod api;
 mod env;
 mod error;
@@ -6,7 +7,6 @@ mod session;
 mod status;
 mod tensor;
 mod value;
-
 #[cfg(test)]
 mod tests {
     use std::{convert::TryInto, ptr::null};

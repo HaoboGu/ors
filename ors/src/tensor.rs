@@ -2,7 +2,10 @@ use ors_sys::*;
 
 use crate::{api::get_api, status::assert_status};
 
-fn get_dimensions(type_info: *const OrtTensorTypeAndShapeInfo, dimension_cnt: usize) -> Vec<i64> {
+pub(crate) fn get_dimensions(
+    type_info: *const OrtTensorTypeAndShapeInfo,
+    dimension_cnt: usize,
+) -> Vec<i64> {
     let mut dim_values: Vec<i64> = vec![0; dimension_cnt as usize];
 
     let dim_values_ptr = &mut dim_values;
@@ -15,7 +18,7 @@ fn get_dimensions(type_info: *const OrtTensorTypeAndShapeInfo, dimension_cnt: us
     return dim_values;
 }
 
-fn get_dimension_count(type_info: *const OrtTensorTypeAndShapeInfo) -> usize {
+pub(crate) fn get_dimension_count(type_info: *const OrtTensorTypeAndShapeInfo) -> usize {
     let mut dimension_cnt = 0;
     let status = unsafe { get_api().GetDimensionsCount.unwrap()(type_info, &mut dimension_cnt) };
     assert_status(status);
@@ -33,4 +36,12 @@ fn get_tensor_shape_element_count(type_info: *const OrtTensorTypeAndShapeInfo) -
 
     assert_status(status);
     return element_cnt;
+}
+
+mod test {
+
+    use super::*;
+
+    #[test]
+    fn test_dimentsions() {}
 }

@@ -4,22 +4,16 @@ use std::{
 };
 
 #[cfg(target_family = "windows")]
-use std::{
-	ffi::OsStr,
-	os::windows::prelude::OsStrExt,
-};
+use std::{ffi::OsStr, os::windows::prelude::OsStrExt};
 
 #[cfg(not(target_family = "windows"))]
 use std::ffi::CString;
 
 use ors_sys::{
-    OrtAllocator, OrtEnv, OrtSession, OrtSessionOptions, OrtTypeInfo,
+    OrtAllocator, OrtEnv, OrtSession, OrtSessionOptions, OrtTensorTypeAndShapeInfo, OrtTypeInfo,
 };
 
-use crate::{
-    api::get_api,
-    status::assert_status,
-};
+use crate::{api::get_api, status::assert_status};
 
 fn create_session(
     env: *const OrtEnv,
@@ -93,13 +87,24 @@ fn get_input_count(session: *const OrtSession) -> usize {
     unsafe { *input_count_ptr }
 }
 
+fn cast_type_info_to_tensor_info(type_info: *const OrtTypeInfo) -> *mut OrtTensorTypeAndShapeInfo {
+    let mut tensor_info_ptr: *const OrtTensorTypeAndShapeInfo = null_mut();
+    let status =
+        unsafe { get_api().CastTypeInfoToTensorInfo.unwrap()(type_info, &mut tensor_info_ptr) };
+    assert_status(status);
+    return tensor_info_ptr as *mut OrtTensorTypeAndShapeInfo;
+}
 // fn get_output_name(se)
 
 mod test {
     use std::time::SystemTime;
 
     use super::*;
-    use crate::{env::create_env, log::LoggingLevel};
+    use crate::{
+        env::create_env,
+        log::LoggingLevel,
+        tensor::{get_dimension_count, get_dimensions},
+    };
 
     #[test]
     fn test_session() {
@@ -110,12 +115,7 @@ mod test {
         #[cfg(not(target_family = "windows"))]
         let path = "/Users/haobogu/Projects/rust/cosy-local-tools/model/model.onnx";
 
-        let session = create_session(
-            env as *const OrtEnv,
-            //
-            path,
-            std::ptr::null(),
-        );
+        let session = create_session(env as *const OrtEnv, path, std::ptr::null());
         let allocator = get_allocator();
         println!("init costs: {:?}", SystemTime::now().duration_since(start));
         let input_cnt = get_input_count(session);
@@ -123,7 +123,11 @@ mod test {
             let input_name = get_input_name(session, i, allocator);
             println!("{}", input_name);
             let type_info = get_input_typeinfo(session, i);
-            // type_info.
+            let tensor_info = cast_type_info_to_tensor_info(type_info);
+            let dimension_cnt = get_dimension_count(tensor_info);
+            println!("dimension cnt: {}", dimension_cnt);
+            let dimensions = get_dimensions(tensor_info, dimension_cnt);
+            println!("dimensions: {:?}", dimensions);
         }
         println!("a costs: {:?}", SystemTime::now().duration_since(start));
     }
