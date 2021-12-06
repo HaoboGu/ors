@@ -29,11 +29,13 @@ pub(crate) fn get_dimension_count(type_info: *const OrtTensorTypeAndShapeInfo) -
 // Get total number of elements in a tensor shape from an OrtTensorTypeAndShapeInfo.
 // Return the number of elements specified by the tensor shape (all dimensions multiplied by each other).
 // For 0 dimensions, 1 is returned. If any dimension is less than 0, the result is always -1.
-fn get_tensor_shape_element_count(type_info: *const OrtTensorTypeAndShapeInfo) -> usize {
+pub(crate) fn get_tensor_shape_element_count(type_info: *const OrtTensorTypeAndShapeInfo) -> usize {
     let mut element_cnt = 0;
     let status =
         unsafe { get_api().GetTensorShapeElementCount.unwrap()(type_info, &mut element_cnt) };
-
     assert_status(status);
+    if element_cnt > 99999999 {
+        element_cnt = 0;
+    }
     return element_cnt;
 }

@@ -10,3 +10,4 @@ description = "ors"
 [dependencies]
 ors-sys = { version = "0.0.1", path = "../ors-sys"}
 lazy_static = "1.4.0"
+ndarray = "0.15.4"

@@ -25,7 +25,11 @@ pub fn assert_status(status: *mut OrtStatus) {
         println!("status: ok");
         return;
     } else {
-        println!("error on status: {}", get_error_code(status));
+        println!(
+            "error on status: {}, msg: {}",
+            get_error_code(status),
+            get_error_msg(status)
+        );
     }
 }
 
