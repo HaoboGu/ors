@@ -37,11 +37,3 @@ fn get_tensor_shape_element_count(type_info: *const OrtTensorTypeAndShapeInfo) -
     assert_status(status);
     return element_cnt;
 }
-
-mod test {
-
-    use super::*;
-
-    #[test]
-    fn test_dimentsions() {}
-}

@@ -4,6 +4,7 @@
 // Disable clippy and `u128` not being FFI-safe (see #1)
 #![allow(clippy::all)]
 #![allow(improper_ctypes)]
+#![allow(deref_nullptr)]
 
 include!(concat!(
     env!("CARGO_MANIFEST_DIR"),

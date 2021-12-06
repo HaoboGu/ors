@@ -1,5 +1,5 @@
 use ors_sys::*;
-use std::{ffi::{CStr, c_void}, ptr::null_mut};
+use std::{ffi::c_void, ptr::null_mut};
 
 use crate::{status::assert_status, api::get_api};
 
@@ -21,13 +21,4 @@ pub(crate) fn create_tensor_with_data(mem_info: *mut OrtMemoryInfo, data_ptr: *m
 
     // TODO: this ort value must be freed by `OrtApi::ReleaseValue`
     return ort_value_ptr;
-}
-
-#[cfg(test)]
-mod test {
-    use super::*;
-
-    #[test]
-    fn test() {
-    }
 }

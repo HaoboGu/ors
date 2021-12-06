@@ -13,7 +13,7 @@ use ors_sys::{
     OrtAllocator, OrtEnv, OrtSession, OrtSessionOptions, OrtTensorTypeAndShapeInfo, OrtTypeInfo, OrtRunOptions, OrtValue, OrtMemoryInfo,
 };
 
-use crate::{api::get_api, status::{assert_status, self}};
+use crate::{api::get_api, status::assert_status};
 
 // TODO: get all parameters of a single session run
 // 
@@ -53,7 +53,7 @@ fn get_default_allocator() -> *mut OrtAllocator {
 }
 
 fn create_and_register_allocator(env: *mut OrtEnv, mem_info: *const OrtMemoryInfo) -> *mut OrtAllocator {
-    let mut allocator_ptr = null_mut();
+    let allocator_ptr = null_mut();
     let arena_cfg = null();
     let status = unsafe {
         get_api().CreateAndRegisterAllocator.unwrap()(
@@ -118,6 +118,7 @@ fn cast_type_info_to_tensor_info(type_info: *const OrtTypeInfo) -> *mut OrtTenso
 }
 // fn get_output_name(se)
 
+#[cfg(test)]
 mod test {
     use std::time::SystemTime;
 
@@ -125,7 +126,7 @@ mod test {
     use crate::{
         env::create_env,
         log::LoggingLevel,
-        tensor::{get_dimension_count, get_dimensions}, value::create_tensor_with_data,
+        tensor::{get_dimension_count, get_dimensions},
     };
 
     #[test]
