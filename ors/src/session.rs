@@ -5,7 +5,10 @@ use std::{
 };
 
 #[cfg(target_family = "windows")]
-use std::{ffi::OsStr, os::windows::prelude::OsStrExt};
+use std::{
+    ffi::{CString, OsStr},
+    os::windows::prelude::OsStrExt,
+};
 
 #[cfg(not(target_family = "windows"))]
 use std::ffi::CString;
