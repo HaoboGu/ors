@@ -1,6 +1,4 @@
-use std::{
-    ptr::{null, null_mut},
-};
+use std::ptr::{null, null_mut};
 
 #[cfg(target_family = "windows")]
 use std::{
@@ -114,13 +112,14 @@ fn get_allocator_mem_info(allocator: *const OrtAllocator) -> *const OrtMemoryInf
 mod test {
     use std::time::SystemTime;
 
-    use ndarray::{ArrayD, IxDyn};
+    use ndarray::{s, ArrayD, IxDyn};
 
     use super::*;
     use crate::{
         env::create_env,
         log::LoggingLevel,
-        session_io::{get_input_count, get_output_count, get_session_input, get_session_output}, value::create_tensor_with_ndarray,
+        session_io::{get_input_count, get_output_count, get_session_input, get_session_output},
+        value::create_tensor_with_ndarray,
     };
 
     #[test]
@@ -147,11 +146,12 @@ mod test {
         // position_ids: int64, [[0, 0, 0, 0, 0, 1, 2, 3, 4], [0, 1, 2, 3, 4, 5, 6, 7, 8]]
         // 'past_0': array([], shape=(2, 2, 12, 0, 64), dtype=float32),
         // 'past_1': array([], shape=(2, 2, 12, 0, 64), dtype=float32), ...
+        let mem_info = get_allocator_mem_info(get_default_allocator()) as *mut OrtMemoryInfo;
+        let inference_1_start = SystemTime::now();
         let input_ids_data: Vec<i64> = vec![
             50256, 50256, 50256, 50256, 13466, 7541, 287, 15489, 1989, 1456, 318, 281, 1672, 286,
             308, 457, 17, 2746,
         ];
-        let mem_info = get_allocator_mem_info(get_default_allocator()) as *mut OrtMemoryInfo;
         let mut input: Vec<*mut OrtValue> = vec![];
         let mut input_ids = ArrayD::<i64>::from_shape_vec(IxDyn(&[2, 9]), input_ids_data).unwrap();
         let mut positions_ids = ArrayD::<i64>::from_shape_vec(
@@ -196,13 +196,15 @@ mod test {
         // {'logits': [2, 9, 50257],
         // 'present_0': [2, 2, 12, 9, 64],
         // 'present_1': [2, 2, 12, 9, 64], ...
-        let mut outputs = vec![];
+        let mut presents = vec![];
         let mut output_tensors = vec![];
         let mut logits =
             ArrayD::<f32>::from_shape_vec(IxDyn(&[2, 9, 50257]), vec![0.0; 2 * 9 * 50257]).unwrap();
-        let logits_tensor = create_tensor_with_ndarray::<f32>(mem_info, logits.view_mut());
+        let logits_tensor = create_tensor_with_ndarray::<f32>(
+            mem_info,
+            logits.slice_mut(s![.., 0..9, ..]).into_dyn(),
+        );
         output_tensors.push(logits_tensor);
-        outputs.push(logits);
         for i in 0..past_num {
             let key = format!("present_{}", i);
             let mut present = ArrayD::<f32>::from_shape_vec(
@@ -212,7 +214,7 @@ mod test {
             .unwrap();
             let present_tensor = create_tensor_with_ndarray::<f32>(mem_info, present.view_mut());
             output_tensors.push(present_tensor);
-            outputs.push(present);
+            presents.push(present);
         }
 
         let mut inputs_info = vec![];
@@ -228,19 +230,82 @@ mod test {
             outputs_info.push(output_info);
         }
 
-        println!("run session inference");
         session_run(
             session,
             null(),
             input,
             output_tensors,
-            inputs_info,
-            outputs_info,
+            inputs_info.clone(),
+            outputs_info.clone(),
         );
-        println!("logits: {:?}", outputs.get(0));
+
+        // println!("the first inference result: logits: {:?}", logits);
+        // println!("firset presents: {:?}", presents.get(0).unwrap());
         println!(
-            "session costs: {:?}",
-            SystemTime::now().duration_since(start)
+            "the first inference costs: {:?}",
+            SystemTime::now().duration_since(inference_1_start)
+        );
+
+        // The second inference
+        let inference_2_start = SystemTime::now();
+        let mut new_input: Vec<*mut OrtValue> = vec![];
+        let mut input_ids = ArrayD::<i64>::from_shape_vec(IxDyn(&[2, 1]), vec![1234, 568]).unwrap();
+        let mut positions_ids = ArrayD::<i64>::from_shape_vec(IxDyn(&[2, 1]), vec![5, 9]).unwrap();
+        let mut attension_mask =
+            ArrayD::<f32>::from_shape_vec(IxDyn(&[2, 1]), vec![1., 1.]).unwrap();
+        let input_ids_tensor =
+            create_tensor_with_ndarray::<i64>(mem_info as *mut OrtMemoryInfo, input_ids.view_mut());
+        let position_ids_tensor = create_tensor_with_ndarray::<i64>(
+            mem_info as *mut OrtMemoryInfo,
+            positions_ids.view_mut(),
+        );
+        let attension_mask_tensor = create_tensor_with_ndarray::<f32>(
+            mem_info as *mut OrtMemoryInfo,
+            attension_mask.view_mut(),
+        );
+        new_input.push(input_ids_tensor);
+        new_input.push(position_ids_tensor);
+        new_input.push(attension_mask_tensor);
+        for mut past in presents {
+            new_input.push(create_tensor_with_ndarray(mem_info, past.view_mut()));
+        }
+
+        let mut new_output_tensors = vec![];
+        let mut new_logits =
+            ArrayD::<f32>::from_shape_vec(IxDyn(&[2, 1, 50257]), vec![0.0; 2 * 1 * 50257]).unwrap();
+        let logits_tensor = create_tensor_with_ndarray::<f32>(mem_info, new_logits.view_mut());
+        new_output_tensors.push(logits_tensor);
+        let mut new_presents = vec![];
+        for i in 0..past_num {
+            let key = format!("present_{}", i);
+            let mut present = ArrayD::<f32>::from_shape_vec(
+                IxDyn(&[2, 2, 12, 10, 64]),
+                vec![0.0; 2 * 2 * 12 * 10 * 64],
+            )
+            .unwrap();
+            let present_tensor = create_tensor_with_ndarray::<f32>(mem_info, present.view_mut());
+            new_output_tensors.push(present_tensor);
+            new_presents.push(present);
+        }
+
+        session_run(
+            session,
+            null(),
+            new_input,
+            new_output_tensors,
+            inputs_info.clone(),
+            outputs_info.clone(),
+        );
+
+        // println!("the second result logits: {:?}", new_logits);
+        // println!("second presents: {:?}", new_presents.get(0).unwrap());
+        println!(
+            "second inference costs: {:?}",
+            SystemTime::now().duration_since(inference_2_start)
+        );
+        println!(
+            "total inference costs: {:?}",
+            SystemTime::now().duration_since(inference_1_start)
         );
     }
 }
