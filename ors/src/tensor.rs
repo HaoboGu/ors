@@ -1,3 +1,5 @@
+use std::ptr::null_mut;
+
 use ors_sys::*;
 
 use crate::{api::get_api, status::assert_status};
@@ -37,12 +39,18 @@ pub(crate) fn get_tensor_shape_element_count(type_info: *const OrtTensorTypeAndS
     return element_cnt;
 }
 
-pub(crate) fn get_tensor_element_type(type_infp: *const OrtTensorTypeAndShapeInfo) -> ONNXTensorElementDataType {
-    let  mut data_type = ONNXTensorElementDataType_ONNX_TENSOR_ELEMENT_DATA_TYPE_UNDEFINED;
-    let status = unsafe {
-        get_api().GetTensorElementType.unwrap()(
-        type_infp,
-        &mut data_type
-    )};
+pub(crate) fn get_tensor_element_type(
+    type_info: *const OrtTensorTypeAndShapeInfo,
+) -> ONNXTensorElementDataType {
+    let mut data_type = ONNXTensorElementDataType_ONNX_TENSOR_ELEMENT_DATA_TYPE_UNDEFINED;
+    let status = unsafe { get_api().GetTensorElementType.unwrap()(type_info, &mut data_type) };
     return data_type;
+}
+
+fn cast_type_info_to_tensor_info(type_info: *const OrtTypeInfo) -> *mut OrtTensorTypeAndShapeInfo {
+    let mut tensor_info_ptr: *const OrtTensorTypeAndShapeInfo = null_mut();
+    let status =
+        unsafe { get_api().CastTypeInfoToTensorInfo.unwrap()(type_info, &mut tensor_info_ptr) };
+    assert_status(status);
+    return tensor_info_ptr as *mut OrtTensorTypeAndShapeInfo;
 }

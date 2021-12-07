@@ -5,9 +5,12 @@ mod env;
 mod error;
 mod log;
 mod session;
+mod session_io;
 mod status;
 mod tensor;
+mod types;
 mod value;
+
 #[cfg(test)]
 mod tests {
     use std::{convert::TryInto, ptr::null};

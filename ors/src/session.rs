@@ -1,7 +1,5 @@
 use std::{
-    ffi::CStr,
     ptr::{null, null_mut},
-    vec,
 };
 
 #[cfg(target_family = "windows")]
@@ -13,124 +11,54 @@ use std::{
 #[cfg(not(target_family = "windows"))]
 use std::ffi::CString;
 
-use ndarray::{ArrayD, IxDyn};
-use ors_sys::{
-    OrtAllocator, OrtEnv, OrtMemoryInfo, OrtRunOptions, OrtSession, OrtSessionOptions,
-    OrtTensorTypeAndShapeInfo, OrtTypeInfo, OrtValue,
-};
+use ors_sys::*;
 
 use crate::{
     api::get_api,
+    session_io::{SessionInputInfo, SessionOutputInfo},
     status::assert_status,
-    tensor::{get_dimension_count, get_dimensions, get_tensor_shape_element_count},
-    value::create_tensor_with_ndarray,
 };
 
-pub(crate) fn get_inputs_tensor_info(
-    session: *mut OrtSession,
-) -> Vec<*const OrtTensorTypeAndShapeInfo> {
-    let input_cnt = get_input_count(session);
-    let mut inputs_tensor_info = vec![];
-    for i in 0..input_cnt {
-        let type_info = get_input_typeinfo(session, i);
-        inputs_tensor_info.push(type_info);
-    }
-    return inputs_tensor_info;
-}
-
-pub(crate) fn get_outputs_tensor_info(
-    session: *mut OrtSession,
-) -> Vec<*const OrtTensorTypeAndShapeInfo> {
-    let output_cnt = get_output_count(session);
-    let mut outputs_tensor_info = vec![];
-    for i in 0..output_cnt {
-        let type_info = get_output_typeinfo(session, i);
-        outputs_tensor_info.push(type_info);
-    }
-    return outputs_tensor_info;
-}
-
-//
+// Run session inference
 fn session_run(
     session: *mut OrtSession,
     run_options: *const OrtRunOptions,
-    input_names: Vec<String>,
-    inputs: Vec<*const OrtValue>,
-    input_len: usize,
-    output_names: Vec<String>,
-    output_names_len: usize,
-) -> Vec<*mut OrtValue> {
-
-    let input_names_ptr: Vec<*const i8> = input_names
+    inputs: Vec<*mut OrtValue>,
+    mut outputs: Vec<*mut OrtValue>,
+    input_info: Vec<SessionInputInfo>,
+    output_info: Vec<SessionOutputInfo>,
+) {
+    let input_names_ptr: Vec<*const i8> = input_info
         .iter()
-        .map(|n| CString::new(n.clone()).unwrap())
+        .map(|n| CString::new(n.name.clone()).unwrap())
         .map(|n| n.into_raw() as *const i8)
         .collect();
-    
-    let output_names_cstring: Vec<CString> = output_names
-    .iter()
-    .map(|n| CString::new(n.clone()).unwrap()).collect();
 
-    let output_names_ptr: Vec<*const i8> = 
-        output_names_cstring
+    let output_names_cstring: Vec<CString> = output_info
+        .iter()
+        .map(|n| CString::new(n.name.clone()).unwrap())
+        .collect();
+
+    let output_names_ptr: Vec<*const i8> = output_names_cstring
         .iter()
         .map(|n| n.as_ptr() as *const i8)
         .collect();
 
-    let mut outputs = vec![];
-
-    for i in 0..output_names_len {
-        let output_typeinfo = get_output_typeinfo(session, i);
-        let mut dim = get_dimensions(output_typeinfo, get_dimension_count(output_typeinfo));
-        if i == 0 {
-            println!("output dim for i: {:?}", dim);
-            dim = vec![1, 2, 39949];
-        } else {
-            dim = vec![2, 1, 6, 2, 64];
-        }
-        let dim_usize = dim
-            .iter()
-            .map(|d| if *d <= 0 { 0 } else { *d as usize })
-            .collect::<Vec<usize>>();
-
-        // let mut element_count = get_tensor_shape_element_count(output_typeinfo);
-        let mut element_count = 0;
-        if i == 0 {
-            element_count = 2* 39949;
-        } else {
-            element_count = 2 * 2 * 6 * 64;
-        }
-        println!("output dims: {:?}, element cnt: {}", dim_usize, element_count);
-        let output_array =
-            ArrayD::from_shape_vec(IxDyn(&dim_usize), vec![0.0; element_count]).unwrap();
-        outputs.push(output_array);
-    }
-
-    let mut output_tensors = vec![];
-    for mut array in outputs {
-        println!("shape: {:?}", array.shape());
-        let tensor = create_tensor_with_ndarray(
-            get_allocator_mem_info(get_default_allocator() as *mut OrtAllocator)
-                as *mut OrtMemoryInfo,
-            array.view_mut(),
-        );
-        output_tensors.push(tensor);
-    }
+    let inputs_ptr: Vec<*const OrtValue> = inputs.iter().map(|i| (*i) as *const OrtValue).collect();
 
     let status = unsafe {
         get_api().Run.unwrap()(
             session,
-            run_options,
+            null(),
             input_names_ptr.as_ptr(),
-            inputs.as_ptr(),
+            inputs_ptr.as_ptr(),
             inputs.len(),
             output_names_ptr.as_ptr(),
             output_names_ptr.len(),
-            output_tensors.as_mut_ptr(),
+            outputs.as_mut_ptr(),
         )
     };
     assert_status(status);
-    return output_tensors;
 }
 
 pub(crate) fn create_session(
@@ -155,7 +83,7 @@ pub(crate) fn create_session(
     return session_ptr;
 }
 
-pub(crate) fn get_default_allocator() -> *mut OrtAllocator {
+fn get_default_allocator() -> *mut OrtAllocator {
     let mut allocator_ptr = null_mut();
     let status = unsafe { get_api().GetAllocatorWithDefaultOptions.unwrap()(&mut allocator_ptr) };
     assert_status(status);
@@ -173,114 +101,13 @@ fn create_and_register_allocator(
     return allocator_ptr;
 }
 
-fn get_input_name(
-    session: *const OrtSession,
-    index: usize,
-    allocator: *mut OrtAllocator,
-) -> String {
-    let mut input_name_ptr = null_mut();
-    let input_name_ptr_ptr = &mut input_name_ptr;
-    let status = unsafe {
-        get_api().SessionGetInputName.unwrap()(session, index, allocator, input_name_ptr_ptr)
-    };
-    assert_status(status);
-    unsafe {
-        (*(CStr::from_ptr(input_name_ptr)))
-            .to_string_lossy()
-            .to_string()
-    }
-}
-
-fn get_output_name(
-    session: *const OrtSession,
-    index: usize,
-    allocator: *mut OrtAllocator,
-) -> String {
-    let mut output_name_ptr = null_mut();
-    let output_name_ptr_ptr = &mut output_name_ptr;
-    let status = unsafe {
-        get_api().SessionGetOutputName.unwrap()(session, index, allocator, output_name_ptr_ptr)
-    };
-    assert_status(status);
-    unsafe {
-        (*(CStr::from_ptr(output_name_ptr)))
-            .to_string_lossy()
-            .to_string()
-    }
-}
-
-fn get_input_typeinfo(
-    session: *const OrtSession,
-    index: usize,
-) -> *const OrtTensorTypeAndShapeInfo {
-    let mut type_info_ptr = null_mut();
-    let status =
-        unsafe { get_api().SessionGetInputTypeInfo.unwrap()(session, index, &mut type_info_ptr) };
-    assert_status(status);
-
-    let mut tensor_type_info_ptr = null();
-    let status = unsafe {
-        get_api().CastTypeInfoToTensorInfo.unwrap()(type_info_ptr, &mut tensor_type_info_ptr)
-    };
-    assert_status(status);
-
-    // TODO: this type info must be freed by `OrtApi::ReleaseTypeInfo`
-    return tensor_type_info_ptr;
-}
-
-fn get_output_typeinfo(
-    session: *const OrtSession,
-    index: usize,
-) -> *const OrtTensorTypeAndShapeInfo {
-    let mut type_info_ptr = null_mut();
-    let status =
-        unsafe { get_api().SessionGetOutputTypeInfo.unwrap()(session, index, &mut type_info_ptr) };
-    assert_status(status);
-
-    let mut tensor_type_info_ptr = null();
-    let status = unsafe {
-        get_api().CastTypeInfoToTensorInfo.unwrap()(type_info_ptr, &mut tensor_type_info_ptr)
-    };
-    assert_status(status);
-
-    // TODO: this type info must be freed by `OrtApi::ReleaseTypeInfo`
-    return tensor_type_info_ptr;
-}
-
-fn get_output_count(session: *const OrtSession) -> usize {
-    let mut output_count: usize = 0;
-    let output_count_ptr: *mut usize = &mut output_count;
-    let status = unsafe { get_api().SessionGetOutputCount.unwrap()(session, output_count_ptr) };
-
-    assert_status(status);
-    output_count
-}
-
-fn get_input_count(session: *const OrtSession) -> usize {
-    let mut input_count: usize = 0;
-    let input_count_ptr: *mut usize = &mut input_count;
-    let status = unsafe { get_api().SessionGetInputCount.unwrap()(session, input_count_ptr) };
-
-    assert_status(status);
-    input_count
-}
-
-pub(crate) fn get_allocator_mem_info(allocator: *const OrtAllocator) -> *const OrtMemoryInfo {
+fn get_allocator_mem_info(allocator: *const OrtAllocator) -> *const OrtMemoryInfo {
     let mut mem_info_ptr = null();
     let status = unsafe { get_api().AllocatorGetInfo.unwrap()(allocator, &mut mem_info_ptr) };
     assert_status(status);
     return mem_info_ptr;
 }
 
-pub(crate) fn cast_type_info_to_tensor_info(
-    type_info: *const OrtTypeInfo,
-) -> *mut OrtTensorTypeAndShapeInfo {
-    let mut tensor_info_ptr: *const OrtTensorTypeAndShapeInfo = null_mut();
-    let status =
-        unsafe { get_api().CastTypeInfoToTensorInfo.unwrap()(type_info, &mut tensor_info_ptr) };
-    assert_status(status);
-    return tensor_info_ptr as *mut OrtTensorTypeAndShapeInfo;
-}
 // fn get_output_name(se)
 
 #[cfg(test)]
@@ -293,8 +120,7 @@ mod test {
     use crate::{
         env::create_env,
         log::LoggingLevel,
-        tensor::{get_dimension_count, get_dimensions, get_tensor_shape_element_count, get_tensor_element_type},
-        value::create_tensor_with_ndarray,
+        session_io::{get_input_count, get_output_count, get_session_input, get_session_output}, value::create_tensor_with_ndarray,
     };
 
     #[test]
@@ -305,57 +131,116 @@ mod test {
         let path = "D:\\Projects\\Rust\\ors\\gpt2.onnx";
         #[cfg(not(target_family = "windows"))]
         // let path = "/Users/haobogu/Projects/rust/cosy-local-tools/model/model.onnx";
-        let path = "/Users/haobogu/Projects/rust/ors/large_model.onnx";
-
+        let path = "/Users/haobogu/Projects/rust/ors/ors/sample/gpt2.onnx";
         let session = create_session(env as *const OrtEnv, path, std::ptr::null());
         let allocator = get_default_allocator();
         println!("init costs: {:?}", SystemTime::now().duration_since(start));
         let input_cnt = get_input_count(session);
         let output_cnt = get_output_count(session);
         println!("input cnt: {}, output cnt: {}", input_cnt, output_cnt);
-        let mut input_names: Vec<String> = vec![];
-        let mut inputs: Vec<*const OrtValue> = vec![];
+
+        // Create gpt2 inputs:
+        // gpt2 model sample inputs:
+        // input_ids: int64, [[50256, 50256, 50256, 50256, 13466,  7541,   287, 15489,  1989], [ 1456,   318,   281,  1672,   286,   308,   457,    17,  2746]]
+        // shape: [2, 9]
+        // attention_mask: float32, [[0., 0., 0., 0., 1., 1., 1., 1., 1.], [1., 1., 1., 1., 1., 1., 1., 1., 1.]]
+        // position_ids: int64, [[0, 0, 0, 0, 0, 1, 2, 3, 4], [0, 1, 2, 3, 4, 5, 6, 7, 8]]
+        // 'past_0': array([], shape=(2, 2, 12, 0, 64), dtype=float32),
+        // 'past_1': array([], shape=(2, 2, 12, 0, 64), dtype=float32), ...
+        let input_ids_data: Vec<i64> = vec![
+            50256, 50256, 50256, 50256, 13466, 7541, 287, 15489, 1989, 1456, 318, 281, 1672, 286,
+            308, 457, 17, 2746,
+        ];
+        let mem_info = get_allocator_mem_info(get_default_allocator()) as *mut OrtMemoryInfo;
+        let mut input: Vec<*mut OrtValue> = vec![];
+        let mut input_ids = ArrayD::<i64>::from_shape_vec(IxDyn(&[2, 9]), input_ids_data).unwrap();
+        let mut positions_ids = ArrayD::<i64>::from_shape_vec(
+            IxDyn(&[2, 9]),
+            vec![0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8],
+        )
+        .unwrap();
+        let mut attension_mask = ArrayD::<f32>::from_shape_vec(
+            IxDyn(&[2, 9]),
+            vec![
+                0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+            ],
+        )
+        .unwrap();
+        let input_ids_tensor =
+            create_tensor_with_ndarray::<i64>(mem_info as *mut OrtMemoryInfo, input_ids.view_mut());
+        let position_ids_tensor = create_tensor_with_ndarray::<i64>(
+            mem_info as *mut OrtMemoryInfo,
+            positions_ids.view_mut(),
+        );
+        let attension_mask_tensor = create_tensor_with_ndarray::<f32>(
+            mem_info as *mut OrtMemoryInfo,
+            attension_mask.view_mut(),
+        );
+        input.push(input_ids_tensor);
+        input.push(position_ids_tensor);
+        input.push(attension_mask_tensor);
+        let past_num = 12;
+        for i in 0..past_num {
+            let mut past =
+                ArrayD::<f32>::from_shape_vec(IxDyn(&[2, 2, 12, 0, 64]), vec![]).unwrap();
+            let key = format!("past_{}", i);
+            input.push(create_tensor_with_ndarray::<f32>(
+                mem_info as *mut OrtMemoryInfo,
+                past.view_mut(),
+            ));
+        }
+        // created input is a map
+
+        // Create gpt2 outputs
+        // gpt2 model output dims:
+        // {'logits': [2, 9, 50257],
+        // 'present_0': [2, 2, 12, 9, 64],
+        // 'present_1': [2, 2, 12, 9, 64], ...
+        let mut outputs = vec![];
+        let mut output_tensors = vec![];
+        let mut logits =
+            ArrayD::<f32>::from_shape_vec(IxDyn(&[2, 9, 50257]), vec![0.0; 2 * 9 * 50257]).unwrap();
+        let logits_tensor = create_tensor_with_ndarray::<f32>(mem_info, logits.view_mut());
+        output_tensors.push(logits_tensor);
+        outputs.push(logits);
+        for i in 0..past_num {
+            let key = format!("present_{}", i);
+            let mut present = ArrayD::<f32>::from_shape_vec(
+                IxDyn(&[2, 2, 12, 9, 64]),
+                vec![0.0; 2 * 2 * 12 * 9 * 64],
+            )
+            .unwrap();
+            let present_tensor = create_tensor_with_ndarray::<f32>(mem_info, present.view_mut());
+            output_tensors.push(present_tensor);
+            outputs.push(present);
+        }
+
+        let mut inputs_info = vec![];
         for i in 0..input_cnt {
-            let input_name = get_input_name(session, i, allocator);
-            input_names.push(input_name.clone());
-            let tensor_info = get_input_typeinfo(session, i);
-            let dimension_cnt = get_dimension_count(tensor_info);
-            let dimensions = get_dimensions(tensor_info, dimension_cnt);
-            println!("dim: {:?} for input: {}", dimensions, input_name);
-            if input_name == "input_ids" {
-                let mut array = ArrayD::from_shape_vec(IxDyn(&[1, 1]), vec![1.0]).unwrap();
-                let ort_value_ptr = create_tensor_with_ndarray(
-                    get_allocator_mem_info(allocator) as *mut OrtMemoryInfo,
-                    array.view_mut(),
-                );
-                println!("input shape: {:?}", array.shape());
-                inputs.push(ort_value_ptr as *const OrtValue);
-            } else {
-                let mut array =
-                    ArrayD::from_shape_vec(IxDyn(&[2, 1, 6, 1, 64]), vec![1.0;2*6*64]).unwrap();
-                println!("input shape: {:?}", array.shape());
-                let ort_value_ptr = create_tensor_with_ndarray(
-                    get_allocator_mem_info(allocator) as *mut OrtMemoryInfo,
-                    array.view_mut(),
-                );
-                inputs.push(ort_value_ptr as *const OrtValue);
-            }
+            let input_info = get_session_input(session, i, allocator);
+            println!("input info: {:?}", input_info);
+            inputs_info.push(input_info);
         }
-        let mut output_names: Vec<String> = vec![];
+        let mut outputs_info = vec![];
         for i in 0..output_cnt {
-            let output_name = get_output_name(session, i, allocator);
-            output_names.push(output_name);
+            let output_info = get_session_output(session, i, allocator);
+            println!("output info: {:?}", output_info);
+            outputs_info.push(output_info);
         }
-        let input_len = inputs.len();
+
+        println!("run session inference");
         session_run(
             session,
             null(),
-            input_names,
-            inputs,
-            input_len,
-            output_names,
-            output_cnt,
+            input,
+            output_tensors,
+            inputs_info,
+            outputs_info,
         );
-        println!("a costs: {:?}", SystemTime::now().duration_since(start));
+        println!("logits: {:?}", outputs.get(0));
+        println!(
+            "session costs: {:?}",
+            SystemTime::now().duration_since(start)
+        );
     }
 }
