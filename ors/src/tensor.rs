@@ -34,8 +34,15 @@ pub(crate) fn get_tensor_shape_element_count(type_info: *const OrtTensorTypeAndS
     let status =
         unsafe { get_api().GetTensorShapeElementCount.unwrap()(type_info, &mut element_cnt) };
     assert_status(status);
-    if element_cnt > 99999999 {
-        element_cnt = 0;
-    }
     return element_cnt;
+}
+
+pub(crate) fn get_tensor_element_type(type_infp: *const OrtTensorTypeAndShapeInfo) -> ONNXTensorElementDataType {
+    let  mut data_type = ONNXTensorElementDataType_ONNX_TENSOR_ELEMENT_DATA_TYPE_UNDEFINED;
+    let status = unsafe {
+        get_api().GetTensorElementType.unwrap()(
+        type_infp,
+        &mut data_type
+    )};
+    return data_type;
 }

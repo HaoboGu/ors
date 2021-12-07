@@ -22,7 +22,6 @@ fn get_error_msg(status: *const OrtStatus) -> String {
 
 pub fn assert_status(status: *mut OrtStatus) {
     if status.is_null() || OrtErrorCode_ORT_OK == get_error_code(status) {
-        println!("status: ok");
         return;
     } else {
         println!(

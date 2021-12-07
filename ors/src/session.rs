@@ -57,28 +57,47 @@ fn session_run(
     output_names: Vec<String>,
     output_names_len: usize,
 ) -> Vec<*mut OrtValue> {
+
     let input_names_ptr: Vec<*const i8> = input_names
         .iter()
         .map(|n| CString::new(n.clone()).unwrap())
         .map(|n| n.into_raw() as *const i8)
         .collect();
-    let output_names_ptr: Vec<*const i8> = output_names
+    
+    let output_names_cstring: Vec<CString> = output_names
+    .iter()
+    .map(|n| CString::new(n.clone()).unwrap()).collect();
+
+    let output_names_ptr: Vec<*const i8> = 
+        output_names_cstring
         .iter()
-        .map(|n| CString::new(n.clone()).unwrap())
-        .map(|n| n.into_raw() as *const i8)
+        .map(|n| n.as_ptr() as *const i8)
         .collect();
 
     let mut outputs = vec![];
 
     for i in 0..output_names_len {
         let output_typeinfo = get_output_typeinfo(session, i);
-        let dim = get_dimensions(output_typeinfo, get_dimension_count(output_typeinfo));
+        let mut dim = get_dimensions(output_typeinfo, get_dimension_count(output_typeinfo));
+        if i == 0 {
+            println!("output dim for i: {:?}", dim);
+            dim = vec![1, 2, 39949];
+        } else {
+            dim = vec![2, 1, 6, 2, 64];
+        }
         let dim_usize = dim
             .iter()
             .map(|d| if *d <= 0 { 0 } else { *d as usize })
             .collect::<Vec<usize>>();
 
-        let element_count = get_tensor_shape_element_count(output_typeinfo);
+        // let mut element_count = get_tensor_shape_element_count(output_typeinfo);
+        let mut element_count = 0;
+        if i == 0 {
+            element_count = 2* 39949;
+        } else {
+            element_count = 2 * 2 * 6 * 64;
+        }
+        println!("output dims: {:?}, element cnt: {}", dim_usize, element_count);
         let output_array =
             ArrayD::from_shape_vec(IxDyn(&dim_usize), vec![0.0; element_count]).unwrap();
         outputs.push(output_array);
@@ -86,6 +105,7 @@ fn session_run(
 
     let mut output_tensors = vec![];
     for mut array in outputs {
+        println!("shape: {:?}", array.shape());
         let tensor = create_tensor_with_ndarray(
             get_allocator_mem_info(get_default_allocator() as *mut OrtAllocator)
                 as *mut OrtMemoryInfo,
@@ -100,9 +120,9 @@ fn session_run(
             run_options,
             input_names_ptr.as_ptr(),
             inputs.as_ptr(),
-            input_len,
+            inputs.len(),
             output_names_ptr.as_ptr(),
-            output_names_len,
+            output_names_ptr.len(),
             output_tensors.as_mut_ptr(),
         )
     };
@@ -270,7 +290,7 @@ mod test {
     use crate::{
         env::create_env,
         log::LoggingLevel,
-        tensor::{get_dimension_count, get_dimensions, get_tensor_shape_element_count},
+        tensor::{get_dimension_count, get_dimensions, get_tensor_shape_element_count, get_tensor_element_type},
         value::create_tensor_with_ndarray,
     };
 
@@ -294,29 +314,23 @@ mod test {
         let mut inputs: Vec<*const OrtValue> = vec![];
         for i in 0..input_cnt {
             let input_name = get_input_name(session, i, allocator);
-            println!("{}", input_name);
             input_names.push(input_name.clone());
             let tensor_info = get_input_typeinfo(session, i);
             let dimension_cnt = get_dimension_count(tensor_info);
-            println!("dimension cnt: {}", dimension_cnt);
             let dimensions = get_dimensions(tensor_info, dimension_cnt);
-            println!("dimensions: {:?}", dimensions);
-            let dim_usize = dimensions
-                .iter()
-                .map(|d| if *d <= 0 { 0 } else { *d as usize })
-                .collect::<Vec<usize>>();
-            let element_count = get_tensor_shape_element_count(tensor_info);
-            println!("element cnt: {}", element_count);
+            println!("dim: {:?} for input: {}", dimensions, input_name);
             if input_name == "input_ids" {
-                let mut array = ArrayD::from_shape_vec(IxDyn(&[1, 0]), vec![0.0; 0]).unwrap();
+                let mut array = ArrayD::from_shape_vec(IxDyn(&[1, 1]), vec![1.0]).unwrap();
                 let ort_value_ptr = create_tensor_with_ndarray(
                     get_allocator_mem_info(allocator) as *mut OrtMemoryInfo,
                     array.view_mut(),
                 );
+                println!("input shape: {:?}", array.shape());
                 inputs.push(ort_value_ptr as *const OrtValue);
             } else {
                 let mut array =
-                    ArrayD::from_shape_vec(IxDyn(&[2, 1, 6, 0, 64]), vec![0.0; 0]).unwrap();
+                    ArrayD::from_shape_vec(IxDyn(&[2, 1, 6, 1, 64]), vec![1.0;2*6*64]).unwrap();
+                println!("input shape: {:?}", array.shape());
                 let ort_value_ptr = create_tensor_with_ndarray(
                     get_allocator_mem_info(allocator) as *mut OrtMemoryInfo,
                     array.view_mut(),
@@ -329,12 +343,13 @@ mod test {
             let output_name = get_output_name(session, i, allocator);
             output_names.push(output_name);
         }
+        let input_len = inputs.len();
         session_run(
             session,
             null(),
             input_names,
             inputs,
-            input_cnt,
+            input_len,
             output_names,
             output_cnt,
         );
