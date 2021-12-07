@@ -9,7 +9,6 @@ mod session_io;
 mod status;
 mod tensor;
 mod types;
-mod value;
 
 #[cfg(test)]
 mod tests {

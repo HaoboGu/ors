@@ -17,6 +17,7 @@ use crate::{
     status::assert_status,
 };
 
+// TODO: run with io binding
 // Run session inference
 fn session_run(
     session: *mut OrtSession,
@@ -119,7 +120,7 @@ mod test {
         env::create_env,
         log::LoggingLevel,
         session_io::{get_input_count, get_output_count, get_session_input, get_session_output},
-        value::create_tensor_with_ndarray,
+        tensor::create_tensor_with_ndarray,
     };
 
     #[test]
