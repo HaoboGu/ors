@@ -84,3 +84,36 @@ fn cast_type_info_to_tensor_info(type_info: *const OrtTypeInfo) -> *mut OrtTenso
     assert_status(status);
     return tensor_info_ptr as *mut OrtTensorTypeAndShapeInfo;
 }
+
+fn get_tensor_type_and_shape(value: *const OrtValue) -> *const OrtTensorTypeAndShapeInfo {
+    let mut tensor_info_ptr = null_mut();
+    let status = unsafe { get_api().GetTensorTypeAndShape.unwrap()(value, &mut tensor_info_ptr) };
+    return tensor_info_ptr as *const OrtTensorTypeAndShapeInfo;
+}
+
+#[cfg(test)]
+mod test {
+    use ndarray::{ArrayD, IxDyn};
+
+    use crate::session::{get_allocator_mem_info, get_default_allocator};
+
+    use super::*;
+
+    #[test]
+    fn test_create_tensor() {
+        let mut array = ArrayD::<f32>::from_shape_vec(IxDyn(&[1, 2]), vec![1., 2.]).unwrap();
+        let allocator = get_default_allocator();
+        let mem_info = get_allocator_mem_info(allocator) as *mut OrtMemoryInfo;
+        let ort_value = create_tensor_with_ndarray(mem_info, array.view_mut());
+        let tensor_info = get_tensor_type_and_shape(ort_value as *const OrtValue);
+        assert_eq!(
+            get_tensor_element_type(tensor_info),
+            ONNXTensorElementDataType_ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT
+        );
+        assert_eq!(get_tensor_shape_element_count(tensor_info), 2);
+        assert_eq!(
+            get_dimensions(tensor_info, get_dimension_count(tensor_info)),
+            vec![1, 2]
+        );
+    }
+}

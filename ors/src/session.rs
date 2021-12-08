@@ -17,13 +17,12 @@ use crate::{
     status::assert_status,
 };
 
-// TODO: run with io binding
 // Run session inference
 fn session_run(
     session: *mut OrtSession,
     run_options: *const OrtRunOptions,
-    inputs: Vec<*mut OrtValue>,
-    mut outputs: Vec<*mut OrtValue>,
+    inputs: &Vec<*const OrtValue>,
+    outputs: &mut Vec<*mut OrtValue>,
     input_info: Vec<SessionInputInfo>,
     output_info: Vec<SessionOutputInfo>,
 ) {
@@ -82,7 +81,7 @@ pub(crate) fn create_session(
     return session_ptr;
 }
 
-fn get_default_allocator() -> *mut OrtAllocator {
+pub(super) fn get_default_allocator() -> *mut OrtAllocator {
     let mut allocator_ptr = null_mut();
     let status = unsafe { get_api().GetAllocatorWithDefaultOptions.unwrap()(&mut allocator_ptr) };
     assert_status(status);
@@ -100,7 +99,7 @@ fn create_and_register_allocator(
     return allocator_ptr;
 }
 
-fn get_allocator_mem_info(allocator: *const OrtAllocator) -> *const OrtMemoryInfo {
+pub(super) fn get_allocator_mem_info(allocator: *const OrtAllocator) -> *const OrtMemoryInfo {
     let mut mem_info_ptr = null();
     let status = unsafe { get_api().AllocatorGetInfo.unwrap()(allocator, &mut mem_info_ptr) };
     assert_status(status);
@@ -113,7 +112,7 @@ fn get_allocator_mem_info(allocator: *const OrtAllocator) -> *const OrtMemoryInf
 mod test {
     use std::time::SystemTime;
 
-    use ndarray::{s, ArrayD, IxDyn};
+    use ndarray::{ArrayD, IxDyn};
 
     use super::*;
     use crate::{
@@ -153,7 +152,7 @@ mod test {
             50256, 50256, 50256, 50256, 13466, 7541, 287, 15489, 1989, 1456, 318, 281, 1672, 286,
             308, 457, 17, 2746,
         ];
-        let mut input: Vec<*mut OrtValue> = vec![];
+        let mut input: Vec<*const OrtValue> = vec![];
         let mut input_ids = ArrayD::<i64>::from_shape_vec(IxDyn(&[2, 9]), input_ids_data).unwrap();
         let mut positions_ids = ArrayD::<i64>::from_shape_vec(
             IxDyn(&[2, 9]),
@@ -177,9 +176,9 @@ mod test {
             mem_info as *mut OrtMemoryInfo,
             attension_mask.view_mut(),
         );
-        input.push(input_ids_tensor);
-        input.push(position_ids_tensor);
-        input.push(attension_mask_tensor);
+        input.push(input_ids_tensor as *const OrtValue);
+        input.push(position_ids_tensor as *const OrtValue);
+        input.push(attension_mask_tensor as *const OrtValue);
         let past_num = 12;
         for i in 0..past_num {
             let mut past =
@@ -188,7 +187,7 @@ mod test {
             input.push(create_tensor_with_ndarray::<f32>(
                 mem_info as *mut OrtMemoryInfo,
                 past.view_mut(),
-            ));
+            ) as *const OrtValue);
         }
         // created input is a map
 
@@ -201,10 +200,7 @@ mod test {
         let mut output_tensors = vec![];
         let mut logits =
             ArrayD::<f32>::from_shape_vec(IxDyn(&[2, 9, 50257]), vec![0.0; 2 * 9 * 50257]).unwrap();
-        let logits_tensor = create_tensor_with_ndarray::<f32>(
-            mem_info,
-            logits.slice_mut(s![.., 0..9, ..]).into_dyn(),
-        );
+        let logits_tensor = create_tensor_with_ndarray::<f32>(mem_info, logits.view_mut());
         output_tensors.push(logits_tensor);
         for i in 0..past_num {
             let key = format!("present_{}", i);
@@ -234,13 +230,13 @@ mod test {
         session_run(
             session,
             null(),
-            input,
-            output_tensors,
+            &input,
+            &mut output_tensors,
             inputs_info.clone(),
             outputs_info.clone(),
         );
 
-        // println!("the first inference result: logits: {:?}", logits);
+        println!("the first inference result: logits: {:?}", logits);
         // println!("firset presents: {:?}", presents.get(0).unwrap());
         println!(
             "the first inference costs: {:?}",
@@ -249,7 +245,7 @@ mod test {
 
         // The second inference
         let inference_2_start = SystemTime::now();
-        let mut new_input: Vec<*mut OrtValue> = vec![];
+        let mut new_input: Vec<*const OrtValue> = vec![];
         let mut input_ids = ArrayD::<i64>::from_shape_vec(IxDyn(&[2, 1]), vec![1234, 568]).unwrap();
         let mut positions_ids = ArrayD::<i64>::from_shape_vec(IxDyn(&[2, 1]), vec![5, 9]).unwrap();
         let mut attension_mask =
@@ -264,12 +260,16 @@ mod test {
             mem_info as *mut OrtMemoryInfo,
             attension_mask.view_mut(),
         );
-        new_input.push(input_ids_tensor);
-        new_input.push(position_ids_tensor);
-        new_input.push(attension_mask_tensor);
-        for mut past in presents {
-            new_input.push(create_tensor_with_ndarray(mem_info, past.view_mut()));
-        }
+        new_input.push(input_ids_tensor as *const OrtValue);
+        new_input.push(position_ids_tensor as *const OrtValue);
+        new_input.push(attension_mask_tensor as *const OrtValue);
+        let mut new_input_presents: Vec<*const OrtValue> = output_tensors
+            .iter()
+            .enumerate()
+            .filter(|(i, p)| *i > 0)
+            .map(|(_i, p)| *p as *const OrtValue)
+            .collect();
+        new_input.append(&mut new_input_presents);
 
         let mut new_output_tensors = vec![];
         let mut new_logits =
@@ -292,13 +292,14 @@ mod test {
         session_run(
             session,
             null(),
-            new_input,
-            new_output_tensors,
+            &new_input,
+            &mut new_output_tensors,
             inputs_info.clone(),
             outputs_info.clone(),
         );
 
-        // println!("the second result logits: {:?}", new_logits);
+        // TODO: validate this
+        println!("the second result logits: {:?}", new_logits);
         // println!("second presents: {:?}", new_presents.get(0).unwrap());
         println!(
             "second inference costs: {:?}",
