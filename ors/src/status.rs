@@ -1,6 +1,6 @@
 use crate::api::get_api;
 use ors_sys::*;
-use std::ffi::CString;
+use std::ffi::{CStr, CString};
 
 fn create_status(error_code: OrtErrorCode, msg: String) -> *const OrtStatus {
     let msg = CString::new(msg).unwrap();
@@ -13,6 +13,23 @@ fn get_error_code(status: *const OrtStatus) -> OrtErrorCode {
 
 fn release_status(status: *mut OrtStatus) {
     unsafe { get_api().ReleaseStatus.unwrap()(status) }
+}
+
+fn get_error_msg(status: *const OrtStatus) -> String {
+    let msg = unsafe { CStr::from_ptr(get_api().GetErrorMessage.unwrap()(status)) };
+    (*msg.to_string_lossy()).to_string()
+}
+
+pub fn assert_status(status: *mut OrtStatus) {
+    if status.is_null() || OrtErrorCode_ORT_OK == get_error_code(status) {
+        return;
+    } else {
+        println!(
+            "error on status: {}, msg: {}",
+            get_error_code(status),
+            get_error_msg(status)
+        );
+    }
 }
 
 #[cfg(test)]

@@ -20,6 +20,8 @@ fn main() {
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         // Format bindings using rustfmt
         .rustfmt_bindings(true)
+        // Use usize instead of size_t
+        .size_t_is_usize(true)
         // Finish the builder and generate the bindings.
         .generate()
         // Unwrap the Result and panic on failure.

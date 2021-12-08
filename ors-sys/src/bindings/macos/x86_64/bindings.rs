@@ -117,6 +117,9 @@ pub const __MAC_10_16: u32 = 101600;
 pub const __MAC_11_0: u32 = 110000;
 pub const __MAC_11_1: u32 = 110100;
 pub const __MAC_11_3: u32 = 110300;
+pub const __MAC_11_4: u32 = 110400;
+pub const __MAC_11_5: u32 = 110500;
+pub const __MAC_12_0: u32 = 120000;
 pub const __IPHONE_2_0: u32 = 20000;
 pub const __IPHONE_2_1: u32 = 20100;
 pub const __IPHONE_2_2: u32 = 20200;
@@ -169,6 +172,10 @@ pub const __IPHONE_14_1: u32 = 140100;
 pub const __IPHONE_14_2: u32 = 140200;
 pub const __IPHONE_14_3: u32 = 140300;
 pub const __IPHONE_14_5: u32 = 140500;
+pub const __IPHONE_14_6: u32 = 140600;
+pub const __IPHONE_14_7: u32 = 140700;
+pub const __IPHONE_14_8: u32 = 140800;
+pub const __IPHONE_15_0: u32 = 150000;
 pub const __TVOS_9_0: u32 = 90000;
 pub const __TVOS_9_1: u32 = 90100;
 pub const __TVOS_9_2: u32 = 90200;
@@ -195,6 +202,9 @@ pub const __TVOS_14_1: u32 = 140100;
 pub const __TVOS_14_2: u32 = 140200;
 pub const __TVOS_14_3: u32 = 140300;
 pub const __TVOS_14_5: u32 = 140500;
+pub const __TVOS_14_6: u32 = 140600;
+pub const __TVOS_14_7: u32 = 140700;
+pub const __TVOS_15_0: u32 = 150000;
 pub const __WATCHOS_1_0: u32 = 10000;
 pub const __WATCHOS_2_0: u32 = 20000;
 pub const __WATCHOS_2_1: u32 = 20100;
@@ -219,6 +229,9 @@ pub const __WATCHOS_7_1: u32 = 70100;
 pub const __WATCHOS_7_2: u32 = 70200;
 pub const __WATCHOS_7_3: u32 = 70300;
 pub const __WATCHOS_7_4: u32 = 70400;
+pub const __WATCHOS_7_5: u32 = 70500;
+pub const __WATCHOS_7_6: u32 = 70600;
+pub const __WATCHOS_8_0: u32 = 80000;
 pub const MAC_OS_X_VERSION_10_0: u32 = 1000;
 pub const MAC_OS_X_VERSION_10_1: u32 = 1010;
 pub const MAC_OS_X_VERSION_10_2: u32 = 1020;
@@ -252,9 +265,11 @@ pub const MAC_OS_X_VERSION_10_15: u32 = 101500;
 pub const MAC_OS_X_VERSION_10_15_1: u32 = 101501;
 pub const MAC_OS_X_VERSION_10_16: u32 = 101600;
 pub const MAC_OS_VERSION_11_0: u32 = 110000;
+pub const MAC_OS_VERSION_12_0: u32 = 120000;
 pub const __DRIVERKIT_19_0: u32 = 190000;
 pub const __DRIVERKIT_20_0: u32 = 200000;
-pub const __MAC_OS_X_VERSION_MAX_ALLOWED: u32 = 110300;
+pub const __DRIVERKIT_21_0: u32 = 210000;
+pub const __MAC_OS_X_VERSION_MAX_ALLOWED: u32 = 120000;
 pub const __ENABLE_LEGACY_MAC_AVAILABILITY: u32 = 1;
 pub const __DARWIN_ONLY_64_BIT_INO_T: u32 = 0;
 pub const __DARWIN_ONLY_UNIX_CONFORMANCE: u32 = 1;
@@ -498,6 +513,7 @@ pub const IOPOL_TYPE_VFS_TRIGGER_RESOLVE: u32 = 5;
 pub const IOPOL_TYPE_VFS_IGNORE_CONTENT_PROTECTION: u32 = 6;
 pub const IOPOL_TYPE_VFS_IGNORE_PERMISSIONS: u32 = 7;
 pub const IOPOL_TYPE_VFS_SKIP_MTIME_UPDATE: u32 = 8;
+pub const IOPOL_TYPE_VFS_ALLOW_LOW_SPACE_WRITES: u32 = 9;
 pub const IOPOL_SCOPE_PROCESS: u32 = 0;
 pub const IOPOL_SCOPE_THREAD: u32 = 1;
 pub const IOPOL_SCOPE_DARWIN_BG: u32 = 2;
@@ -524,6 +540,8 @@ pub const IOPOL_VFS_IGNORE_PERMISSIONS_OFF: u32 = 0;
 pub const IOPOL_VFS_IGNORE_PERMISSIONS_ON: u32 = 1;
 pub const IOPOL_VFS_SKIP_MTIME_UPDATE_OFF: u32 = 0;
 pub const IOPOL_VFS_SKIP_MTIME_UPDATE_ON: u32 = 1;
+pub const IOPOL_VFS_ALLOW_LOW_SPACE_WRITES_OFF: u32 = 0;
+pub const IOPOL_VFS_ALLOW_LOW_SPACE_WRITES_ON: u32 = 1;
 pub const WNOHANG: u32 = 1;
 pub const WUNTRACED: u32 = 2;
 pub const WCOREFLAG: u32 = 128;
@@ -7964,7 +7982,6 @@ fn bindgen_test_layout___darwin_ucontext() {
 }
 pub type ucontext_t = __darwin_ucontext;
 pub type sigset_t = __darwin_sigset_t;
-pub type size_t = __darwin_size_t;
 pub type uid_t = __darwin_uid_t;
 #[repr(C)]
 #[derive(Copy, Clone)]
@@ -11167,16 +11184,16 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    pub fn valloc(arg1: size_t) -> *mut ::std::os::raw::c_void;
+    pub fn valloc(arg1: usize) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
-    pub fn aligned_alloc(__alignment: size_t, __size: size_t) -> *mut ::std::os::raw::c_void;
+    pub fn aligned_alloc(__alignment: usize, __size: usize) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
     pub fn posix_memalign(
         __memptr: *mut *mut ::std::os::raw::c_void,
-        __alignment: size_t,
-        __size: size_t,
+        __alignment: usize,
+        __size: usize,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
@@ -11204,8 +11221,8 @@ extern "C" {
     pub fn bsearch(
         __key: *const ::std::os::raw::c_void,
         __base: *const ::std::os::raw::c_void,
-        __nel: size_t,
-        __width: size_t,
+        __nel: usize,
+        __width: usize,
         __compar: ::std::option::Option<
             unsafe extern "C" fn(
                 arg1: *const ::std::os::raw::c_void,
@@ -11236,27 +11253,23 @@ extern "C" {
     pub fn lldiv(arg1: ::std::os::raw::c_longlong, arg2: ::std::os::raw::c_longlong) -> lldiv_t;
 }
 extern "C" {
-    pub fn mblen(__s: *const ::std::os::raw::c_char, __n: size_t) -> ::std::os::raw::c_int;
+    pub fn mblen(__s: *const ::std::os::raw::c_char, __n: usize) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    pub fn mbstowcs(
-        arg1: *mut wchar_t,
-        arg2: *const ::std::os::raw::c_char,
-        arg3: size_t,
-    ) -> size_t;
+    pub fn mbstowcs(arg1: *mut wchar_t, arg2: *const ::std::os::raw::c_char, arg3: usize) -> usize;
 }
 extern "C" {
     pub fn mbtowc(
         arg1: *mut wchar_t,
         arg2: *const ::std::os::raw::c_char,
-        arg3: size_t,
+        arg3: usize,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
     pub fn qsort(
         __base: *mut ::std::os::raw::c_void,
-        __nel: size_t,
-        __width: size_t,
+        __nel: usize,
+        __width: usize,
         __compar: ::std::option::Option<
             unsafe extern "C" fn(
                 arg1: *const ::std::os::raw::c_void,
@@ -11321,11 +11334,7 @@ extern "C" {
     pub fn system(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
 }
 extern "C" {
-    pub fn wcstombs(
-        arg1: *mut ::std::os::raw::c_char,
-        arg2: *const wchar_t,
-        arg3: size_t,
-    ) -> size_t;
+    pub fn wcstombs(arg1: *mut ::std::os::raw::c_char, arg2: *const wchar_t, arg3: usize) -> usize;
 }
 extern "C" {
     pub fn wctomb(arg1: *mut ::std::os::raw::c_char, arg2: wchar_t) -> ::std::os::raw::c_int;
@@ -11379,7 +11388,7 @@ extern "C" {
     pub fn initstate(
         arg1: ::std::os::raw::c_uint,
         arg2: *mut ::std::os::raw::c_char,
-        arg3: size_t,
+        arg3: usize,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
@@ -11416,7 +11425,7 @@ extern "C" {
     pub fn ptsname_r(
         fildes: ::std::os::raw::c_int,
         buffer: *mut ::std::os::raw::c_char,
-        buflen: size_t,
+        buflen: usize,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
@@ -11472,7 +11481,7 @@ extern "C" {
     pub fn arc4random_addrandom(arg1: *mut ::std::os::raw::c_uchar, arg2: ::std::os::raw::c_int);
 }
 extern "C" {
-    pub fn arc4random_buf(__buf: *mut ::std::os::raw::c_void, __nbytes: size_t);
+    pub fn arc4random_buf(__buf: *mut ::std::os::raw::c_void, __nbytes: usize);
 }
 extern "C" {
     pub fn arc4random_stir();
@@ -11487,8 +11496,8 @@ extern "C" {
     pub fn bsearch_b(
         __key: *const ::std::os::raw::c_void,
         __base: *const ::std::os::raw::c_void,
-        __nel: size_t,
-        __width: size_t,
+        __nel: usize,
+        __width: usize,
         __compar: *mut ::std::os::raw::c_void,
     ) -> *mut ::std::os::raw::c_void;
 }
@@ -11587,8 +11596,8 @@ extern "C" {
 extern "C" {
     pub fn heapsort(
         __base: *mut ::std::os::raw::c_void,
-        __nel: size_t,
-        __width: size_t,
+        __nel: usize,
+        __width: usize,
         __compar: ::std::option::Option<
             unsafe extern "C" fn(
                 arg1: *const ::std::os::raw::c_void,
@@ -11600,16 +11609,16 @@ extern "C" {
 extern "C" {
     pub fn heapsort_b(
         __base: *mut ::std::os::raw::c_void,
-        __nel: size_t,
-        __width: size_t,
+        __nel: usize,
+        __width: usize,
         __compar: *mut ::std::os::raw::c_void,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
     pub fn mergesort(
         __base: *mut ::std::os::raw::c_void,
-        __nel: size_t,
-        __width: size_t,
+        __nel: usize,
+        __width: usize,
         __compar: ::std::option::Option<
             unsafe extern "C" fn(
                 arg1: *const ::std::os::raw::c_void,
@@ -11621,16 +11630,16 @@ extern "C" {
 extern "C" {
     pub fn mergesort_b(
         __base: *mut ::std::os::raw::c_void,
-        __nel: size_t,
-        __width: size_t,
+        __nel: usize,
+        __width: usize,
         __compar: *mut ::std::os::raw::c_void,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
     pub fn psort(
         __base: *mut ::std::os::raw::c_void,
-        __nel: size_t,
-        __width: size_t,
+        __nel: usize,
+        __width: usize,
         __compar: ::std::option::Option<
             unsafe extern "C" fn(
                 arg1: *const ::std::os::raw::c_void,
@@ -11642,16 +11651,16 @@ extern "C" {
 extern "C" {
     pub fn psort_b(
         __base: *mut ::std::os::raw::c_void,
-        __nel: size_t,
-        __width: size_t,
+        __nel: usize,
+        __width: usize,
         __compar: *mut ::std::os::raw::c_void,
     );
 }
 extern "C" {
     pub fn psort_r(
         __base: *mut ::std::os::raw::c_void,
-        __nel: size_t,
-        __width: size_t,
+        __nel: usize,
+        __width: usize,
         arg1: *mut ::std::os::raw::c_void,
         __compar: ::std::option::Option<
             unsafe extern "C" fn(
@@ -11665,16 +11674,16 @@ extern "C" {
 extern "C" {
     pub fn qsort_b(
         __base: *mut ::std::os::raw::c_void,
-        __nel: size_t,
-        __width: size_t,
+        __nel: usize,
+        __width: usize,
         __compar: *mut ::std::os::raw::c_void,
     );
 }
 extern "C" {
     pub fn qsort_r(
         __base: *mut ::std::os::raw::c_void,
-        __nel: size_t,
-        __width: size_t,
+        __nel: usize,
+        __width: usize,
         arg1: *mut ::std::os::raw::c_void,
         __compar: ::std::option::Option<
             unsafe extern "C" fn(
@@ -11713,7 +11722,7 @@ extern "C" {
 extern "C" {
     pub fn reallocf(
         __ptr: *mut ::std::os::raw::c_void,
-        __size: size_t,
+        __size: usize,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
@@ -11887,7 +11896,7 @@ extern "C" {
     pub fn strerror_r(
         __errnum: ::std::os::raw::c_int,
         __strerrbuf: *mut ::std::os::raw::c_char,
-        __buflen: size_t,
+        __buflen: usize,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
@@ -11921,7 +11930,7 @@ extern "C" {
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
-    pub fn strnlen(__s1: *const ::std::os::raw::c_char, __n: size_t) -> size_t;
+    pub fn strnlen(__s1: *const ::std::os::raw::c_char, __n: usize) -> usize;
 }
 extern "C" {
     pub fn strsignal(__sig: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char;
@@ -11936,34 +11945,33 @@ extern "C" {
         __n: rsize_t,
     ) -> errno_t;
 }
-pub type ssize_t = __darwin_ssize_t;
 extern "C" {
     pub fn memmem(
         __big: *const ::std::os::raw::c_void,
-        __big_len: size_t,
+        __big_len: usize,
         __little: *const ::std::os::raw::c_void,
-        __little_len: size_t,
+        __little_len: usize,
     ) -> *mut ::std::os::raw::c_void;
 }
 extern "C" {
     pub fn memset_pattern4(
         __b: *mut ::std::os::raw::c_void,
         __pattern4: *const ::std::os::raw::c_void,
-        __len: size_t,
+        __len: usize,
     );
 }
 extern "C" {
     pub fn memset_pattern8(
         __b: *mut ::std::os::raw::c_void,
         __pattern8: *const ::std::os::raw::c_void,
-        __len: size_t,
+        __len: usize,
     );
 }
 extern "C" {
     pub fn memset_pattern16(
         __b: *mut ::std::os::raw::c_void,
         __pattern16: *const ::std::os::raw::c_void,
-        __len: size_t,
+        __len: usize,
     );
 }
 extern "C" {
@@ -11976,7 +11984,7 @@ extern "C" {
     pub fn strnstr(
         __big: *const ::std::os::raw::c_char,
         __little: *const ::std::os::raw::c_char,
-        __len: size_t,
+        __len: usize,
     ) -> *mut ::std::os::raw::c_char;
 }
 extern "C" {
@@ -12006,21 +12014,21 @@ extern "C" {
     pub fn swab(
         arg1: *const ::std::os::raw::c_void,
         arg2: *mut ::std::os::raw::c_void,
-        arg3: ssize_t,
+        arg3: isize,
     );
 }
 extern "C" {
     pub fn timingsafe_bcmp(
         __b1: *const ::std::os::raw::c_void,
         __b2: *const ::std::os::raw::c_void,
-        __len: size_t,
+        __len: usize,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
     pub fn strsignal_r(
         __sig: ::std::os::raw::c_int,
         __strsignalbuf: *mut ::std::os::raw::c_char,
-        __buflen: size_t,
+        __buflen: usize,
     ) -> ::std::os::raw::c_int;
 }
 extern "C" {
@@ -12034,7 +12042,7 @@ extern "C" {
     pub fn bcopy(
         arg1: *const ::std::os::raw::c_void,
         arg2: *mut ::std::os::raw::c_void,
-        arg3: size_t,
+        arg3: usize,
     );
 }
 extern "C" {
@@ -12240,7 +12248,7 @@ pub type OrtStatusPtr = *mut OrtStatus;
 pub struct OrtAllocator {
     pub version: u32,
     pub Alloc: ::std::option::Option<
-        unsafe extern "C" fn(this_: *mut OrtAllocator, size: size_t) -> *mut ::std::os::raw::c_void,
+        unsafe extern "C" fn(this_: *mut OrtAllocator, size: usize) -> *mut ::std::os::raw::c_void,
     >,
     pub Free: ::std::option::Option<
         unsafe extern "C" fn(this_: *mut OrtAllocator, p: *mut ::std::os::raw::c_void),
@@ -12361,7 +12369,7 @@ pub type OrtCudnnConvAlgoSearch = ::std::os::raw::c_uint;
 pub struct OrtCUDAProviderOptions {
     pub device_id: ::std::os::raw::c_int,
     pub cudnn_conv_algo_search: OrtCudnnConvAlgoSearch,
-    pub gpu_mem_limit: size_t,
+    pub gpu_mem_limit: usize,
     pub arena_extend_strategy: ::std::os::raw::c_int,
     pub do_copy_in_default_stream: ::std::os::raw::c_int,
     pub has_user_compute_stream: ::std::os::raw::c_int,
@@ -12491,7 +12499,7 @@ fn bindgen_test_layout_OrtCUDAProviderOptions() {
 pub struct OrtROCMProviderOptions {
     pub device_id: ::std::os::raw::c_int,
     pub miopen_conv_exhaustive_search: ::std::os::raw::c_int,
-    pub gpu_mem_limit: size_t,
+    pub gpu_mem_limit: usize,
     pub arena_extend_strategy: ::std::os::raw::c_int,
 }
 #[test]
@@ -12568,7 +12576,7 @@ pub struct OrtTensorRTProviderOptions {
     pub user_compute_stream: *mut ::std::os::raw::c_void,
     pub trt_max_partition_iterations: ::std::os::raw::c_int,
     pub trt_min_subgraph_size: ::std::os::raw::c_int,
-    pub trt_max_workspace_size: size_t,
+    pub trt_max_workspace_size: usize,
     pub trt_fp16_enable: ::std::os::raw::c_int,
     pub trt_int8_enable: ::std::os::raw::c_int,
     pub trt_int8_calibration_table_name: *const ::std::os::raw::c_char,
@@ -12836,7 +12844,7 @@ pub struct OrtOpenVINOProviderOptions {
     pub device_type: *const ::std::os::raw::c_char,
     pub enable_vpu_fast_compile: ::std::os::raw::c_uchar,
     pub device_id: *const ::std::os::raw::c_char,
-    pub num_of_threads: size_t,
+    pub num_of_threads: usize,
     pub use_compiled_network: ::std::os::raw::c_uchar,
     pub blob_dump_path: *const ::std::os::raw::c_char,
 }
@@ -13021,7 +13029,7 @@ pub struct OrtApi {
         unsafe extern "C" fn(
             env: *const OrtEnv,
             model_data: *const ::std::os::raw::c_void,
-            model_data_length: size_t,
+            model_data_length: usize,
             options: *const OrtSessionOptions,
             out: *mut *mut OrtSession,
         ) -> OrtStatusPtr,
@@ -13032,9 +13040,9 @@ pub struct OrtApi {
             run_options: *const OrtRunOptions,
             input_names: *const *const ::std::os::raw::c_char,
             input: *const *const OrtValue,
-            input_len: size_t,
+            input_len: usize,
             output_names1: *const *const ::std::os::raw::c_char,
-            output_names_len: size_t,
+            output_names_len: usize,
             output: *mut *mut OrtValue,
         ) -> OrtStatusPtr,
     >,
@@ -13142,39 +13150,39 @@ pub struct OrtApi {
         ) -> OrtStatusPtr,
     >,
     pub SessionGetInputCount: ::std::option::Option<
-        unsafe extern "C" fn(sess: *const OrtSession, out: *mut size_t) -> OrtStatusPtr,
+        unsafe extern "C" fn(sess: *const OrtSession, out: *mut usize) -> OrtStatusPtr,
     >,
     pub SessionGetOutputCount: ::std::option::Option<
-        unsafe extern "C" fn(sess: *const OrtSession, out: *mut size_t) -> OrtStatusPtr,
+        unsafe extern "C" fn(sess: *const OrtSession, out: *mut usize) -> OrtStatusPtr,
     >,
     pub SessionGetOverridableInitializerCount: ::std::option::Option<
-        unsafe extern "C" fn(sess: *const OrtSession, out: *mut size_t) -> OrtStatusPtr,
+        unsafe extern "C" fn(sess: *const OrtSession, out: *mut usize) -> OrtStatusPtr,
     >,
     pub SessionGetInputTypeInfo: ::std::option::Option<
         unsafe extern "C" fn(
             sess: *const OrtSession,
-            index: size_t,
+            index: usize,
             type_info: *mut *mut OrtTypeInfo,
         ) -> OrtStatusPtr,
     >,
     pub SessionGetOutputTypeInfo: ::std::option::Option<
         unsafe extern "C" fn(
             sess: *const OrtSession,
-            index: size_t,
+            index: usize,
             type_info: *mut *mut OrtTypeInfo,
         ) -> OrtStatusPtr,
     >,
     pub SessionGetOverridableInitializerTypeInfo: ::std::option::Option<
         unsafe extern "C" fn(
             sess: *const OrtSession,
-            index: size_t,
+            index: usize,
             type_info: *mut *mut OrtTypeInfo,
         ) -> OrtStatusPtr,
     >,
     pub SessionGetInputName: ::std::option::Option<
         unsafe extern "C" fn(
             sess: *const OrtSession,
-            index: size_t,
+            index: usize,
             allocator: *mut OrtAllocator,
             value: *mut *mut ::std::os::raw::c_char,
         ) -> OrtStatusPtr,
@@ -13182,7 +13190,7 @@ pub struct OrtApi {
     pub SessionGetOutputName: ::std::option::Option<
         unsafe extern "C" fn(
             sess: *const OrtSession,
-            index: size_t,
+            index: usize,
             allocator: *mut OrtAllocator,
             value: *mut *mut ::std::os::raw::c_char,
         ) -> OrtStatusPtr,
@@ -13190,7 +13198,7 @@ pub struct OrtApi {
     pub SessionGetOverridableInitializerName: ::std::option::Option<
         unsafe extern "C" fn(
             sess: *const OrtSession,
-            index: size_t,
+            index: usize,
             allocator: *mut OrtAllocator,
             value: *mut *mut ::std::os::raw::c_char,
         ) -> OrtStatusPtr,
@@ -13241,7 +13249,7 @@ pub struct OrtApi {
         unsafe extern "C" fn(
             allocator: *mut OrtAllocator,
             shape: *const i64,
-            shape_len: size_t,
+            shape_len: usize,
             type_: ONNXTensorElementDataType,
             out: *mut *mut OrtValue,
         ) -> OrtStatusPtr,
@@ -13250,9 +13258,9 @@ pub struct OrtApi {
         unsafe extern "C" fn(
             info: *const OrtMemoryInfo,
             p_data: *mut ::std::os::raw::c_void,
-            p_data_len: size_t,
+            p_data_len: usize,
             shape: *const i64,
-            shape_len: size_t,
+            shape_len: usize,
             type_: ONNXTensorElementDataType,
             out: *mut *mut OrtValue,
         ) -> OrtStatusPtr,
@@ -13273,19 +13281,19 @@ pub struct OrtApi {
         unsafe extern "C" fn(
             value: *mut OrtValue,
             s: *const *const ::std::os::raw::c_char,
-            s_len: size_t,
+            s_len: usize,
         ) -> OrtStatusPtr,
     >,
     pub GetStringTensorDataLength: ::std::option::Option<
-        unsafe extern "C" fn(value: *const OrtValue, len: *mut size_t) -> OrtStatusPtr,
+        unsafe extern "C" fn(value: *const OrtValue, len: *mut usize) -> OrtStatusPtr,
     >,
     pub GetStringTensorContent: ::std::option::Option<
         unsafe extern "C" fn(
             value: *const OrtValue,
             s: *mut ::std::os::raw::c_void,
-            s_len: size_t,
-            offsets: *mut size_t,
-            offsets_len: size_t,
+            s_len: usize,
+            offsets: *mut usize,
+            offsets_len: usize,
         ) -> OrtStatusPtr,
     >,
     pub CastTypeInfoToTensorInfo: ::std::option::Option<
@@ -13310,7 +13318,7 @@ pub struct OrtApi {
         unsafe extern "C" fn(
             info: *mut OrtTensorTypeAndShapeInfo,
             dim_values: *const i64,
-            dim_count: size_t,
+            dim_count: usize,
         ) -> OrtStatusPtr,
     >,
     pub GetTensorElementType: ::std::option::Option<
@@ -13322,27 +13330,27 @@ pub struct OrtApi {
     pub GetDimensionsCount: ::std::option::Option<
         unsafe extern "C" fn(
             info: *const OrtTensorTypeAndShapeInfo,
-            out: *mut size_t,
+            out: *mut usize,
         ) -> OrtStatusPtr,
     >,
     pub GetDimensions: ::std::option::Option<
         unsafe extern "C" fn(
             info: *const OrtTensorTypeAndShapeInfo,
             dim_values: *mut i64,
-            dim_values_length: size_t,
+            dim_values_length: usize,
         ) -> OrtStatusPtr,
     >,
     pub GetSymbolicDimensions: ::std::option::Option<
         unsafe extern "C" fn(
             info: *const OrtTensorTypeAndShapeInfo,
             dim_params: *mut *const ::std::os::raw::c_char,
-            dim_params_length: size_t,
+            dim_params_length: usize,
         ) -> OrtStatusPtr,
     >,
     pub GetTensorShapeElementCount: ::std::option::Option<
         unsafe extern "C" fn(
             info: *const OrtTensorTypeAndShapeInfo,
-            out: *mut size_t,
+            out: *mut usize,
         ) -> OrtStatusPtr,
     >,
     pub GetTensorTypeAndShape: ::std::option::Option<
@@ -13401,7 +13409,7 @@ pub struct OrtApi {
     pub AllocatorAlloc: ::std::option::Option<
         unsafe extern "C" fn(
             ptr: *mut OrtAllocator,
-            size: size_t,
+            size: usize,
             out: *mut *mut ::std::os::raw::c_void,
         ) -> OrtStatusPtr,
     >,
@@ -13435,12 +13443,12 @@ pub struct OrtApi {
         ) -> OrtStatusPtr,
     >,
     pub GetValueCount: ::std::option::Option<
-        unsafe extern "C" fn(value: *const OrtValue, out: *mut size_t) -> OrtStatusPtr,
+        unsafe extern "C" fn(value: *const OrtValue, out: *mut usize) -> OrtStatusPtr,
     >,
     pub CreateValue: ::std::option::Option<
         unsafe extern "C" fn(
             in_: *const *const OrtValue,
-            num_values: size_t,
+            num_values: usize,
             value_type: ONNXType,
             out: *mut *mut OrtValue,
         ) -> OrtStatusPtr,
@@ -13450,7 +13458,7 @@ pub struct OrtApi {
             domain_name: *const ::std::os::raw::c_char,
             type_name: *const ::std::os::raw::c_char,
             data_container: *const ::std::os::raw::c_void,
-            data_container_size: size_t,
+            data_container_size: usize,
             out: *mut *mut OrtValue,
         ) -> OrtStatusPtr,
     >,
@@ -13460,7 +13468,7 @@ pub struct OrtApi {
             type_name: *const ::std::os::raw::c_char,
             in_: *const OrtValue,
             data_container: *mut ::std::os::raw::c_void,
-            data_container_size: size_t,
+            data_container_size: usize,
         ) -> OrtStatusPtr,
     >,
     pub KernelInfoGetAttribute_float: ::std::option::Option<
@@ -13482,28 +13490,28 @@ pub struct OrtApi {
             info: *const OrtKernelInfo,
             name: *const ::std::os::raw::c_char,
             out: *mut ::std::os::raw::c_char,
-            size: *mut size_t,
+            size: *mut usize,
         ) -> OrtStatusPtr,
     >,
     pub KernelContext_GetInputCount: ::std::option::Option<
-        unsafe extern "C" fn(context: *const OrtKernelContext, out: *mut size_t) -> OrtStatusPtr,
+        unsafe extern "C" fn(context: *const OrtKernelContext, out: *mut usize) -> OrtStatusPtr,
     >,
     pub KernelContext_GetOutputCount: ::std::option::Option<
-        unsafe extern "C" fn(context: *const OrtKernelContext, out: *mut size_t) -> OrtStatusPtr,
+        unsafe extern "C" fn(context: *const OrtKernelContext, out: *mut usize) -> OrtStatusPtr,
     >,
     pub KernelContext_GetInput: ::std::option::Option<
         unsafe extern "C" fn(
             context: *const OrtKernelContext,
-            index: size_t,
+            index: usize,
             out: *mut *const OrtValue,
         ) -> OrtStatusPtr,
     >,
     pub KernelContext_GetOutput: ::std::option::Option<
         unsafe extern "C" fn(
             context: *mut OrtKernelContext,
-            index: size_t,
+            index: usize,
             dim_values: *const i64,
-            dim_count: size_t,
+            dim_count: usize,
             out: *mut *mut OrtValue,
         ) -> OrtStatusPtr,
     >,
@@ -13524,7 +13532,7 @@ pub struct OrtApi {
         unsafe extern "C" fn(
             arg1: *const OrtTypeInfo,
             denotation: *mut *const ::std::os::raw::c_char,
-            len: *mut size_t,
+            len: *mut usize,
         ) -> OrtStatusPtr,
     >,
     pub CastTypeInfoToMapTypeInfo: ::std::option::Option<
@@ -13661,17 +13669,13 @@ pub struct OrtApi {
         ) -> OrtStatusPtr,
     >,
     pub GetStringTensorElementLength: ::std::option::Option<
-        unsafe extern "C" fn(
-            value: *const OrtValue,
-            index: size_t,
-            out: *mut size_t,
-        ) -> OrtStatusPtr,
+        unsafe extern "C" fn(value: *const OrtValue, index: usize, out: *mut usize) -> OrtStatusPtr,
     >,
     pub GetStringTensorElement: ::std::option::Option<
         unsafe extern "C" fn(
             value: *const OrtValue,
-            s_len: size_t,
-            index: size_t,
+            s_len: usize,
+            index: usize,
             s: *mut ::std::os::raw::c_void,
         ) -> OrtStatusPtr,
     >,
@@ -13679,7 +13683,7 @@ pub struct OrtApi {
         unsafe extern "C" fn(
             value: *mut OrtValue,
             s: *const ::std::os::raw::c_char,
-            index: size_t,
+            index: usize,
         ) -> OrtStatusPtr,
     >,
     pub AddSessionConfigEntry: ::std::option::Option<
@@ -13734,8 +13738,8 @@ pub struct OrtApi {
             binding_ptr: *const OrtIoBinding,
             allocator: *mut OrtAllocator,
             buffer: *mut *mut ::std::os::raw::c_char,
-            lengths: *mut *mut size_t,
-            count: *mut size_t,
+            lengths: *mut *mut usize,
+            count: *mut usize,
         ) -> OrtStatusPtr,
     >,
     pub GetBoundOutputValues: ::std::option::Option<
@@ -13743,7 +13747,7 @@ pub struct OrtApi {
             binding_ptr: *const OrtIoBinding,
             allocator: *mut OrtAllocator,
             output: *mut *mut *mut OrtValue,
-            output_count: *mut size_t,
+            output_count: *mut usize,
         ) -> OrtStatusPtr,
     >,
     #[doc = " Clears any previously specified bindings for inputs/outputs"]
@@ -13755,7 +13759,7 @@ pub struct OrtApi {
         unsafe extern "C" fn(
             value: *mut OrtValue,
             location_values: *const i64,
-            location_values_count: size_t,
+            location_values_count: usize,
             out: *mut *mut ::std::os::raw::c_void,
         ) -> OrtStatusPtr,
     >,
@@ -13833,7 +13837,7 @@ pub struct OrtApi {
     >,
     pub CreateArenaCfg: ::std::option::Option<
         unsafe extern "C" fn(
-            max_mem: size_t,
+            max_mem: usize,
             arena_extend_strategy: ::std::os::raw::c_int,
             initial_chunk_size_bytes: ::std::os::raw::c_int,
             max_dead_bytes_per_chunk: ::std::os::raw::c_int,
@@ -13865,7 +13869,7 @@ pub struct OrtApi {
             info: *const OrtKernelInfo,
             name: *const ::std::os::raw::c_char,
             out: *mut f32,
-            size: *mut size_t,
+            size: *mut usize,
         ) -> OrtStatusPtr,
     >,
     pub KernelInfoGetAttributeArray_int64: ::std::option::Option<
@@ -13873,14 +13877,14 @@ pub struct OrtApi {
             info: *const OrtKernelInfo,
             name: *const ::std::os::raw::c_char,
             out: *mut i64,
-            size: *mut size_t,
+            size: *mut usize,
         ) -> OrtStatusPtr,
     >,
     pub CreateArenaCfgV2: ::std::option::Option<
         unsafe extern "C" fn(
             arena_config_keys: *const *const ::std::os::raw::c_char,
-            arena_config_values: *const size_t,
-            num_keys: size_t,
+            arena_config_values: *const usize,
+            num_keys: usize,
             out: *mut *mut OrtArenaCfg,
         ) -> OrtStatusPtr,
     >,
@@ -13909,7 +13913,7 @@ pub struct OrtApi {
         unsafe extern "C" fn(
             env: *const OrtEnv,
             model_data: *const ::std::os::raw::c_void,
-            model_data_length: size_t,
+            model_data_length: usize,
             options: *const OrtSessionOptions,
             prepacked_weights_container: *mut OrtPrepackedWeightsContainer,
             out: *mut *mut OrtSession,
@@ -15770,15 +15774,15 @@ pub struct OrtCustomOp {
         unsafe extern "C" fn(op: *const OrtCustomOp) -> *const ::std::os::raw::c_char,
     >,
     pub GetInputType: ::std::option::Option<
-        unsafe extern "C" fn(op: *const OrtCustomOp, index: size_t) -> ONNXTensorElementDataType,
+        unsafe extern "C" fn(op: *const OrtCustomOp, index: usize) -> ONNXTensorElementDataType,
     >,
     pub GetInputTypeCount:
-        ::std::option::Option<unsafe extern "C" fn(op: *const OrtCustomOp) -> size_t>,
+        ::std::option::Option<unsafe extern "C" fn(op: *const OrtCustomOp) -> usize>,
     pub GetOutputType: ::std::option::Option<
-        unsafe extern "C" fn(op: *const OrtCustomOp, index: size_t) -> ONNXTensorElementDataType,
+        unsafe extern "C" fn(op: *const OrtCustomOp, index: usize) -> ONNXTensorElementDataType,
     >,
     pub GetOutputTypeCount:
-        ::std::option::Option<unsafe extern "C" fn(op: *const OrtCustomOp) -> size_t>,
+        ::std::option::Option<unsafe extern "C" fn(op: *const OrtCustomOp) -> usize>,
     pub KernelCompute: ::std::option::Option<
         unsafe extern "C" fn(
             op_kernel: *mut ::std::os::raw::c_void,
@@ -15790,13 +15794,13 @@ pub struct OrtCustomOp {
     pub GetInputCharacteristic: ::std::option::Option<
         unsafe extern "C" fn(
             op: *const OrtCustomOp,
-            index: size_t,
+            index: usize,
         ) -> OrtCustomOpInputOutputCharacteristic,
     >,
     pub GetOutputCharacteristic: ::std::option::Option<
         unsafe extern "C" fn(
             op: *const OrtCustomOp,
-            index: size_t,
+            index: usize,
         ) -> OrtCustomOpInputOutputCharacteristic,
     >,
 }

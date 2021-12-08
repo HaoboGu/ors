@@ -1,10 +1,14 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
 mod api;
 mod env;
 mod error;
+mod log;
 mod session;
+mod session_io;
 mod status;
 mod tensor;
-mod value;
+mod types;
 
 #[cfg(test)]
 mod tests {
