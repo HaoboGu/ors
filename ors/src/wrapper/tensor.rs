@@ -2,7 +2,7 @@ use std::{ffi::c_void, ptr::null_mut};
 
 use ors_sys::*;
 
-use crate::{api::get_api, status::assert_status, types::TypeToTensorElementDataType};
+use crate::{api::get_api, status::check_status, types::TypeToTensorElementDataType};
 
 pub(crate) fn get_dimensions(
     type_info: *const OrtTensorTypeAndShapeInfo,
@@ -16,14 +16,14 @@ pub(crate) fn get_dimensions(
         get_api().GetDimensions.unwrap()(type_info, dim_values_ptr.as_mut_ptr(), dimension_cnt)
     };
 
-    assert_status(status);
+    check_status(status);
     return dim_values;
 }
 
 pub(crate) fn get_dimension_count(type_info: *const OrtTensorTypeAndShapeInfo) -> usize {
     let mut dimension_cnt = 0;
     let status = unsafe { get_api().GetDimensionsCount.unwrap()(type_info, &mut dimension_cnt) };
-    assert_status(status);
+    check_status(status);
 
     return dimension_cnt;
 }
@@ -35,7 +35,7 @@ pub(crate) fn get_tensor_shape_element_count(type_info: *const OrtTensorTypeAndS
     let mut element_cnt = 0;
     let status =
         unsafe { get_api().GetTensorShapeElementCount.unwrap()(type_info, &mut element_cnt) };
-    assert_status(status);
+    check_status(status);
     return element_cnt;
 }
 
@@ -72,7 +72,7 @@ where
             &mut ort_value_ptr,
         )
     };
-    assert_status(status);
+    check_status(status);
 
     return ort_value_ptr;
 }
@@ -81,7 +81,7 @@ fn cast_type_info_to_tensor_info(type_info: *const OrtTypeInfo) -> *mut OrtTenso
     let mut tensor_info_ptr: *const OrtTensorTypeAndShapeInfo = null_mut();
     let status =
         unsafe { get_api().CastTypeInfoToTensorInfo.unwrap()(type_info, &mut tensor_info_ptr) };
-    assert_status(status);
+    check_status(status);
     return tensor_info_ptr as *mut OrtTensorTypeAndShapeInfo;
 }
 

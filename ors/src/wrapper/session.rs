@@ -14,7 +14,7 @@ use ors_sys::*;
 use crate::{
     api::get_api,
     session_io::{SessionInputInfo, SessionOutputInfo},
-    status::assert_status,
+    status::check_status,
 };
 
 // Run session inference
@@ -56,7 +56,7 @@ fn session_run(
             outputs.as_mut_ptr(),
         )
     };
-    assert_status(status);
+    check_status(status);
 }
 
 pub(crate) fn create_session(
@@ -77,14 +77,14 @@ pub(crate) fn create_session(
     let status = unsafe {
         get_api().CreateSession.unwrap()(env, c_model_path.as_ptr(), options, &mut session_ptr)
     };
-    assert_status(status);
+    check_status(status);
     return session_ptr;
 }
 
 pub(super) fn get_default_allocator() -> *mut OrtAllocator {
     let mut allocator_ptr = null_mut();
     let status = unsafe { get_api().GetAllocatorWithDefaultOptions.unwrap()(&mut allocator_ptr) };
-    assert_status(status);
+    check_status(status);
     return allocator_ptr;
 }
 
@@ -95,14 +95,14 @@ fn create_and_register_allocator(
     let allocator_ptr = null_mut();
     let arena_cfg = null();
     let status = unsafe { get_api().CreateAndRegisterAllocator.unwrap()(env, mem_info, arena_cfg) };
-    assert_status(status);
+    check_status(status);
     return allocator_ptr;
 }
 
 pub(super) fn get_allocator_mem_info(allocator: *const OrtAllocator) -> *const OrtMemoryInfo {
     let mut mem_info_ptr = null();
     let status = unsafe { get_api().AllocatorGetInfo.unwrap()(allocator, &mut mem_info_ptr) };
-    assert_status(status);
+    check_status(status);
     return mem_info_ptr;
 }
 

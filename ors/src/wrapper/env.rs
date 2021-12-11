@@ -1,4 +1,4 @@
-use crate::{api::get_api, log::LoggingLevel, status::assert_status};
+use crate::{api::get_api, log::LoggingLevel, status::check_status};
 use ors_sys::{OrtEnv, OrtLoggingLevel};
 use std::ffi::CString;
 
@@ -12,7 +12,7 @@ pub(crate) fn create_env(logging_level: LoggingLevel, log_id: String) -> *mut Or
             &mut env_ptr,
         )
     };
-    assert_status(status);
+    check_status(status);
     return env_ptr;
 }
 

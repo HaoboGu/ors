@@ -7,7 +7,7 @@ use ors_sys::*;
 
 use crate::{
     api::get_api,
-    status::assert_status,
+    status::check_status,
     tensor::{get_dimension_count, get_dimensions, get_tensor_element_type},
 };
 
@@ -79,7 +79,7 @@ fn get_input_name(
     let status = unsafe {
         get_api().SessionGetInputName.unwrap()(session, index, allocator, input_name_ptr_ptr)
     };
-    assert_status(status);
+    check_status(status);
     unsafe {
         (*(CStr::from_ptr(input_name_ptr)))
             .to_string_lossy()
@@ -97,7 +97,7 @@ fn get_output_name(
     let status = unsafe {
         get_api().SessionGetOutputName.unwrap()(session, index, allocator, output_name_ptr_ptr)
     };
-    assert_status(status);
+    check_status(status);
     unsafe {
         (*(CStr::from_ptr(output_name_ptr)))
             .to_string_lossy()
@@ -112,13 +112,13 @@ fn get_input_typeinfo(
     let mut type_info_ptr = null_mut();
     let status =
         unsafe { get_api().SessionGetInputTypeInfo.unwrap()(session, index, &mut type_info_ptr) };
-    assert_status(status);
+    check_status(status);
 
     let mut tensor_type_info_ptr = null();
     let status = unsafe {
         get_api().CastTypeInfoToTensorInfo.unwrap()(type_info_ptr, &mut tensor_type_info_ptr)
     };
-    assert_status(status);
+    check_status(status);
 
     // TODO: this type info must be freed by `OrtApi::ReleaseTypeInfo`
     return tensor_type_info_ptr;
@@ -131,13 +131,13 @@ fn get_output_typeinfo(
     let mut type_info_ptr = null_mut();
     let status =
         unsafe { get_api().SessionGetOutputTypeInfo.unwrap()(session, index, &mut type_info_ptr) };
-    assert_status(status);
+    check_status(status);
 
     let mut tensor_type_info_ptr = null();
     let status = unsafe {
         get_api().CastTypeInfoToTensorInfo.unwrap()(type_info_ptr, &mut tensor_type_info_ptr)
     };
-    assert_status(status);
+    check_status(status);
 
     // TODO: this type info must be freed by `OrtApi::ReleaseTypeInfo`
     return tensor_type_info_ptr;
@@ -148,7 +148,7 @@ pub(crate) fn get_output_count(session: *const OrtSession) -> usize {
     let output_count_ptr: *mut usize = &mut output_count;
     let status = unsafe { get_api().SessionGetOutputCount.unwrap()(session, output_count_ptr) };
 
-    assert_status(status);
+    check_status(status);
     output_count
 }
 
@@ -157,6 +157,6 @@ pub(crate) fn get_input_count(session: *const OrtSession) -> usize {
     let input_count_ptr: *mut usize = &mut input_count;
     let status = unsafe { get_api().SessionGetInputCount.unwrap()(session, input_count_ptr) };
 
-    assert_status(status);
+    check_status(status);
     input_count
 }
