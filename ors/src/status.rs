@@ -1,7 +1,7 @@
 use crate::{api::get_api, call_ort};
+use anyhow::{anyhow, Result};
 use ors_sys::*;
 use std::ffi::{CStr, CString};
-use anyhow::{anyhow, Result};
 
 /// Create an OrtStatus from a null terminated string
 fn create_status(error_code: OrtErrorCode, msg: String) -> *const OrtStatus {
@@ -25,13 +25,17 @@ fn get_error_msg(status: *const OrtStatus) -> String {
     (*msg.to_string_lossy()).to_string()
 }
 
-// Check an OrtStatus, returns Ok(()) if the api runs good
+/// Check an OrtStatus, returns Ok(()) if the api runs good
 pub fn check_status(status: *mut OrtStatus) -> Result<()> {
     if status.is_null() || OrtErrorCode_ORT_OK == get_error_code(status) {
         Ok(())
     } else {
         // Extract onnxruntime error and then release the status
-        let err = anyhow!("onnxruntime error: {}:{}", get_error_code(status), get_error_msg(status));
+        let err = anyhow!(
+            "onnxruntime error: {}:{}",
+            get_error_code(status),
+            get_error_msg(status)
+        );
         release_status(status);
         Err(err)
     }

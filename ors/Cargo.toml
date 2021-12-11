@@ -13,3 +13,6 @@ lazy_static = "1.4.0"
 ndarray = "0.15.4"
 tracing = "0.1.29"
 anyhow = "1.0"
+
+[dev-dependencies]
+tracing-test = "0.2"
