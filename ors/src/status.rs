@@ -1,4 +1,4 @@
-use crate::{api::get_api, unsafe_api_call};
+use crate::{api::get_api, call_ort};
 use ors_sys::*;
 use std::ffi::{CStr, CString};
 use anyhow::{anyhow, Result};
@@ -6,17 +6,17 @@ use anyhow::{anyhow, Result};
 /// Create an OrtStatus from a null terminated string
 fn create_status(error_code: OrtErrorCode, msg: String) -> *const OrtStatus {
     let msg = CString::new(msg).unwrap();
-    unsafe_api_call!(CreateStatus, error_code, msg.as_ptr())
+    call_ort!(CreateStatus, error_code, msg.as_ptr())
 }
 
 /// Get OrtErrorCode from OrtStatus
 fn get_error_code(status: *const OrtStatus) -> OrtErrorCode {
-    unsafe_api_call!(GetErrorCode, status)
+    call_ort!(GetErrorCode, status)
 }
 
 /// Release an OrtStatus
 fn release_status(status: *mut OrtStatus) {
-    unsafe_api_call!(ReleaseStatus, status)
+    call_ort!(ReleaseStatus, status)
 }
 
 /// Get error string from OrtStatus
