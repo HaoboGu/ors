@@ -4,11 +4,11 @@ mod api;
 mod env;
 // mod error;
 mod log;
-// mod session;
+mod session;
 // mod session_io;
 mod status;
 // mod tensor;
-// mod types;
+mod types;
 
 #[cfg(test)]
 mod tests {
