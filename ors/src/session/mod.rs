@@ -7,13 +7,16 @@ use crate::session::io::get_session_inputs;
 use crate::status::check_status;
 use anyhow::{anyhow, Result};
 use ors_sys::*;
+use std::ffi::c_void;
 #[cfg(not(target_family = "windows"))]
-use std::ffi::{c_void, OsString};
-use std::os::unix::prelude::OsStrExt;
+use std::{
+    ffi::OsString,
+    os::unix::prelude::OsStrExt
+};
+#[cfg(target_family = "windows")]
+use std::{ffi::OsString, os::windows::prelude::OsStrExt};
 use std::path::Path;
 use std::ptr::{null, null_mut};
-#[cfg(target_family = "windows")]
-use std::{ffi::OsStr, os::windows::prelude::OsStrExt};
 
 pub(crate) mod io;
 
