@@ -8,15 +8,12 @@ use crate::status::check_status;
 use anyhow::{anyhow, Result};
 use ors_sys::*;
 use std::ffi::c_void;
-#[cfg(not(target_family = "windows"))]
-use std::{
-    ffi::OsString,
-    os::unix::prelude::OsStrExt
-};
-#[cfg(target_family = "windows")]
-use std::{ffi::OsString, os::windows::prelude::OsStrExt};
 use std::path::Path;
 use std::ptr::{null, null_mut};
+#[cfg(not(target_family = "windows"))]
+use std::{ffi::OsString, os::unix::prelude::OsStrExt};
+#[cfg(target_family = "windows")]
+use std::{ffi::OsString, os::windows::prelude::OsStrExt};
 
 pub(crate) mod io;
 
@@ -211,13 +208,17 @@ mod test {
     use super::*;
     use tracing_test::traced_test;
 
-    #[test]
-    #[traced_test]
-    fn test_create_session() {
+    fn get_path() -> &'static str {
         #[cfg(target_family = "windows")]
         let path = "D:\\Projects\\Rust\\ors\\gpt2.onnx";
         #[cfg(not(target_family = "windows"))]
         let path = "/Users/haobogu/Projects/rust/ors/ors/sample/gpt2.onnx";
+        return path;
+    }
+
+    #[test]
+    #[traced_test]
+    fn test_create_session() {
         let session_builder = SessionBuilder::new().unwrap();
         let session = session_builder
             .intra_number_threads(4)
@@ -230,9 +231,27 @@ mod test {
             .unwrap()
             .mem_pattern_enabled(true)
             .unwrap()
-            .build_with_model_from_file(path)
+            .build_with_model_from_file(get_path())
             .unwrap();
+
         println!("{:#?}", session);
         assert_ne!(session.session_ptr, null_mut());
+    }
+
+    #[test]
+    #[traced_test]
+    fn test_session_drop() {
+        {
+            let session_builder = SessionBuilder::new().unwrap();
+            let session = session_builder
+                .build_with_model_from_file(get_path())
+                .unwrap();
+            assert_ne!(session.session_ptr, null_mut());
+        }
+        let session_builder2 = SessionBuilder::new().unwrap();
+        let session2 = session_builder2
+            .build_with_model_from_file(get_path())
+            .unwrap();
+        assert_ne!(session2.session_ptr, null_mut());
     }
 }
