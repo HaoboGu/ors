@@ -3,12 +3,11 @@
 mod api;
 mod config;
 mod env;
-// mod error;
 mod log;
+mod memory_info;
 mod session;
-// mod session_io;
 mod status;
-// mod tensor;
+mod tensor;
 mod types;
 
 #[cfg(test)]
