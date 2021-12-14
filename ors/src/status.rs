@@ -27,7 +27,10 @@ fn get_error_msg(status: *const OrtStatus) -> String {
 
 /// Check an OrtStatus, returns Ok(()) if the api runs good
 pub fn check_status(status: *mut OrtStatus) -> Result<()> {
-    if status.is_null() || OrtErrorCode_ORT_OK == get_error_code(status) {
+    if status.is_null() {
+        Ok(())
+    } else if OrtErrorCode_ORT_OK == get_error_code(status) {
+        release_status(status);
         Ok(())
     } else {
         // Extract onnxruntime error and then release the status
