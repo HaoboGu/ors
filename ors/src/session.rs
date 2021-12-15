@@ -189,14 +189,19 @@ impl SessionBuilder {
     }
 }
 
-fn get_default_allocator() -> Result<*mut OrtAllocator> {
+pub(crate) fn get_default_allocator() -> Result<*mut OrtAllocator> {
     let mut allocator_ptr = null_mut();
     let status = call_ort!(GetAllocatorWithDefaultOptions, &mut allocator_ptr);
     check_status(status)?;
     Ok(allocator_ptr)
 }
 
-fn get_allocator_mem_info(allocator: *const OrtAllocator) -> Result<*mut OrtMemoryInfo> {
+pub(crate) fn get_default_memory_info() -> Result<*mut OrtMemoryInfo> {
+    let allocator = get_default_allocator()?;
+    return get_allocator_mem_info(allocator);
+}
+
+pub(crate) fn get_allocator_mem_info(allocator: *const OrtAllocator) -> Result<*mut OrtMemoryInfo> {
     let mut mem_info_ptr = null();
     let status = unsafe { get_api().AllocatorGetInfo.unwrap()(allocator, &mut mem_info_ptr) };
     check_status(status)?;

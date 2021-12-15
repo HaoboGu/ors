@@ -4,17 +4,17 @@ use ors_sys::*;
 use tracing::{debug, warn};
 
 #[derive(Debug)]
-pub(crate) struct MemoryInfo {
+pub struct MemoryInfo {
     pub(crate) ptr: *mut OrtMemoryInfo,
 }
 
 impl MemoryInfo {
-    pub fn new(allocator: OrtAllocatorType, memory_type: OrtMemType) -> Result<Self> {
+    pub fn new(allocator_type: OrtAllocatorType, memory_type: OrtMemType) -> Result<Self> {
         debug!("Creating new memory info.");
         let mut memory_info_ptr: *mut OrtMemoryInfo = std::ptr::null_mut();
         let status = call_ort!(
             CreateCpuMemoryInfo,
-            allocator,
+            allocator_type,
             memory_type,
             &mut memory_info_ptr
         );
