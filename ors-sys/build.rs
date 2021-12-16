@@ -5,6 +5,7 @@ use std::fs;
 use std::path::PathBuf;
 
 fn main() {
+    // FIXME: link libonnxruntime
     // Tell cargo to invalidate the built crate whenever the wrapper changes
     println!("cargo:rerun-if-changed=onnxruntime_c_api.h");
 
