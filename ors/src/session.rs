@@ -5,9 +5,10 @@ use crate::config::{SessionExecutionMode, SessionGraphOptimizationLevel};
 use crate::env::get_env_ptr;
 use crate::session::io::get_session_inputs;
 use crate::status::check_status;
+use crate::tensor::Tensor;
 use anyhow::{anyhow, Result};
 use ors_sys::*;
-use std::ffi::c_void;
+use std::ffi::{c_void, CString};
 use std::path::Path;
 use std::ptr::{null, null_mut};
 #[cfg(not(target_family = "windows"))]
@@ -24,6 +25,45 @@ pub struct Session {
     mem_info: *mut OrtMemoryInfo,
     input_info: Vec<SessionInputInfo>,
     output_info: Vec<SessionOutputInfo>,
+}
+
+pub fn run(session: &mut Session, inputs: &Vec<Tensor>, outputs: &mut Vec<Tensor>) -> Result<()> {
+    let input_names_ptr: Vec<*const i8> = session
+        .input_info
+        .iter()
+        .map(|n| CString::new(n.name.clone()).unwrap())
+        .map(|n| n.into_raw() as *const i8)
+        .collect();
+
+    let output_names_cstring: Vec<CString> = session
+        .output_info
+        .iter()
+        .map(|n| CString::new(n.name.clone()).unwrap())
+        .collect();
+
+    let output_names_ptr: Vec<*const i8> = output_names_cstring
+        .iter()
+        .map(|n| n.as_ptr() as *const i8)
+        .collect();
+
+    let inputs_ptr: Vec<*const OrtValue> =
+        inputs.iter().map(|i| (i.ptr) as *const OrtValue).collect();
+    let mut outputs_ptr: Vec<*mut OrtValue> = outputs.iter().map(|o| o.ptr).collect();
+
+    let status = unsafe {
+        get_api().Run.unwrap()(
+            session.session_ptr,
+            null(),
+            input_names_ptr.as_ptr(),
+            inputs_ptr.as_ptr(),
+            inputs.len(),
+            output_names_ptr.as_ptr(),
+            output_names_ptr.len(),
+            outputs_ptr.as_mut_ptr(),
+        )
+    };
+    check_status(status)?;
+    Ok(())
 }
 
 pub struct SessionBuilder {
@@ -210,15 +250,97 @@ pub(crate) fn get_allocator_mem_info(allocator: *const OrtAllocator) -> Result<*
 
 #[cfg(test)]
 mod test {
+    use std::time::SystemTime;
+
     use super::*;
+    use crate::tensor::create_tensor_with_ndarray;
+    use ndarray::{ArrayD, IxDyn};
     use tracing_test::traced_test;
 
-    fn get_path() -> &'static str {
-        #[cfg(target_family = "windows")]
-        let path = "D:\\Projects\\Rust\\ors\\gpt2.onnx";
-        #[cfg(not(target_family = "windows"))]
-        let path = "/Users/haobogu/Projects/rust/ors/ors/sample/gpt2.onnx";
-        return path;
+    #[test]
+    #[traced_test]
+    fn test_session_run() {
+        let session_builder = SessionBuilder::new().unwrap();
+        let mut session = session_builder
+            .intra_number_threads(4)
+            .unwrap()
+            .graph_optimization_level(SessionGraphOptimizationLevel::All)
+            .unwrap()
+            .execution_mode(SessionExecutionMode::Sequential)
+            .unwrap()
+            .cpu_mem_arena_enabled(true)
+            .unwrap()
+            .mem_pattern_enabled(true)
+            .unwrap()
+            .build_with_model_from_file(get_path())
+            .unwrap();
+
+        // let inputs = create_gpt2_inputs();
+        // let mut outputs = create_gpt2_outputs();
+        // Model input
+        let mut inputs: Vec<Tensor> = vec![];
+        // Input data
+        let input_ids_data: Vec<i64> = vec![
+            50256, 50256, 50256, 50256, 13466, 7541, 287, 15489, 1989, 1456, 318, 281, 1672, 286,
+            308, 457, 17, 2746,
+        ];
+        let mut input_ids = ArrayD::<i64>::from_shape_vec(IxDyn(&[2, 9]), input_ids_data).unwrap();
+        let mut positions_ids = ArrayD::<i64>::from_shape_vec(
+            IxDyn(&[2, 9]),
+            vec![0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8],
+        )
+        .unwrap();
+        let mut attension_mask = ArrayD::<f32>::from_shape_vec(
+            IxDyn(&[2, 9]),
+            vec![
+                0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
+            ],
+        )
+        .unwrap();
+        // Create tensors
+        let input_ids_tensor = create_tensor_with_ndarray::<i64>(input_ids.view_mut()).unwrap();
+        let position_ids_tensor =
+            create_tensor_with_ndarray::<i64>(positions_ids.view_mut()).unwrap();
+        let attention_mask_tensor =
+            create_tensor_with_ndarray::<f32>(attension_mask.view_mut()).unwrap();
+        inputs.push(input_ids_tensor);
+        inputs.push(position_ids_tensor);
+        inputs.push(attention_mask_tensor);
+        // Initialize pasts
+        let past_num = 12;
+        for i in 0..past_num {
+            let mut past =
+                ArrayD::<f32>::from_shape_vec(IxDyn(&[2, 2, 12, 0, 64]), vec![]).unwrap();
+            inputs.push(create_tensor_with_ndarray::<f32>(past.view_mut()).unwrap());
+        }
+
+        let mut outputs: Vec<Tensor> = vec![];
+        let mut presents = vec![];
+        let mut logits =
+            ArrayD::<f32>::from_shape_vec(IxDyn(&[2, 9, 50257]), vec![0.0; 2 * 9 * 50257]).unwrap();
+        let logits_tensor = create_tensor_with_ndarray::<f32>(logits.view_mut()).unwrap();
+        outputs.push(logits_tensor);
+        let past_num = 12;
+        for i in 0..past_num {
+            let key = format!("present_{}", i);
+            let mut present = ArrayD::<f32>::from_shape_vec(
+                IxDyn(&[2, 2, 12, 9, 64]),
+                vec![0.0; 2 * 2 * 12 * 9 * 64],
+            )
+            .unwrap();
+            let present_tensor = create_tensor_with_ndarray::<f32>(present.view_mut()).unwrap();
+            outputs.push(present_tensor);
+            presents.push(present);
+        }
+        let inference_1_start = SystemTime::now();
+        run(&mut session, &inputs, &mut outputs).unwrap();
+
+        println!("the first inference result: logits: {:?}", logits);
+        // println!("firset presents: {:?}", presents.get(0).unwrap());
+        println!(
+            "the first inference costs: {:?}",
+            SystemTime::now().duration_since(inference_1_start)
+        );
     }
 
     #[test]
@@ -258,5 +380,23 @@ mod test {
             .build_with_model_from_file(get_path())
             .unwrap();
         assert_ne!(session2.session_ptr, null_mut());
+    }
+
+    // fn create_gpt2_outputs() -> Vec<Tensor> {
+
+    //     return outputs;
+    // }
+
+    // fn create_gpt2_inputs() -> Vec<Tensor> {
+
+    //     return inputs;
+    // }
+
+    fn get_path() -> &'static str {
+        #[cfg(target_family = "windows")]
+        let path = "D:\\Projects\\Rust\\ors\\gpt2.onnx";
+        #[cfg(not(target_family = "windows"))]
+        let path = "/Users/haobogu/Projects/rust/ors/ors/sample/gpt2.onnx";
+        return path;
     }
 }

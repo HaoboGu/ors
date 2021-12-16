@@ -11,7 +11,7 @@ use crate::{
 
 // Tensor stores OrtValue ptr and it doesn't own the actual data
 pub struct Tensor {
-    ptr: *mut OrtValue,
+    pub(crate) ptr: *mut OrtValue,
 }
 
 fn create_tensor_with_ndarray_and_mem_info<T>(
@@ -43,7 +43,8 @@ where
     Ok(Tensor { ptr: ort_value_ptr })
 }
 
-fn create_tensor_with_ndarray<T>(mut array: ndarray::ArrayViewMutD<T>) -> Result<Tensor>
+// The ndarray must live longer than tensor
+pub(crate) fn create_tensor_with_ndarray<T>(mut array: ndarray::ArrayViewMutD<T>) -> Result<Tensor>
 where
     T: TypeToTensorElementDataType,
 {
