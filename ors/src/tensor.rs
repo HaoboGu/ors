@@ -14,7 +14,7 @@ pub struct Tensor {
     pub(crate) ptr: *mut OrtValue,
 }
 
-fn create_tensor_with_ndarray_and_mem_info<T>(
+pub fn create_tensor_with_ndarray_and_mem_info<T>(
     memory_info: &MemoryInfo,
     mut array: ndarray::ArrayViewMutD<T>,
 ) -> Result<Tensor>
@@ -44,7 +44,7 @@ where
 }
 
 // The ndarray must live longer than tensor
-pub(crate) fn create_tensor_with_ndarray<T>(mut array: ndarray::ArrayViewMutD<T>) -> Result<Tensor>
+pub fn create_tensor_with_ndarray<T>(mut array: ndarray::ArrayViewMutD<T>) -> Result<Tensor>
 where
     T: TypeToTensorElementDataType,
 {
