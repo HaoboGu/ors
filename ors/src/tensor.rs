@@ -1,13 +1,37 @@
 use std::{ffi::c_void, ptr::null_mut};
 
-use ors_sys::*;
-
 use anyhow::Result;
+use enum_as_inner::EnumAsInner;
+use ndarray::ArrayD;
+use ors_sys::*;
 
 use crate::{
     api::get_api, call_ort, memory_info::MemoryInfo, session::get_default_memory_info,
     status::check_status, types::TypeToTensorElementDataType,
 };
+
+#[derive(Debug, EnumAsInner)]
+pub enum AcceptedArray {
+    F32(ArrayD<f32>),
+    I32(ArrayD<i32>),
+}
+
+#[derive(Debug)]
+pub struct OwnedTensor {
+    array: AcceptedArray,
+}
+
+macro_rules! impl_accepted_array {
+    ($atype:ty, $at: ident) => {
+        impl AcceptedArray {
+            fn from(array: ArrayD<$atype>) -> Self {
+                AcceptedArray::$at(array)
+            }
+        }
+    };
+}
+
+impl_accepted_array!(f32, F32);
 
 // Tensor stores OrtValue ptr and it doesn't own the actual data
 pub struct Tensor {
@@ -82,6 +106,15 @@ mod test {
     use crate::session::SessionBuilder;
 
     use super::*;
+
+    #[test]
+    #[traced_test]
+    fn test() {
+        let array = ArrayD::<f32>::from_shape_vec(IxDyn(&[1, 0]), vec![]).unwrap();
+        let a = AcceptedArray::from(array);
+
+        println!("{:?}", a.as_f32())
+    }
 
     #[test]
     #[traced_test]
