@@ -262,21 +262,11 @@ mod test {
     fn test_session_run() {
         let session_builder = SessionBuilder::new().unwrap();
         let mut session = session_builder
-            .intra_number_threads(4)
-            .unwrap()
             .graph_optimization_level(SessionGraphOptimizationLevel::All)
-            .unwrap()
-            .execution_mode(SessionExecutionMode::Sequential)
-            .unwrap()
-            .cpu_mem_arena_enabled(true)
-            .unwrap()
-            .mem_pattern_enabled(true)
             .unwrap()
             .build_with_model_from_file(get_path())
             .unwrap();
 
-        // let inputs = create_gpt2_inputs();
-        // let mut outputs = create_gpt2_outputs();
         // Model input
         let mut inputs: Vec<Tensor> = vec![];
         // Input data
@@ -335,10 +325,9 @@ mod test {
         let inference_1_start = SystemTime::now();
         run(&mut session, &inputs, &mut outputs).unwrap();
 
-        println!("the first inference result: logits: {:?}", logits);
-        // println!("firset presents: {:?}", presents.get(0).unwrap());
+        println!("inference result: logits: {:?}", logits);
         println!(
-            "the first inference costs: {:?}",
+            "inference costs: {:?}",
             SystemTime::now().duration_since(inference_1_start)
         );
     }
@@ -381,16 +370,6 @@ mod test {
             .unwrap();
         assert_ne!(session2.session_ptr, null_mut());
     }
-
-    // fn create_gpt2_outputs() -> Vec<Tensor> {
-
-    //     return outputs;
-    // }
-
-    // fn create_gpt2_inputs() -> Vec<Tensor> {
-
-    //     return inputs;
-    // }
 
     fn get_path() -> &'static str {
         #[cfg(target_family = "windows")]
