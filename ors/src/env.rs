@@ -1,28 +1,58 @@
-use crate::{api::get_api, log::LoggingLevel, status::assert_status};
-use ors_sys::{OrtEnv, OrtLoggingLevel};
-use std::ffi::CString;
+use std::{
+    ffi::CString,
+    ops::DerefMut,
+    ptr::null_mut,
+    sync::{atomic::AtomicPtr, Arc, Mutex},
+};
 
-pub(crate) fn create_env(logging_level: LoggingLevel, log_id: String) -> *mut OrtEnv {
-    let log_id = CString::new(log_id).unwrap();
-    let mut env_ptr = std::ptr::null_mut();
-    let status = unsafe {
-        get_api().CreateEnv.unwrap()(
-            OrtLoggingLevel::from(logging_level),
-            log_id.as_ptr(),
-            &mut env_ptr,
-        )
-    };
-    assert_status(status);
+use crate::{api::get_api, call_ort, log::custom_logger, status::check_status};
+use lazy_static::lazy_static;
+use ors_sys::*;
+use tracing::debug;
+
+lazy_static! {
+    static ref ENV: Arc<Mutex<AtomicPtr<OrtEnv>>> =
+        Arc::new(Mutex::new(AtomicPtr::new(create_env())));
+}
+
+// This function can be only called once
+fn create_env() -> *mut OrtEnv {
+    debug!("Creating onnxruntime environment");
+    let mut env_ptr: *mut OrtEnv = std::ptr::null_mut();
+    let logging_function: OrtLoggingFunction = Some(custom_logger);
+    let logger_param: *mut std::ffi::c_void = null_mut();
+    let name = CString::new("onnxruntime").unwrap();
+
+    let status = call_ort!(
+        CreateEnvWithCustomLogger,
+        logging_function,
+        logger_param,
+        OrtLoggingLevel_ORT_LOGGING_LEVEL_WARNING,
+        name.as_ptr(),
+        &mut env_ptr
+    );
+
+    // panic when failed to create env
+    check_status(status).expect("Failed to create inference environment");
+
     return env_ptr;
+}
+
+pub(crate) fn get_env_ptr() -> *mut OrtEnv {
+    let mut env_guard = ENV.try_lock().unwrap();
+    *env_guard.deref_mut().get_mut()
 }
 
 #[cfg(test)]
 mod test {
+    use tracing_test::traced_test;
+
     use super::*;
 
     #[test]
+    #[traced_test]
     fn test_env() {
-        let env = create_env(LoggingLevel::Verbose, "log_name".to_string());
-        println!("{:?}", env);
+        let p = get_env_ptr();
+        assert_ne!(p, null_mut());
     }
 }

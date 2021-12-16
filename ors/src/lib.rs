@@ -1,11 +1,11 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 mod api;
+mod config;
 mod env;
-mod error;
 mod log;
+mod memory_info;
 mod session;
-mod session_io;
 mod status;
 mod tensor;
 mod types;
