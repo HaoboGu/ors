@@ -1,6 +1,8 @@
 # ors - onnxruntime bindings for rust
 This project provides Rust bindings of Microsoft's [onnxruntime](https://github.com/microsoft/onnxruntime), which is a machine learning inference and training framework.
 
+Warning: This project is in very early stage and not finished yet. There are still many bugs as far as I know. Don't use it in production.
+
 ## Prerequisites
 This crate requires onnxruntime's C library in version v1.8.1 to be installed on your system's default path. For example, on MacOS you should have `libonnxruntime.1.8.1.dylib` in your `/usr/local/lib`.
 
