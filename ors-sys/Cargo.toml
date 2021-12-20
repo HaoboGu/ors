@@ -10,5 +10,13 @@ description = "ors-sys - low level onnxruntime bindings for rust"
 
 [build-dependencies]
 bindgen = "0.59.1"
+ureq = "2.1"
+
+# Used on Windows
+zip = "0.5"
+
+# Used on unix
+flate2 = "1.0"
+tar = "0.4"
 
 [dependencies]
