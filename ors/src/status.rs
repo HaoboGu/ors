@@ -26,7 +26,7 @@ fn get_error_msg(status: *const OrtStatus) -> String {
 }
 
 /// Check an OrtStatus, returns Ok(()) if the api runs good
-pub fn check_status(status: *mut OrtStatus) -> Result<()> {
+pub(crate) fn check_status(status: *mut OrtStatus) -> Result<()> {
     if status.is_null() {
         Ok(())
     } else if OrtErrorCode_ORT_OK == get_error_code(status) {

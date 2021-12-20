@@ -1,14 +1,14 @@
 [package]
 name = "ors"
-version = "0.0.1"
+version = "0.0.4"
 authors = ["Haobo Gu <haobogu@outlook.com>"]
 edition = "2018"
-readme = "README.md"
+readme = "../README.md"
 license = "MIT OR Apache-2.0"
 description = "ors - onnxruntime bindings for rust"
 
 [dependencies]
-ors-sys = { version = "0.0.1", path = "../ors-sys"}
+ors-sys = { version = "0.0.2", path = "../ors-sys"}
 lazy_static = "1.4.0"
 ndarray = "0.15.4"
 tracing = "0.1.29"

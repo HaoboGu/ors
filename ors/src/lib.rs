@@ -1,14 +1,14 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
-mod api;
-mod config;
-mod env;
-mod log;
-mod memory_info;
-mod session;
+pub mod api;
+pub mod config;
+pub mod env;
+pub mod log;
+pub mod memory_info;
+pub mod session;
 mod status;
-mod tensor;
-mod types;
+pub mod tensor;
+pub mod types;
 
 #[cfg(test)]
 mod tests {
