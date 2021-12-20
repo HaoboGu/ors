@@ -2,6 +2,7 @@ use std::{ffi::c_void, ptr::null_mut};
 
 use anyhow::Result;
 use enum_as_inner::EnumAsInner;
+use enum_dispatch::enum_dispatch;
 use ndarray::ArrayD;
 use ors_sys::*;
 
@@ -11,39 +12,39 @@ use crate::{
 };
 
 #[derive(Debug, EnumAsInner)]
-pub enum AcceptedArray {
-    F32(ArrayD<f32>),
-    I32(ArrayD<i32>),
+#[enum_dispatch]
+pub enum TypedArray {
+    F32Array(ArrayD<f32>),
+    F64Array(ArrayD<f64>),
+    I8Array(ArrayD<i8>),
+    I16Array(ArrayD<i16>),
+    I32Array(ArrayD<i32>),
+    I64Array(ArrayD<i64>),
+    U8Array(ArrayD<u8>),
+    U16Array(ArrayD<u16>),
+    U32Array(ArrayD<u32>),
+    U64Array(ArrayD<u64>),
 }
 
-#[derive(Debug)]
-pub struct OwnedTensor {
-    array: AcceptedArray,
-}
+#[enum_dispatch(TypedArray)]
+pub trait TypeToOnnxTensor {}
 
-macro_rules! impl_accepted_array {
-    ($atype:ty, $at: ident) => {
-        impl AcceptedArray {
-            fn from(array: ArrayD<$atype>) -> Self {
-                AcceptedArray::$at(array)
-            }
-        }
-    };
-}
-
-impl_accepted_array!(f32, F32);
+impl<T: TypeToTensorElementDataType> TypeToOnnxTensor for ArrayD<T> {}
 
 // Tensor stores OrtValue ptr and it doesn't own the actual data
+#[derive(Debug)]
 pub struct Tensor {
     pub(crate) ptr: *mut OrtValue,
+    pub(crate) data: TypedArray,
 }
 
 pub fn create_tensor_with_ndarray_and_mem_info<T>(
     memory_info: &MemoryInfo,
-    mut array: ndarray::ArrayViewMutD<T>,
+    mut array: ArrayD<T>,
 ) -> Result<Tensor>
 where
     T: TypeToTensorElementDataType,
+    TypedArray: From<ArrayD<T>>,
 {
     let mut ort_value_ptr: *mut OrtValue = null_mut();
     let array_ptr = array.as_mut_ptr() as *mut c_void;
@@ -64,13 +65,17 @@ where
     );
     check_status(status)?;
 
-    Ok(Tensor { ptr: ort_value_ptr })
+    Ok(Tensor {
+        ptr: ort_value_ptr,
+        data: TypedArray::from(array),
+    })
 }
 
 // The ndarray must live longer than tensor
-pub fn create_tensor_with_ndarray<T>(mut array: ndarray::ArrayViewMutD<T>) -> Result<Tensor>
+pub fn create_tensor_with_ndarray<T>(mut array: ndarray::ArrayD<T>) -> Result<Tensor>
 where
     T: TypeToTensorElementDataType,
+    TypedArray: From<ArrayD<T>>,
 {
     let mut ort_value_ptr: *mut OrtValue = null_mut();
     let array_ptr = array.as_mut_ptr() as *mut c_void;
@@ -92,7 +97,10 @@ where
     );
     check_status(status)?;
 
-    Ok(Tensor { ptr: ort_value_ptr })
+    Ok(Tensor {
+        ptr: ort_value_ptr,
+        data: TypedArray::from(array),
+    })
 }
 
 #[cfg(test)]
@@ -109,30 +117,21 @@ mod test {
 
     #[test]
     #[traced_test]
-    fn test() {
-        let array = ArrayD::<f32>::from_shape_vec(IxDyn(&[1, 0]), vec![]).unwrap();
-        let a = AcceptedArray::from(array);
-
-        println!("{:?}", a.as_f32())
-    }
-
-    #[test]
-    #[traced_test]
     fn test_tensor_creation() {
         let path = get_test_model_path();
         let session_builder = SessionBuilder::new().unwrap();
         let session = session_builder.build_with_model_from_file(path).unwrap();
-        let mut array = ArrayD::<i64>::from_shape_vec(IxDyn(&[1, 2]), vec![0; 2]).unwrap();
+        let array = ArrayD::<i64>::from_shape_vec(IxDyn(&[1, 2]), vec![0; 2]).unwrap();
         let start = SystemTime::now();
-        let tensor = create_tensor_with_ndarray::<i64>(array.view_mut()).unwrap();
+        let tensor = create_tensor_with_ndarray::<i64>(array).unwrap();
         info!(
             "creation of tensor costs: {:?}",
             SystemTime::now().duration_since(start).unwrap()
         );
         assert_ne!(tensor.ptr, null_mut());
-        let mut array2 = ArrayD::<f32>::from_shape_vec(IxDyn(&[1, 2]), vec![0.; 2]).unwrap();
+        let array2 = ArrayD::<f32>::from_shape_vec(IxDyn(&[1, 2]), vec![0.; 2]).unwrap();
         let start = SystemTime::now();
-        let tensor2 = create_tensor_with_ndarray::<f32>(array2.view_mut()).unwrap();
+        let tensor2 = create_tensor_with_ndarray::<f32>(array2).unwrap();
         info!(
             "creation of tensor costs: {:?}",
             SystemTime::now().duration_since(start).unwrap()
@@ -147,25 +146,25 @@ mod test {
         let path = get_test_model_path();
         let session_builder = SessionBuilder::new().unwrap();
         let session = session_builder.build_with_model_from_file(path).unwrap();
-        let mut array = ArrayD::<i64>::from_shape_vec(IxDyn(&[1, 2]), vec![0; 2]).unwrap();
+        let array = ArrayD::<i64>::from_shape_vec(IxDyn(&[1, 2]), vec![0; 2]).unwrap();
         let memory_info = MemoryInfo::new(
             OrtAllocatorType_OrtDeviceAllocator,
             OrtMemType_OrtMemTypeCPU,
         )
         .unwrap();
         let start = SystemTime::now();
-        let tensor =
-            create_tensor_with_ndarray_and_mem_info(&memory_info, array.view_mut()).unwrap();
+        let tensor = create_tensor_with_ndarray_and_mem_info(&memory_info, array).unwrap();
         info!(
             "creation of tensor with memory info costs: {:?}",
             SystemTime::now().duration_since(start).unwrap()
         );
         assert_ne!(tensor.ptr, null_mut());
-        let mut array2 = ArrayD::<f32>::from_shape_vec(IxDyn(&[1, 2]), vec![0.; 2]).unwrap();
         let start = SystemTime::now();
-        let tensor2 =
-            create_tensor_with_ndarray_and_mem_info::<f32>(&memory_info, array2.view_mut())
-                .unwrap();
+        let tensor2 = create_tensor_with_ndarray_and_mem_info::<f32>(
+            &memory_info,
+            ArrayD::<f32>::from_shape_vec(IxDyn(&[1, 2]), vec![0.; 2]).unwrap(),
+        )
+        .unwrap();
         info!(
             "creation of tensor with memory info costs: {:?}",
             SystemTime::now().duration_since(start).unwrap()
