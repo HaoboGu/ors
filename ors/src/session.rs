@@ -274,13 +274,13 @@ mod test {
             50256, 50256, 50256, 50256, 13466, 7541, 287, 15489, 1989, 1456, 318, 281, 1672, 286,
             308, 457, 17, 2746,
         ];
-        let mut input_ids = ArrayD::<i64>::from_shape_vec(IxDyn(&[2, 9]), input_ids_data).unwrap();
-        let mut positions_ids = ArrayD::<i64>::from_shape_vec(
+        let input_ids = ArrayD::<i64>::from_shape_vec(IxDyn(&[2, 9]), input_ids_data).unwrap();
+        let positions_ids = ArrayD::<i64>::from_shape_vec(
             IxDyn(&[2, 9]),
             vec![0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 1, 2, 3, 4, 5, 6, 7, 8],
         )
         .unwrap();
-        let mut attension_mask = ArrayD::<f32>::from_shape_vec(
+        let attension_mask = ArrayD::<f32>::from_shape_vec(
             IxDyn(&[2, 9]),
             vec![
                 0., 0., 0., 0., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1., 1.,
@@ -288,44 +288,39 @@ mod test {
         )
         .unwrap();
         // Create tensors
-        let input_ids_tensor = create_tensor_with_ndarray::<i64>(input_ids.view_mut()).unwrap();
-        let position_ids_tensor =
-            create_tensor_with_ndarray::<i64>(positions_ids.view_mut()).unwrap();
-        let attention_mask_tensor =
-            create_tensor_with_ndarray::<f32>(attension_mask.view_mut()).unwrap();
+        let input_ids_tensor = create_tensor_with_ndarray::<i64>(input_ids).unwrap();
+        let position_ids_tensor = create_tensor_with_ndarray::<i64>(positions_ids).unwrap();
+        let attention_mask_tensor = create_tensor_with_ndarray::<f32>(attension_mask).unwrap();
         inputs.push(input_ids_tensor);
         inputs.push(position_ids_tensor);
         inputs.push(attention_mask_tensor);
         // Initialize pasts
         let past_num = 12;
         for i in 0..past_num {
-            let mut past =
-                ArrayD::<f32>::from_shape_vec(IxDyn(&[2, 2, 12, 0, 64]), vec![]).unwrap();
-            inputs.push(create_tensor_with_ndarray::<f32>(past.view_mut()).unwrap());
+            let past = ArrayD::<f32>::from_shape_vec(IxDyn(&[2, 2, 12, 0, 64]), vec![]).unwrap();
+            inputs.push(create_tensor_with_ndarray::<f32>(past).unwrap());
         }
 
         let mut outputs: Vec<Tensor> = vec![];
-        let mut presents = vec![];
-        let mut logits =
+        let logits =
             ArrayD::<f32>::from_shape_vec(IxDyn(&[2, 9, 50257]), vec![0.0; 2 * 9 * 50257]).unwrap();
-        let logits_tensor = create_tensor_with_ndarray::<f32>(logits.view_mut()).unwrap();
+        let logits_tensor = create_tensor_with_ndarray::<f32>(logits).unwrap();
         outputs.push(logits_tensor);
         let past_num = 12;
         for i in 0..past_num {
             let key = format!("present_{}", i);
-            let mut present = ArrayD::<f32>::from_shape_vec(
+            let present = ArrayD::<f32>::from_shape_vec(
                 IxDyn(&[2, 2, 12, 9, 64]),
                 vec![0.0; 2 * 2 * 12 * 9 * 64],
             )
             .unwrap();
-            let present_tensor = create_tensor_with_ndarray::<f32>(present.view_mut()).unwrap();
+            let present_tensor = create_tensor_with_ndarray::<f32>(present).unwrap();
             outputs.push(present_tensor);
-            presents.push(present);
         }
         let inference_1_start = SystemTime::now();
         run(&mut session, &inputs, &mut outputs).unwrap();
 
-        println!("inference result: logits: {:?}", logits);
+        println!("inference result: logits: {:?}", outputs[0].data);
         println!(
             "inference costs: {:?}",
             SystemTime::now().duration_since(inference_1_start)
