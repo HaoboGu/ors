@@ -31,11 +31,11 @@ pub trait TypeToOnnxTensor {}
 
 impl<T: TypeToTensorElementDataType> TypeToOnnxTensor for ArrayD<T> {}
 
-// Tensor stores OrtValue ptr and it doesn't own the actual data
+// Tensor stores OrtValue ptr and owns tensor data
 #[derive(Debug)]
 pub struct Tensor {
     pub(crate) ptr: *mut OrtValue,
-    pub(crate) data: TypedArray,
+    pub data: TypedArray,
 }
 
 pub fn create_tensor_with_ndarray_and_mem_info<T>(
