@@ -38,6 +38,31 @@ pub struct Tensor {
     pub data: TypedArray,
 }
 
+/// Expose owned data
+#[macro_export]
+macro_rules! convert_typed_array {
+    ($n:ident, $t:ty, $pattern:pat => $extracted_value:expr) => {
+        impl Tensor {
+            /// Get owned data from tensor
+            /// If the target type is not right, returns None
+            fn $n(&self) -> Option<&ArrayD<$t>> {
+                self.data.$n()
+            }
+        }
+    };
+}
+
+convert_typed_array!(as_f32_array, f32, TypedArray::F32Array(d) => d);
+convert_typed_array!(as_f64_array, f64, TypedArray::F64Array(d) => d);
+convert_typed_array!(as_i8_array, i8, TypedArray::I8Array(d) => d);
+convert_typed_array!(as_i16_array, i16, TypedArray::I16Array(d) => d);
+convert_typed_array!(as_i32_array, i32, TypedArray::I32Array(d) => d);
+convert_typed_array!(as_i64_array, i64, TypedArray::I64Array(d) => d);
+convert_typed_array!(as_u8_array, u8, TypedArray::U8Array(d) => d);
+convert_typed_array!(as_u16_array, u16, TypedArray::U16Array(d) => d);
+convert_typed_array!(as_u32_array, u32, TypedArray::U32Array(d) => d);
+convert_typed_array!(as_u64_array, u64, TypedArray::U64Array(d) => d);
+
 pub fn create_tensor_with_ndarray_and_mem_info<T>(
     memory_info: &MemoryInfo,
     mut array: ArrayD<T>,

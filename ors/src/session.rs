@@ -346,6 +346,8 @@ mod test {
             .unwrap();
 
         println!("{:#?}", session);
+        println!("{:#?}", session.input_info);
+        println!("{:#?}", session.output_info);
         assert_ne!(session.session_ptr, null_mut());
     }
 

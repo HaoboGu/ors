@@ -1,4 +1,5 @@
 use std::ffi::CStr;
+use std::fmt::Debug;
 use std::ptr::{null, null_mut};
 
 use anyhow::Result;
@@ -8,7 +9,7 @@ use ors_sys::*;
 use crate::api::get_api;
 use crate::{call_ort, status::check_status};
 
-#[derive(Debug, Clone)]
+#[derive(Clone)]
 pub struct SessionInputInfo {
     pub name: String,
 
@@ -17,13 +18,25 @@ pub struct SessionInputInfo {
     pub input_dim: Vec<Option<i64>>,
 }
 
-#[derive(Debug, Clone)]
+impl Debug for SessionInputInfo {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "input name: {}, dim: {:?}", self.name, self.input_dim)
+    }
+}
+
+#[derive(Clone)]
 pub struct SessionOutputInfo {
     pub name: String,
 
     pub output_type: ONNXTensorElementDataType,
 
     pub output_dim: Vec<Option<i64>>,
+}
+
+impl Debug for SessionOutputInfo {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "output name: {}, dim: {:?}", self.name, self.output_dim)
+    }
 }
 
 pub(crate) fn get_session_inputs(
