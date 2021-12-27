@@ -20,7 +20,7 @@ pub struct SessionInputInfo {
 
 impl Debug for SessionInputInfo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "name: {}, input_dim: {:?}", self.name, self.input_dim)
+        write!(f, "input name: {}, dim: {:?}", self.name, self.input_dim)
     }
 }
 
@@ -35,7 +35,7 @@ pub struct SessionOutputInfo {
 
 impl Debug for SessionOutputInfo {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "name: {}, input_dim: {:?}", self.name, self.output_dim)
+        write!(f, "output name: {}, dim: {:?}", self.name, self.output_dim)
     }
 }
 
