@@ -166,8 +166,10 @@ mod test {
         assert_ne!(tensor2.ptr, null_mut());
         assert_ne!(tensor.ptr, tensor2.ptr);
 
-        let array_bool = ArrayD::<bool>::from_shape_vec(IxDyn(&[1, 1]), vec![false]).unwrap();
-        let tensor_array = create_tensor_with_ndarray::<bool>(array_bool).unwrap();
+        let tensor_array = create_tensor_with_ndarray::<bool>(
+            ArrayD::<bool>::from_shape_vec(IxDyn(&[1, 1]), vec![false]).unwrap(),
+        )
+        .unwrap();
         assert_ne!(tensor_array.ptr, null_mut());
     }
 
