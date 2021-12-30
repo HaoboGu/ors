@@ -370,7 +370,8 @@ mod test {
         #[cfg(target_family = "windows")]
         let path = "D:\\Projects\\Rust\\ors\\gpt2.onnx";
         #[cfg(not(target_family = "windows"))]
-        let path = "/Users/haobogu/Projects/rust/ors/ors/sample/gpt2.onnx";
+        // let path = "/Users/haobogu/Projects/rust/ors/ors/sample/gpt2.onnx";
+        let path = "/Users/haobogu/Projects/python/force-ai-models/tools/torch/onnx/exported_onnx_models/onnx_beam_search_model.onnx";
         return path;
     }
 }
