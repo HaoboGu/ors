@@ -24,6 +24,7 @@ pub enum TypedArray {
     U16Array(ArrayD<u16>),
     U32Array(ArrayD<u32>),
     U64Array(ArrayD<u64>),
+    BoolArray(ArrayD<bool>),
 }
 
 #[enum_dispatch(TypedArray)]
@@ -62,6 +63,7 @@ convert_typed_array!(as_u8_array, u8, TypedArray::U8Array(d) => d);
 convert_typed_array!(as_u16_array, u16, TypedArray::U16Array(d) => d);
 convert_typed_array!(as_u32_array, u32, TypedArray::U32Array(d) => d);
 convert_typed_array!(as_u64_array, u64, TypedArray::U64Array(d) => d);
+convert_typed_array!(as_bool_array, bool, TypedArray::BoolArray(d) => d);
 
 pub fn create_tensor_with_ndarray_and_mem_info<T>(
     memory_info: &MemoryInfo,
@@ -163,6 +165,10 @@ mod test {
         );
         assert_ne!(tensor2.ptr, null_mut());
         assert_ne!(tensor.ptr, tensor2.ptr);
+
+        let array_bool = ArrayD::<bool>::from_shape_vec(IxDyn(&[1, 1]), vec![false]).unwrap();
+        let tensor_array = create_tensor_with_ndarray::<bool>(array_bool).unwrap();
+        assert_ne!(tensor_array.ptr, null_mut());
     }
 
     #[test]
