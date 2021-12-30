@@ -18,3 +18,7 @@ enum_dispatch = "0.3.7"
 
 [dev-dependencies]
 tracing-test = "0.2"
+
+[features]
+default = ["runtime-linking"]
+runtime-linking = ["ors-sys/runtime-linking"] 

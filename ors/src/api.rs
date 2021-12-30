@@ -1,8 +1,11 @@
+use anyhow::{anyhow, Result};
 use lazy_static::lazy_static;
 use ors_sys::*;
+use std::path::Path;
 use std::sync::{atomic::AtomicPtr, Arc, Mutex};
 
 // The instance of onnxruntime api
+#[cfg(not(feature = "runtime-linking"))]
 lazy_static! {
     static ref API: Arc<Mutex<AtomicPtr<OrtApi>>> = {
         let api_base = unsafe { OrtGetApiBase() };
@@ -13,6 +16,26 @@ lazy_static! {
 
         Arc::new(Mutex::new(AtomicPtr::new(api as *mut OrtApi)))
     };
+}
+
+#[cfg(feature = "runtime-linking")]
+lazy_static! {
+    static ref API: Arc<Mutex<AtomicPtr<OrtApi>>> =
+        Arc::new(Mutex::new(AtomicPtr::new(std::ptr::null_mut())));
+}
+#[cfg(feature = "runtime-linking")]
+pub fn load_runtime(path: &Path) -> Result<onnxruntime> {
+    // TODO: don't drop loaded lib
+    let ort = match unsafe { onnxruntime::new(path) } {
+        Ok(ort) => ort,
+        Err(err) => return Err(anyhow!("Failed to load onnxruntime shared library")),
+    };
+    let base: *const OrtApiBase = unsafe { ort.OrtGetApiBase() };
+    assert_ne!(base, std::ptr::null());
+    let api: *const OrtApi = unsafe { (&(*base).GetApi.unwrap())(ORT_API_VERSION) };
+    let mut g_api = API.lock().expect("Failed to get api");
+    *g_api = AtomicPtr::new(api as *mut OrtApi);
+    Ok(ort)
 }
 
 /// Macro for calling unsafe methods using get_api()
@@ -46,7 +69,17 @@ pub(crate) fn get_api() -> OrtApi {
 mod test {
     use std::ffi::CString;
 
+    use tracing_test::traced_test;
+
     use super::*;
+
+    #[test]
+    #[traced_test]
+    fn test_get_dynamic_load() {
+        let ort = load_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
+            .expect("Failed to load onnxruntime");
+        test_macro();
+    }
 
     #[test]
     fn test_macro() {
