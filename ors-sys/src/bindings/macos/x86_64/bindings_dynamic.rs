@@ -8478,17 +8478,6 @@ fn bindgen_test_layout_sigstack() {
         )
     );
 }
-extern "C" {
-    pub fn signal(
-        arg1: ::std::os::raw::c_int,
-        arg2: ::std::option::Option<unsafe extern "C" fn(arg1: ::std::os::raw::c_int)>,
-    ) -> ::std::option::Option<
-        unsafe extern "C" fn(
-            arg1: ::std::os::raw::c_int,
-            arg2: ::std::option::Option<unsafe extern "C" fn(arg1: ::std::os::raw::c_int)>,
-        ),
-    >;
-}
 pub type int_least8_t = i8;
 pub type int_least16_t = i16;
 pub type int_least32_t = i32;
@@ -10766,38 +10755,6 @@ fn bindgen_test_layout_proc_rlimit_control_wakeupmon() {
         )
     );
 }
-extern "C" {
-    pub fn getpriority(arg1: ::std::os::raw::c_int, arg2: id_t) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn getiopolicy_np(
-        arg1: ::std::os::raw::c_int,
-        arg2: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn getrlimit(arg1: ::std::os::raw::c_int, arg2: *mut rlimit) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn getrusage(arg1: ::std::os::raw::c_int, arg2: *mut rusage) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn setpriority(
-        arg1: ::std::os::raw::c_int,
-        arg2: id_t,
-        arg3: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn setiopolicy_np(
-        arg1: ::std::os::raw::c_int,
-        arg2: ::std::os::raw::c_int,
-        arg3: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn setrlimit(arg1: ::std::os::raw::c_int, arg2: *const rlimit) -> ::std::os::raw::c_int;
-}
 #[repr(C)]
 #[derive(Copy, Clone)]
 pub union wait {
@@ -11006,42 +10963,6 @@ fn bindgen_test_layout_wait() {
         concat!("Offset of field: ", stringify!(wait), "::", stringify!(w_S))
     );
 }
-extern "C" {
-    pub fn wait(arg1: *mut ::std::os::raw::c_int) -> pid_t;
-}
-extern "C" {
-    pub fn waitpid(
-        arg1: pid_t,
-        arg2: *mut ::std::os::raw::c_int,
-        arg3: ::std::os::raw::c_int,
-    ) -> pid_t;
-}
-extern "C" {
-    pub fn waitid(
-        arg1: idtype_t,
-        arg2: id_t,
-        arg3: *mut siginfo_t,
-        arg4: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn wait3(
-        arg1: *mut ::std::os::raw::c_int,
-        arg2: ::std::os::raw::c_int,
-        arg3: *mut rusage,
-    ) -> pid_t;
-}
-extern "C" {
-    pub fn wait4(
-        arg1: pid_t,
-        arg2: *mut ::std::os::raw::c_int,
-        arg3: ::std::os::raw::c_int,
-        arg4: *mut rusage,
-    ) -> pid_t;
-}
-extern "C" {
-    pub fn alloca(arg1: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void;
-}
 pub type ct_rune_t = __darwin_ct_rune_t;
 pub type rune_t = __darwin_rune_t;
 pub type wchar_t = __darwin_wchar_t;
@@ -11165,932 +11086,13 @@ fn bindgen_test_layout_lldiv_t() {
 extern "C" {
     pub static mut __mb_cur_max: ::std::os::raw::c_int;
 }
-extern "C" {
-    pub fn malloc(__size: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn calloc(
-        __count: ::std::os::raw::c_ulong,
-        __size: ::std::os::raw::c_ulong,
-    ) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn free(arg1: *mut ::std::os::raw::c_void);
-}
-extern "C" {
-    pub fn realloc(
-        __ptr: *mut ::std::os::raw::c_void,
-        __size: ::std::os::raw::c_ulong,
-    ) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn valloc(arg1: usize) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn aligned_alloc(__alignment: usize, __size: usize) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn posix_memalign(
-        __memptr: *mut *mut ::std::os::raw::c_void,
-        __alignment: usize,
-        __size: usize,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn abort();
-}
-extern "C" {
-    pub fn abs(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn atexit(arg1: ::std::option::Option<unsafe extern "C" fn()>) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn atof(arg1: *const ::std::os::raw::c_char) -> f64;
-}
-extern "C" {
-    pub fn atoi(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn atol(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_long;
-}
-extern "C" {
-    pub fn atoll(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_longlong;
-}
-extern "C" {
-    pub fn bsearch(
-        __key: *const ::std::os::raw::c_void,
-        __base: *const ::std::os::raw::c_void,
-        __nel: usize,
-        __width: usize,
-        __compar: ::std::option::Option<
-            unsafe extern "C" fn(
-                arg1: *const ::std::os::raw::c_void,
-                arg2: *const ::std::os::raw::c_void,
-            ) -> ::std::os::raw::c_int,
-        >,
-    ) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn div(arg1: ::std::os::raw::c_int, arg2: ::std::os::raw::c_int) -> div_t;
-}
-extern "C" {
-    pub fn exit(arg1: ::std::os::raw::c_int);
-}
-extern "C" {
-    pub fn getenv(arg1: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn labs(arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_long;
-}
-extern "C" {
-    pub fn ldiv(arg1: ::std::os::raw::c_long, arg2: ::std::os::raw::c_long) -> ldiv_t;
-}
-extern "C" {
-    pub fn llabs(arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_longlong;
-}
-extern "C" {
-    pub fn lldiv(arg1: ::std::os::raw::c_longlong, arg2: ::std::os::raw::c_longlong) -> lldiv_t;
-}
-extern "C" {
-    pub fn mblen(__s: *const ::std::os::raw::c_char, __n: usize) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn mbstowcs(arg1: *mut wchar_t, arg2: *const ::std::os::raw::c_char, arg3: usize) -> usize;
-}
-extern "C" {
-    pub fn mbtowc(
-        arg1: *mut wchar_t,
-        arg2: *const ::std::os::raw::c_char,
-        arg3: usize,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn qsort(
-        __base: *mut ::std::os::raw::c_void,
-        __nel: usize,
-        __width: usize,
-        __compar: ::std::option::Option<
-            unsafe extern "C" fn(
-                arg1: *const ::std::os::raw::c_void,
-                arg2: *const ::std::os::raw::c_void,
-            ) -> ::std::os::raw::c_int,
-        >,
-    );
-}
-extern "C" {
-    pub fn rand() -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn srand(arg1: ::std::os::raw::c_uint);
-}
-extern "C" {
-    pub fn strtod(
-        arg1: *const ::std::os::raw::c_char,
-        arg2: *mut *mut ::std::os::raw::c_char,
-    ) -> f64;
-}
-extern "C" {
-    pub fn strtof(
-        arg1: *const ::std::os::raw::c_char,
-        arg2: *mut *mut ::std::os::raw::c_char,
-    ) -> f32;
-}
-extern "C" {
-    pub fn strtol(
-        __str: *const ::std::os::raw::c_char,
-        __endptr: *mut *mut ::std::os::raw::c_char,
-        __base: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_long;
-}
-extern "C" {
-    pub fn strtold(
-        arg1: *const ::std::os::raw::c_char,
-        arg2: *mut *mut ::std::os::raw::c_char,
-    ) -> u128;
-}
-extern "C" {
-    pub fn strtoll(
-        __str: *const ::std::os::raw::c_char,
-        __endptr: *mut *mut ::std::os::raw::c_char,
-        __base: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_longlong;
-}
-extern "C" {
-    pub fn strtoul(
-        __str: *const ::std::os::raw::c_char,
-        __endptr: *mut *mut ::std::os::raw::c_char,
-        __base: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_ulong;
-}
-extern "C" {
-    pub fn strtoull(
-        __str: *const ::std::os::raw::c_char,
-        __endptr: *mut *mut ::std::os::raw::c_char,
-        __base: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_ulonglong;
-}
-extern "C" {
-    pub fn system(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn wcstombs(arg1: *mut ::std::os::raw::c_char, arg2: *const wchar_t, arg3: usize) -> usize;
-}
-extern "C" {
-    pub fn wctomb(arg1: *mut ::std::os::raw::c_char, arg2: wchar_t) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn _Exit(arg1: ::std::os::raw::c_int);
-}
-extern "C" {
-    pub fn a64l(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_long;
-}
-extern "C" {
-    pub fn drand48() -> f64;
-}
-extern "C" {
-    pub fn ecvt(
-        arg1: f64,
-        arg2: ::std::os::raw::c_int,
-        arg3: *mut ::std::os::raw::c_int,
-        arg4: *mut ::std::os::raw::c_int,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn erand48(arg1: *mut ::std::os::raw::c_ushort) -> f64;
-}
-extern "C" {
-    pub fn fcvt(
-        arg1: f64,
-        arg2: ::std::os::raw::c_int,
-        arg3: *mut ::std::os::raw::c_int,
-        arg4: *mut ::std::os::raw::c_int,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn gcvt(
-        arg1: f64,
-        arg2: ::std::os::raw::c_int,
-        arg3: *mut ::std::os::raw::c_char,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn getsubopt(
-        arg1: *mut *mut ::std::os::raw::c_char,
-        arg2: *const *mut ::std::os::raw::c_char,
-        arg3: *mut *mut ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn grantpt(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn initstate(
-        arg1: ::std::os::raw::c_uint,
-        arg2: *mut ::std::os::raw::c_char,
-        arg3: usize,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn jrand48(arg1: *mut ::std::os::raw::c_ushort) -> ::std::os::raw::c_long;
-}
-extern "C" {
-    pub fn l64a(arg1: ::std::os::raw::c_long) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn lcong48(arg1: *mut ::std::os::raw::c_ushort);
-}
-extern "C" {
-    pub fn lrand48() -> ::std::os::raw::c_long;
-}
-extern "C" {
-    pub fn mktemp(arg1: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn mkstemp(arg1: *mut ::std::os::raw::c_char) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn mrand48() -> ::std::os::raw::c_long;
-}
-extern "C" {
-    pub fn nrand48(arg1: *mut ::std::os::raw::c_ushort) -> ::std::os::raw::c_long;
-}
-extern "C" {
-    pub fn posix_openpt(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn ptsname(arg1: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn ptsname_r(
-        fildes: ::std::os::raw::c_int,
-        buffer: *mut ::std::os::raw::c_char,
-        buflen: usize,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn putenv(arg1: *mut ::std::os::raw::c_char) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn random() -> ::std::os::raw::c_long;
-}
-extern "C" {
-    pub fn rand_r(arg1: *mut ::std::os::raw::c_uint) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_realpath$DARWIN_EXTSN"]
-    pub fn realpath(
-        arg1: *const ::std::os::raw::c_char,
-        arg2: *mut ::std::os::raw::c_char,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn seed48(arg1: *mut ::std::os::raw::c_ushort) -> *mut ::std::os::raw::c_ushort;
-}
-extern "C" {
-    pub fn setenv(
-        __name: *const ::std::os::raw::c_char,
-        __value: *const ::std::os::raw::c_char,
-        __overwrite: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn setkey(arg1: *const ::std::os::raw::c_char);
-}
-extern "C" {
-    pub fn setstate(arg1: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn srand48(arg1: ::std::os::raw::c_long);
-}
-extern "C" {
-    pub fn srandom(arg1: ::std::os::raw::c_uint);
-}
-extern "C" {
-    pub fn unlockpt(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn unsetenv(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
-}
 pub type dev_t = __darwin_dev_t;
 pub type mode_t = __darwin_mode_t;
 extern "C" {
-    pub fn arc4random() -> u32;
-}
-extern "C" {
-    pub fn arc4random_addrandom(arg1: *mut ::std::os::raw::c_uchar, arg2: ::std::os::raw::c_int);
-}
-extern "C" {
-    pub fn arc4random_buf(__buf: *mut ::std::os::raw::c_void, __nbytes: usize);
-}
-extern "C" {
-    pub fn arc4random_stir();
-}
-extern "C" {
-    pub fn arc4random_uniform(__upper_bound: u32) -> u32;
-}
-extern "C" {
-    pub fn atexit_b(arg1: *mut ::std::os::raw::c_void) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn bsearch_b(
-        __key: *const ::std::os::raw::c_void,
-        __base: *const ::std::os::raw::c_void,
-        __nel: usize,
-        __width: usize,
-        __compar: *mut ::std::os::raw::c_void,
-    ) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn cgetcap(
-        arg1: *mut ::std::os::raw::c_char,
-        arg2: *const ::std::os::raw::c_char,
-        arg3: ::std::os::raw::c_int,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn cgetclose() -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn cgetent(
-        arg1: *mut *mut ::std::os::raw::c_char,
-        arg2: *mut *mut ::std::os::raw::c_char,
-        arg3: *const ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn cgetfirst(
-        arg1: *mut *mut ::std::os::raw::c_char,
-        arg2: *mut *mut ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn cgetmatch(
-        arg1: *const ::std::os::raw::c_char,
-        arg2: *const ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn cgetnext(
-        arg1: *mut *mut ::std::os::raw::c_char,
-        arg2: *mut *mut ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn cgetnum(
-        arg1: *mut ::std::os::raw::c_char,
-        arg2: *const ::std::os::raw::c_char,
-        arg3: *mut ::std::os::raw::c_long,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn cgetset(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn cgetstr(
-        arg1: *mut ::std::os::raw::c_char,
-        arg2: *const ::std::os::raw::c_char,
-        arg3: *mut *mut ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn cgetustr(
-        arg1: *mut ::std::os::raw::c_char,
-        arg2: *const ::std::os::raw::c_char,
-        arg3: *mut *mut ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    #[link_name = "\u{1}_daemon$1050"]
-    pub fn daemon(
-        arg1: ::std::os::raw::c_int,
-        arg2: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn devname(arg1: dev_t, arg2: mode_t) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn devname_r(
-        arg1: dev_t,
-        arg2: mode_t,
-        buf: *mut ::std::os::raw::c_char,
-        len: ::std::os::raw::c_int,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn getbsize(
-        arg1: *mut ::std::os::raw::c_int,
-        arg2: *mut ::std::os::raw::c_long,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn getloadavg(arg1: *mut f64, arg2: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn getprogname() -> *const ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn setprogname(arg1: *const ::std::os::raw::c_char);
-}
-extern "C" {
-    pub fn heapsort(
-        __base: *mut ::std::os::raw::c_void,
-        __nel: usize,
-        __width: usize,
-        __compar: ::std::option::Option<
-            unsafe extern "C" fn(
-                arg1: *const ::std::os::raw::c_void,
-                arg2: *const ::std::os::raw::c_void,
-            ) -> ::std::os::raw::c_int,
-        >,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn heapsort_b(
-        __base: *mut ::std::os::raw::c_void,
-        __nel: usize,
-        __width: usize,
-        __compar: *mut ::std::os::raw::c_void,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn mergesort(
-        __base: *mut ::std::os::raw::c_void,
-        __nel: usize,
-        __width: usize,
-        __compar: ::std::option::Option<
-            unsafe extern "C" fn(
-                arg1: *const ::std::os::raw::c_void,
-                arg2: *const ::std::os::raw::c_void,
-            ) -> ::std::os::raw::c_int,
-        >,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn mergesort_b(
-        __base: *mut ::std::os::raw::c_void,
-        __nel: usize,
-        __width: usize,
-        __compar: *mut ::std::os::raw::c_void,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn psort(
-        __base: *mut ::std::os::raw::c_void,
-        __nel: usize,
-        __width: usize,
-        __compar: ::std::option::Option<
-            unsafe extern "C" fn(
-                arg1: *const ::std::os::raw::c_void,
-                arg2: *const ::std::os::raw::c_void,
-            ) -> ::std::os::raw::c_int,
-        >,
-    );
-}
-extern "C" {
-    pub fn psort_b(
-        __base: *mut ::std::os::raw::c_void,
-        __nel: usize,
-        __width: usize,
-        __compar: *mut ::std::os::raw::c_void,
-    );
-}
-extern "C" {
-    pub fn psort_r(
-        __base: *mut ::std::os::raw::c_void,
-        __nel: usize,
-        __width: usize,
-        arg1: *mut ::std::os::raw::c_void,
-        __compar: ::std::option::Option<
-            unsafe extern "C" fn(
-                arg1: *mut ::std::os::raw::c_void,
-                arg2: *const ::std::os::raw::c_void,
-                arg3: *const ::std::os::raw::c_void,
-            ) -> ::std::os::raw::c_int,
-        >,
-    );
-}
-extern "C" {
-    pub fn qsort_b(
-        __base: *mut ::std::os::raw::c_void,
-        __nel: usize,
-        __width: usize,
-        __compar: *mut ::std::os::raw::c_void,
-    );
-}
-extern "C" {
-    pub fn qsort_r(
-        __base: *mut ::std::os::raw::c_void,
-        __nel: usize,
-        __width: usize,
-        arg1: *mut ::std::os::raw::c_void,
-        __compar: ::std::option::Option<
-            unsafe extern "C" fn(
-                arg1: *mut ::std::os::raw::c_void,
-                arg2: *const ::std::os::raw::c_void,
-                arg3: *const ::std::os::raw::c_void,
-            ) -> ::std::os::raw::c_int,
-        >,
-    );
-}
-extern "C" {
-    pub fn radixsort(
-        __base: *mut *const ::std::os::raw::c_uchar,
-        __nel: ::std::os::raw::c_int,
-        __table: *const ::std::os::raw::c_uchar,
-        __endbyte: ::std::os::raw::c_uint,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn rpmatch(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn sradixsort(
-        __base: *mut *const ::std::os::raw::c_uchar,
-        __nel: ::std::os::raw::c_int,
-        __table: *const ::std::os::raw::c_uchar,
-        __endbyte: ::std::os::raw::c_uint,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn sranddev();
-}
-extern "C" {
-    pub fn srandomdev();
-}
-extern "C" {
-    pub fn reallocf(
-        __ptr: *mut ::std::os::raw::c_void,
-        __size: usize,
-    ) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn strtonum(
-        __numstr: *const ::std::os::raw::c_char,
-        __minval: ::std::os::raw::c_longlong,
-        __maxval: ::std::os::raw::c_longlong,
-        __errstrp: *mut *const ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_longlong;
-}
-extern "C" {
-    pub fn strtoq(
-        __str: *const ::std::os::raw::c_char,
-        __endptr: *mut *mut ::std::os::raw::c_char,
-        __base: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_longlong;
-}
-extern "C" {
-    pub fn strtouq(
-        __str: *const ::std::os::raw::c_char,
-        __endptr: *mut *mut ::std::os::raw::c_char,
-        __base: ::std::os::raw::c_int,
-    ) -> ::std::os::raw::c_ulonglong;
-}
-extern "C" {
     pub static mut suboptarg: *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn memchr(
-        __s: *const ::std::os::raw::c_void,
-        __c: ::std::os::raw::c_int,
-        __n: ::std::os::raw::c_ulong,
-    ) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn memcmp(
-        __s1: *const ::std::os::raw::c_void,
-        __s2: *const ::std::os::raw::c_void,
-        __n: ::std::os::raw::c_ulong,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn memcpy(
-        __dst: *mut ::std::os::raw::c_void,
-        __src: *const ::std::os::raw::c_void,
-        __n: ::std::os::raw::c_ulong,
-    ) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn memmove(
-        __dst: *mut ::std::os::raw::c_void,
-        __src: *const ::std::os::raw::c_void,
-        __len: ::std::os::raw::c_ulong,
-    ) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn memset(
-        __b: *mut ::std::os::raw::c_void,
-        __c: ::std::os::raw::c_int,
-        __len: ::std::os::raw::c_ulong,
-    ) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn strcat(
-        __s1: *mut ::std::os::raw::c_char,
-        __s2: *const ::std::os::raw::c_char,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strchr(
-        __s: *const ::std::os::raw::c_char,
-        __c: ::std::os::raw::c_int,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strcmp(
-        __s1: *const ::std::os::raw::c_char,
-        __s2: *const ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn strcoll(
-        __s1: *const ::std::os::raw::c_char,
-        __s2: *const ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn strcpy(
-        __dst: *mut ::std::os::raw::c_char,
-        __src: *const ::std::os::raw::c_char,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strcspn(
-        __s: *const ::std::os::raw::c_char,
-        __charset: *const ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_ulong;
-}
-extern "C" {
-    pub fn strerror(__errnum: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strlen(__s: *const ::std::os::raw::c_char) -> ::std::os::raw::c_ulong;
-}
-extern "C" {
-    pub fn strncat(
-        __s1: *mut ::std::os::raw::c_char,
-        __s2: *const ::std::os::raw::c_char,
-        __n: ::std::os::raw::c_ulong,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strncmp(
-        __s1: *const ::std::os::raw::c_char,
-        __s2: *const ::std::os::raw::c_char,
-        __n: ::std::os::raw::c_ulong,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn strncpy(
-        __dst: *mut ::std::os::raw::c_char,
-        __src: *const ::std::os::raw::c_char,
-        __n: ::std::os::raw::c_ulong,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strpbrk(
-        __s: *const ::std::os::raw::c_char,
-        __charset: *const ::std::os::raw::c_char,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strrchr(
-        __s: *const ::std::os::raw::c_char,
-        __c: ::std::os::raw::c_int,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strspn(
-        __s: *const ::std::os::raw::c_char,
-        __charset: *const ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_ulong;
-}
-extern "C" {
-    pub fn strstr(
-        __big: *const ::std::os::raw::c_char,
-        __little: *const ::std::os::raw::c_char,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strtok(
-        __str: *mut ::std::os::raw::c_char,
-        __sep: *const ::std::os::raw::c_char,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strxfrm(
-        __s1: *mut ::std::os::raw::c_char,
-        __s2: *const ::std::os::raw::c_char,
-        __n: ::std::os::raw::c_ulong,
-    ) -> ::std::os::raw::c_ulong;
-}
-extern "C" {
-    pub fn strtok_r(
-        __str: *mut ::std::os::raw::c_char,
-        __sep: *const ::std::os::raw::c_char,
-        __lasts: *mut *mut ::std::os::raw::c_char,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strerror_r(
-        __errnum: ::std::os::raw::c_int,
-        __strerrbuf: *mut ::std::os::raw::c_char,
-        __buflen: usize,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn strdup(__s1: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn memccpy(
-        __dst: *mut ::std::os::raw::c_void,
-        __src: *const ::std::os::raw::c_void,
-        __c: ::std::os::raw::c_int,
-        __n: ::std::os::raw::c_ulong,
-    ) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn stpcpy(
-        __dst: *mut ::std::os::raw::c_char,
-        __src: *const ::std::os::raw::c_char,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn stpncpy(
-        __dst: *mut ::std::os::raw::c_char,
-        __src: *const ::std::os::raw::c_char,
-        __n: ::std::os::raw::c_ulong,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strndup(
-        __s1: *const ::std::os::raw::c_char,
-        __n: ::std::os::raw::c_ulong,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strnlen(__s1: *const ::std::os::raw::c_char, __n: usize) -> usize;
-}
-extern "C" {
-    pub fn strsignal(__sig: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char;
 }
 pub type rsize_t = __darwin_size_t;
 pub type errno_t = ::std::os::raw::c_int;
-extern "C" {
-    pub fn memset_s(
-        __s: *mut ::std::os::raw::c_void,
-        __smax: rsize_t,
-        __c: ::std::os::raw::c_int,
-        __n: rsize_t,
-    ) -> errno_t;
-}
-extern "C" {
-    pub fn memmem(
-        __big: *const ::std::os::raw::c_void,
-        __big_len: usize,
-        __little: *const ::std::os::raw::c_void,
-        __little_len: usize,
-    ) -> *mut ::std::os::raw::c_void;
-}
-extern "C" {
-    pub fn memset_pattern4(
-        __b: *mut ::std::os::raw::c_void,
-        __pattern4: *const ::std::os::raw::c_void,
-        __len: usize,
-    );
-}
-extern "C" {
-    pub fn memset_pattern8(
-        __b: *mut ::std::os::raw::c_void,
-        __pattern8: *const ::std::os::raw::c_void,
-        __len: usize,
-    );
-}
-extern "C" {
-    pub fn memset_pattern16(
-        __b: *mut ::std::os::raw::c_void,
-        __pattern16: *const ::std::os::raw::c_void,
-        __len: usize,
-    );
-}
-extern "C" {
-    pub fn strcasestr(
-        __big: *const ::std::os::raw::c_char,
-        __little: *const ::std::os::raw::c_char,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strnstr(
-        __big: *const ::std::os::raw::c_char,
-        __little: *const ::std::os::raw::c_char,
-        __len: usize,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn strlcat(
-        __dst: *mut ::std::os::raw::c_char,
-        __source: *const ::std::os::raw::c_char,
-        __size: ::std::os::raw::c_ulong,
-    ) -> ::std::os::raw::c_ulong;
-}
-extern "C" {
-    pub fn strlcpy(
-        __dst: *mut ::std::os::raw::c_char,
-        __source: *const ::std::os::raw::c_char,
-        __size: ::std::os::raw::c_ulong,
-    ) -> ::std::os::raw::c_ulong;
-}
-extern "C" {
-    pub fn strmode(__mode: ::std::os::raw::c_int, __bp: *mut ::std::os::raw::c_char);
-}
-extern "C" {
-    pub fn strsep(
-        __stringp: *mut *mut ::std::os::raw::c_char,
-        __delim: *const ::std::os::raw::c_char,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn swab(
-        arg1: *const ::std::os::raw::c_void,
-        arg2: *mut ::std::os::raw::c_void,
-        arg3: isize,
-    );
-}
-extern "C" {
-    pub fn timingsafe_bcmp(
-        __b1: *const ::std::os::raw::c_void,
-        __b2: *const ::std::os::raw::c_void,
-        __len: usize,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn strsignal_r(
-        __sig: ::std::os::raw::c_int,
-        __strsignalbuf: *mut ::std::os::raw::c_char,
-        __buflen: usize,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn bcmp(
-        arg1: *const ::std::os::raw::c_void,
-        arg2: *const ::std::os::raw::c_void,
-        arg3: ::std::os::raw::c_ulong,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn bcopy(
-        arg1: *const ::std::os::raw::c_void,
-        arg2: *mut ::std::os::raw::c_void,
-        arg3: usize,
-    );
-}
-extern "C" {
-    pub fn bzero(arg1: *mut ::std::os::raw::c_void, arg2: ::std::os::raw::c_ulong);
-}
-extern "C" {
-    pub fn index(
-        arg1: *const ::std::os::raw::c_char,
-        arg2: ::std::os::raw::c_int,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn rindex(
-        arg1: *const ::std::os::raw::c_char,
-        arg2: ::std::os::raw::c_int,
-    ) -> *mut ::std::os::raw::c_char;
-}
-extern "C" {
-    pub fn ffs(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn strcasecmp(
-        arg1: *const ::std::os::raw::c_char,
-        arg2: *const ::std::os::raw::c_char,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn strncasecmp(
-        arg1: *const ::std::os::raw::c_char,
-        arg2: *const ::std::os::raw::c_char,
-        arg3: ::std::os::raw::c_ulong,
-    ) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn ffsl(arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn ffsll(arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn fls(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn flsl(arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_int;
-}
-extern "C" {
-    pub fn flsll(arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_int;
-}
 pub const ONNXTensorElementDataType_ONNX_TENSOR_ELEMENT_DATA_TYPE_UNDEFINED:
     ONNXTensorElementDataType = 0;
 pub const ONNXTensorElementDataType_ONNX_TENSOR_ELEMENT_DATA_TYPE_FLOAT: ONNXTensorElementDataType =
@@ -12976,9 +11978,6 @@ fn bindgen_test_layout_OrtApiBase() {
             stringify!(GetVersionString)
         )
     );
-}
-extern "C" {
-    pub fn OrtGetApiBase() -> *const OrtApiBase;
 }
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
@@ -16004,4 +15003,3063 @@ fn bindgen_test_layout___va_list_tag() {
             stringify!(reg_save_area)
         )
     );
+}
+extern crate libloading;
+pub struct onnxruntime {
+    __library: ::libloading::Library,
+    pub signal: Result<
+        unsafe extern "C" fn(
+            arg1: ::std::os::raw::c_int,
+            arg2: ::std::option::Option<unsafe extern "C" fn(arg1: ::std::os::raw::c_int)>,
+        ) -> ::std::option::Option<
+            unsafe extern "C" fn(
+                arg1: ::std::os::raw::c_int,
+                arg2: ::std::option::Option<unsafe extern "C" fn(arg1: ::std::os::raw::c_int)>,
+            ),
+        >,
+        ::libloading::Error,
+    >,
+    pub getpriority: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_int, arg2: id_t) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub getiopolicy_np: Result<
+        unsafe extern "C" fn(
+            arg1: ::std::os::raw::c_int,
+            arg2: ::std::os::raw::c_int,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub getrlimit: Result<
+        unsafe extern "C" fn(
+            arg1: ::std::os::raw::c_int,
+            arg2: *mut rlimit,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub getrusage: Result<
+        unsafe extern "C" fn(
+            arg1: ::std::os::raw::c_int,
+            arg2: *mut rusage,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub setpriority: Result<
+        unsafe extern "C" fn(
+            arg1: ::std::os::raw::c_int,
+            arg2: id_t,
+            arg3: ::std::os::raw::c_int,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub setiopolicy_np: Result<
+        unsafe extern "C" fn(
+            arg1: ::std::os::raw::c_int,
+            arg2: ::std::os::raw::c_int,
+            arg3: ::std::os::raw::c_int,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub setrlimit: Result<
+        unsafe extern "C" fn(
+            arg1: ::std::os::raw::c_int,
+            arg2: *const rlimit,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub wait: Result<
+        unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_int) -> pid_t,
+        ::libloading::Error,
+    >,
+    pub waitpid: Result<
+        unsafe extern "C" fn(
+            arg1: pid_t,
+            arg2: *mut ::std::os::raw::c_int,
+            arg3: ::std::os::raw::c_int,
+        ) -> pid_t,
+        ::libloading::Error,
+    >,
+    pub waitid: Result<
+        unsafe extern "C" fn(
+            arg1: idtype_t,
+            arg2: id_t,
+            arg3: *mut siginfo_t,
+            arg4: ::std::os::raw::c_int,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub wait3: Result<
+        unsafe extern "C" fn(
+            arg1: *mut ::std::os::raw::c_int,
+            arg2: ::std::os::raw::c_int,
+            arg3: *mut rusage,
+        ) -> pid_t,
+        ::libloading::Error,
+    >,
+    pub wait4: Result<
+        unsafe extern "C" fn(
+            arg1: pid_t,
+            arg2: *mut ::std::os::raw::c_int,
+            arg3: ::std::os::raw::c_int,
+            arg4: *mut rusage,
+        ) -> pid_t,
+        ::libloading::Error,
+    >,
+    pub alloca: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub malloc: Result<
+        unsafe extern "C" fn(__size: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub calloc: Result<
+        unsafe extern "C" fn(
+            __count: ::std::os::raw::c_ulong,
+            __size: ::std::os::raw::c_ulong,
+        ) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub free: Result<unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_void), ::libloading::Error>,
+    pub realloc: Result<
+        unsafe extern "C" fn(
+            __ptr: *mut ::std::os::raw::c_void,
+            __size: ::std::os::raw::c_ulong,
+        ) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub valloc: Result<
+        unsafe extern "C" fn(arg1: usize) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub aligned_alloc: Result<
+        unsafe extern "C" fn(__alignment: usize, __size: usize) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub posix_memalign: Result<
+        unsafe extern "C" fn(
+            __memptr: *mut *mut ::std::os::raw::c_void,
+            __alignment: usize,
+            __size: usize,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub abort: Result<unsafe extern "C" fn(), ::libloading::Error>,
+    pub abs: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub atexit: Result<
+        unsafe extern "C" fn(
+            arg1: ::std::option::Option<unsafe extern "C" fn()>,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub atof: Result<
+        unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char) -> f64,
+        ::libloading::Error,
+    >,
+    pub atoi: Result<
+        unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub atol: Result<
+        unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_long,
+        ::libloading::Error,
+    >,
+    pub atoll: Result<
+        unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_longlong,
+        ::libloading::Error,
+    >,
+    pub bsearch: Result<
+        unsafe extern "C" fn(
+            __key: *const ::std::os::raw::c_void,
+            __base: *const ::std::os::raw::c_void,
+            __nel: usize,
+            __width: usize,
+            __compar: ::std::option::Option<
+                unsafe extern "C" fn(
+                    arg1: *const ::std::os::raw::c_void,
+                    arg2: *const ::std::os::raw::c_void,
+                ) -> ::std::os::raw::c_int,
+            >,
+        ) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub div: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_int, arg2: ::std::os::raw::c_int) -> div_t,
+        ::libloading::Error,
+    >,
+    pub exit: Result<unsafe extern "C" fn(arg1: ::std::os::raw::c_int), ::libloading::Error>,
+    pub getenv: Result<
+        unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub labs: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_long,
+        ::libloading::Error,
+    >,
+    pub ldiv: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_long, arg2: ::std::os::raw::c_long) -> ldiv_t,
+        ::libloading::Error,
+    >,
+    pub llabs: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_longlong,
+        ::libloading::Error,
+    >,
+    pub lldiv: Result<
+        unsafe extern "C" fn(
+            arg1: ::std::os::raw::c_longlong,
+            arg2: ::std::os::raw::c_longlong,
+        ) -> lldiv_t,
+        ::libloading::Error,
+    >,
+    pub mblen: Result<
+        unsafe extern "C" fn(
+            __s: *const ::std::os::raw::c_char,
+            __n: usize,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub mbstowcs: Result<
+        unsafe extern "C" fn(
+            arg1: *mut wchar_t,
+            arg2: *const ::std::os::raw::c_char,
+            arg3: usize,
+        ) -> usize,
+        ::libloading::Error,
+    >,
+    pub mbtowc: Result<
+        unsafe extern "C" fn(
+            arg1: *mut wchar_t,
+            arg2: *const ::std::os::raw::c_char,
+            arg3: usize,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub qsort: Result<
+        unsafe extern "C" fn(
+            __base: *mut ::std::os::raw::c_void,
+            __nel: usize,
+            __width: usize,
+            __compar: ::std::option::Option<
+                unsafe extern "C" fn(
+                    arg1: *const ::std::os::raw::c_void,
+                    arg2: *const ::std::os::raw::c_void,
+                ) -> ::std::os::raw::c_int,
+            >,
+        ),
+        ::libloading::Error,
+    >,
+    pub rand: Result<unsafe extern "C" fn() -> ::std::os::raw::c_int, ::libloading::Error>,
+    pub srand: Result<unsafe extern "C" fn(arg1: ::std::os::raw::c_uint), ::libloading::Error>,
+    pub strtod: Result<
+        unsafe extern "C" fn(
+            arg1: *const ::std::os::raw::c_char,
+            arg2: *mut *mut ::std::os::raw::c_char,
+        ) -> f64,
+        ::libloading::Error,
+    >,
+    pub strtof: Result<
+        unsafe extern "C" fn(
+            arg1: *const ::std::os::raw::c_char,
+            arg2: *mut *mut ::std::os::raw::c_char,
+        ) -> f32,
+        ::libloading::Error,
+    >,
+    pub strtol: Result<
+        unsafe extern "C" fn(
+            __str: *const ::std::os::raw::c_char,
+            __endptr: *mut *mut ::std::os::raw::c_char,
+            __base: ::std::os::raw::c_int,
+        ) -> ::std::os::raw::c_long,
+        ::libloading::Error,
+    >,
+    pub strtold: Result<
+        unsafe extern "C" fn(
+            arg1: *const ::std::os::raw::c_char,
+            arg2: *mut *mut ::std::os::raw::c_char,
+        ) -> u128,
+        ::libloading::Error,
+    >,
+    pub strtoll: Result<
+        unsafe extern "C" fn(
+            __str: *const ::std::os::raw::c_char,
+            __endptr: *mut *mut ::std::os::raw::c_char,
+            __base: ::std::os::raw::c_int,
+        ) -> ::std::os::raw::c_longlong,
+        ::libloading::Error,
+    >,
+    pub strtoul: Result<
+        unsafe extern "C" fn(
+            __str: *const ::std::os::raw::c_char,
+            __endptr: *mut *mut ::std::os::raw::c_char,
+            __base: ::std::os::raw::c_int,
+        ) -> ::std::os::raw::c_ulong,
+        ::libloading::Error,
+    >,
+    pub strtoull: Result<
+        unsafe extern "C" fn(
+            __str: *const ::std::os::raw::c_char,
+            __endptr: *mut *mut ::std::os::raw::c_char,
+            __base: ::std::os::raw::c_int,
+        ) -> ::std::os::raw::c_ulonglong,
+        ::libloading::Error,
+    >,
+    pub system: Result<
+        unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub wcstombs: Result<
+        unsafe extern "C" fn(
+            arg1: *mut ::std::os::raw::c_char,
+            arg2: *const wchar_t,
+            arg3: usize,
+        ) -> usize,
+        ::libloading::Error,
+    >,
+    pub wctomb: Result<
+        unsafe extern "C" fn(
+            arg1: *mut ::std::os::raw::c_char,
+            arg2: wchar_t,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub _Exit: Result<unsafe extern "C" fn(arg1: ::std::os::raw::c_int), ::libloading::Error>,
+    pub a64l: Result<
+        unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_long,
+        ::libloading::Error,
+    >,
+    pub drand48: Result<unsafe extern "C" fn() -> f64, ::libloading::Error>,
+    pub ecvt: Result<
+        unsafe extern "C" fn(
+            arg1: f64,
+            arg2: ::std::os::raw::c_int,
+            arg3: *mut ::std::os::raw::c_int,
+            arg4: *mut ::std::os::raw::c_int,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub erand48: Result<
+        unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_ushort) -> f64,
+        ::libloading::Error,
+    >,
+    pub fcvt: Result<
+        unsafe extern "C" fn(
+            arg1: f64,
+            arg2: ::std::os::raw::c_int,
+            arg3: *mut ::std::os::raw::c_int,
+            arg4: *mut ::std::os::raw::c_int,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub gcvt: Result<
+        unsafe extern "C" fn(
+            arg1: f64,
+            arg2: ::std::os::raw::c_int,
+            arg3: *mut ::std::os::raw::c_char,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub getsubopt: Result<
+        unsafe extern "C" fn(
+            arg1: *mut *mut ::std::os::raw::c_char,
+            arg2: *const *mut ::std::os::raw::c_char,
+            arg3: *mut *mut ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub grantpt: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub initstate: Result<
+        unsafe extern "C" fn(
+            arg1: ::std::os::raw::c_uint,
+            arg2: *mut ::std::os::raw::c_char,
+            arg3: usize,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub jrand48: Result<
+        unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_ushort) -> ::std::os::raw::c_long,
+        ::libloading::Error,
+    >,
+    pub l64a: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_long) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub lcong48:
+        Result<unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_ushort), ::libloading::Error>,
+    pub lrand48: Result<unsafe extern "C" fn() -> ::std::os::raw::c_long, ::libloading::Error>,
+    pub mktemp: Result<
+        unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub mkstemp: Result<
+        unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_char) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub mrand48: Result<unsafe extern "C" fn() -> ::std::os::raw::c_long, ::libloading::Error>,
+    pub nrand48: Result<
+        unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_ushort) -> ::std::os::raw::c_long,
+        ::libloading::Error,
+    >,
+    pub posix_openpt: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub ptsname: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub ptsname_r: Result<
+        unsafe extern "C" fn(
+            fildes: ::std::os::raw::c_int,
+            buffer: *mut ::std::os::raw::c_char,
+            buflen: usize,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub putenv: Result<
+        unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_char) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub random: Result<unsafe extern "C" fn() -> ::std::os::raw::c_long, ::libloading::Error>,
+    pub rand_r: Result<
+        unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_uint) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub realpath: Result<
+        unsafe extern "C" fn(
+            arg1: *const ::std::os::raw::c_char,
+            arg2: *mut ::std::os::raw::c_char,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub seed48: Result<
+        unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_ushort) -> *mut ::std::os::raw::c_ushort,
+        ::libloading::Error,
+    >,
+    pub setenv: Result<
+        unsafe extern "C" fn(
+            __name: *const ::std::os::raw::c_char,
+            __value: *const ::std::os::raw::c_char,
+            __overwrite: ::std::os::raw::c_int,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub setkey:
+        Result<unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char), ::libloading::Error>,
+    pub setstate: Result<
+        unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub srand48: Result<unsafe extern "C" fn(arg1: ::std::os::raw::c_long), ::libloading::Error>,
+    pub srandom: Result<unsafe extern "C" fn(arg1: ::std::os::raw::c_uint), ::libloading::Error>,
+    pub unlockpt: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub unsetenv: Result<
+        unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub arc4random: Result<unsafe extern "C" fn() -> u32, ::libloading::Error>,
+    pub arc4random_addrandom: Result<
+        unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_uchar, arg2: ::std::os::raw::c_int),
+        ::libloading::Error,
+    >,
+    pub arc4random_buf: Result<
+        unsafe extern "C" fn(__buf: *mut ::std::os::raw::c_void, __nbytes: usize),
+        ::libloading::Error,
+    >,
+    pub arc4random_stir: Result<unsafe extern "C" fn(), ::libloading::Error>,
+    pub arc4random_uniform:
+        Result<unsafe extern "C" fn(__upper_bound: u32) -> u32, ::libloading::Error>,
+    pub atexit_b: Result<
+        unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_void) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub bsearch_b: Result<
+        unsafe extern "C" fn(
+            __key: *const ::std::os::raw::c_void,
+            __base: *const ::std::os::raw::c_void,
+            __nel: usize,
+            __width: usize,
+            __compar: *mut ::std::os::raw::c_void,
+        ) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub cgetcap: Result<
+        unsafe extern "C" fn(
+            arg1: *mut ::std::os::raw::c_char,
+            arg2: *const ::std::os::raw::c_char,
+            arg3: ::std::os::raw::c_int,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub cgetclose: Result<unsafe extern "C" fn() -> ::std::os::raw::c_int, ::libloading::Error>,
+    pub cgetent: Result<
+        unsafe extern "C" fn(
+            arg1: *mut *mut ::std::os::raw::c_char,
+            arg2: *mut *mut ::std::os::raw::c_char,
+            arg3: *const ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub cgetfirst: Result<
+        unsafe extern "C" fn(
+            arg1: *mut *mut ::std::os::raw::c_char,
+            arg2: *mut *mut ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub cgetmatch: Result<
+        unsafe extern "C" fn(
+            arg1: *const ::std::os::raw::c_char,
+            arg2: *const ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub cgetnext: Result<
+        unsafe extern "C" fn(
+            arg1: *mut *mut ::std::os::raw::c_char,
+            arg2: *mut *mut ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub cgetnum: Result<
+        unsafe extern "C" fn(
+            arg1: *mut ::std::os::raw::c_char,
+            arg2: *const ::std::os::raw::c_char,
+            arg3: *mut ::std::os::raw::c_long,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub cgetset: Result<
+        unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub cgetstr: Result<
+        unsafe extern "C" fn(
+            arg1: *mut ::std::os::raw::c_char,
+            arg2: *const ::std::os::raw::c_char,
+            arg3: *mut *mut ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub cgetustr: Result<
+        unsafe extern "C" fn(
+            arg1: *mut ::std::os::raw::c_char,
+            arg2: *const ::std::os::raw::c_char,
+            arg3: *mut *mut ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub daemon: Result<
+        unsafe extern "C" fn(
+            arg1: ::std::os::raw::c_int,
+            arg2: ::std::os::raw::c_int,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub devname: Result<
+        unsafe extern "C" fn(arg1: dev_t, arg2: mode_t) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub devname_r: Result<
+        unsafe extern "C" fn(
+            arg1: dev_t,
+            arg2: mode_t,
+            buf: *mut ::std::os::raw::c_char,
+            len: ::std::os::raw::c_int,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub getbsize: Result<
+        unsafe extern "C" fn(
+            arg1: *mut ::std::os::raw::c_int,
+            arg2: *mut ::std::os::raw::c_long,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub getloadavg: Result<
+        unsafe extern "C" fn(arg1: *mut f64, arg2: ::std::os::raw::c_int) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub getprogname:
+        Result<unsafe extern "C" fn() -> *const ::std::os::raw::c_char, ::libloading::Error>,
+    pub setprogname:
+        Result<unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char), ::libloading::Error>,
+    pub heapsort: Result<
+        unsafe extern "C" fn(
+            __base: *mut ::std::os::raw::c_void,
+            __nel: usize,
+            __width: usize,
+            __compar: ::std::option::Option<
+                unsafe extern "C" fn(
+                    arg1: *const ::std::os::raw::c_void,
+                    arg2: *const ::std::os::raw::c_void,
+                ) -> ::std::os::raw::c_int,
+            >,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub heapsort_b: Result<
+        unsafe extern "C" fn(
+            __base: *mut ::std::os::raw::c_void,
+            __nel: usize,
+            __width: usize,
+            __compar: *mut ::std::os::raw::c_void,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub mergesort: Result<
+        unsafe extern "C" fn(
+            __base: *mut ::std::os::raw::c_void,
+            __nel: usize,
+            __width: usize,
+            __compar: ::std::option::Option<
+                unsafe extern "C" fn(
+                    arg1: *const ::std::os::raw::c_void,
+                    arg2: *const ::std::os::raw::c_void,
+                ) -> ::std::os::raw::c_int,
+            >,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub mergesort_b: Result<
+        unsafe extern "C" fn(
+            __base: *mut ::std::os::raw::c_void,
+            __nel: usize,
+            __width: usize,
+            __compar: *mut ::std::os::raw::c_void,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub psort: Result<
+        unsafe extern "C" fn(
+            __base: *mut ::std::os::raw::c_void,
+            __nel: usize,
+            __width: usize,
+            __compar: ::std::option::Option<
+                unsafe extern "C" fn(
+                    arg1: *const ::std::os::raw::c_void,
+                    arg2: *const ::std::os::raw::c_void,
+                ) -> ::std::os::raw::c_int,
+            >,
+        ),
+        ::libloading::Error,
+    >,
+    pub psort_b: Result<
+        unsafe extern "C" fn(
+            __base: *mut ::std::os::raw::c_void,
+            __nel: usize,
+            __width: usize,
+            __compar: *mut ::std::os::raw::c_void,
+        ),
+        ::libloading::Error,
+    >,
+    pub psort_r: Result<
+        unsafe extern "C" fn(
+            __base: *mut ::std::os::raw::c_void,
+            __nel: usize,
+            __width: usize,
+            arg1: *mut ::std::os::raw::c_void,
+            __compar: ::std::option::Option<
+                unsafe extern "C" fn(
+                    arg1: *mut ::std::os::raw::c_void,
+                    arg2: *const ::std::os::raw::c_void,
+                    arg3: *const ::std::os::raw::c_void,
+                ) -> ::std::os::raw::c_int,
+            >,
+        ),
+        ::libloading::Error,
+    >,
+    pub qsort_b: Result<
+        unsafe extern "C" fn(
+            __base: *mut ::std::os::raw::c_void,
+            __nel: usize,
+            __width: usize,
+            __compar: *mut ::std::os::raw::c_void,
+        ),
+        ::libloading::Error,
+    >,
+    pub qsort_r: Result<
+        unsafe extern "C" fn(
+            __base: *mut ::std::os::raw::c_void,
+            __nel: usize,
+            __width: usize,
+            arg1: *mut ::std::os::raw::c_void,
+            __compar: ::std::option::Option<
+                unsafe extern "C" fn(
+                    arg1: *mut ::std::os::raw::c_void,
+                    arg2: *const ::std::os::raw::c_void,
+                    arg3: *const ::std::os::raw::c_void,
+                ) -> ::std::os::raw::c_int,
+            >,
+        ),
+        ::libloading::Error,
+    >,
+    pub radixsort: Result<
+        unsafe extern "C" fn(
+            __base: *mut *const ::std::os::raw::c_uchar,
+            __nel: ::std::os::raw::c_int,
+            __table: *const ::std::os::raw::c_uchar,
+            __endbyte: ::std::os::raw::c_uint,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub rpmatch: Result<
+        unsafe extern "C" fn(arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub sradixsort: Result<
+        unsafe extern "C" fn(
+            __base: *mut *const ::std::os::raw::c_uchar,
+            __nel: ::std::os::raw::c_int,
+            __table: *const ::std::os::raw::c_uchar,
+            __endbyte: ::std::os::raw::c_uint,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub sranddev: Result<unsafe extern "C" fn(), ::libloading::Error>,
+    pub srandomdev: Result<unsafe extern "C" fn(), ::libloading::Error>,
+    pub reallocf: Result<
+        unsafe extern "C" fn(
+            __ptr: *mut ::std::os::raw::c_void,
+            __size: usize,
+        ) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub strtonum: Result<
+        unsafe extern "C" fn(
+            __numstr: *const ::std::os::raw::c_char,
+            __minval: ::std::os::raw::c_longlong,
+            __maxval: ::std::os::raw::c_longlong,
+            __errstrp: *mut *const ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_longlong,
+        ::libloading::Error,
+    >,
+    pub strtoq: Result<
+        unsafe extern "C" fn(
+            __str: *const ::std::os::raw::c_char,
+            __endptr: *mut *mut ::std::os::raw::c_char,
+            __base: ::std::os::raw::c_int,
+        ) -> ::std::os::raw::c_longlong,
+        ::libloading::Error,
+    >,
+    pub strtouq: Result<
+        unsafe extern "C" fn(
+            __str: *const ::std::os::raw::c_char,
+            __endptr: *mut *mut ::std::os::raw::c_char,
+            __base: ::std::os::raw::c_int,
+        ) -> ::std::os::raw::c_ulonglong,
+        ::libloading::Error,
+    >,
+    pub memchr: Result<
+        unsafe extern "C" fn(
+            __s: *const ::std::os::raw::c_void,
+            __c: ::std::os::raw::c_int,
+            __n: ::std::os::raw::c_ulong,
+        ) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub memcmp: Result<
+        unsafe extern "C" fn(
+            __s1: *const ::std::os::raw::c_void,
+            __s2: *const ::std::os::raw::c_void,
+            __n: ::std::os::raw::c_ulong,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub memcpy: Result<
+        unsafe extern "C" fn(
+            __dst: *mut ::std::os::raw::c_void,
+            __src: *const ::std::os::raw::c_void,
+            __n: ::std::os::raw::c_ulong,
+        ) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub memmove: Result<
+        unsafe extern "C" fn(
+            __dst: *mut ::std::os::raw::c_void,
+            __src: *const ::std::os::raw::c_void,
+            __len: ::std::os::raw::c_ulong,
+        ) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub memset: Result<
+        unsafe extern "C" fn(
+            __b: *mut ::std::os::raw::c_void,
+            __c: ::std::os::raw::c_int,
+            __len: ::std::os::raw::c_ulong,
+        ) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub strcat: Result<
+        unsafe extern "C" fn(
+            __s1: *mut ::std::os::raw::c_char,
+            __s2: *const ::std::os::raw::c_char,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strchr: Result<
+        unsafe extern "C" fn(
+            __s: *const ::std::os::raw::c_char,
+            __c: ::std::os::raw::c_int,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strcmp: Result<
+        unsafe extern "C" fn(
+            __s1: *const ::std::os::raw::c_char,
+            __s2: *const ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub strcoll: Result<
+        unsafe extern "C" fn(
+            __s1: *const ::std::os::raw::c_char,
+            __s2: *const ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub strcpy: Result<
+        unsafe extern "C" fn(
+            __dst: *mut ::std::os::raw::c_char,
+            __src: *const ::std::os::raw::c_char,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strcspn: Result<
+        unsafe extern "C" fn(
+            __s: *const ::std::os::raw::c_char,
+            __charset: *const ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_ulong,
+        ::libloading::Error,
+    >,
+    pub strerror: Result<
+        unsafe extern "C" fn(__errnum: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strlen: Result<
+        unsafe extern "C" fn(__s: *const ::std::os::raw::c_char) -> ::std::os::raw::c_ulong,
+        ::libloading::Error,
+    >,
+    pub strncat: Result<
+        unsafe extern "C" fn(
+            __s1: *mut ::std::os::raw::c_char,
+            __s2: *const ::std::os::raw::c_char,
+            __n: ::std::os::raw::c_ulong,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strncmp: Result<
+        unsafe extern "C" fn(
+            __s1: *const ::std::os::raw::c_char,
+            __s2: *const ::std::os::raw::c_char,
+            __n: ::std::os::raw::c_ulong,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub strncpy: Result<
+        unsafe extern "C" fn(
+            __dst: *mut ::std::os::raw::c_char,
+            __src: *const ::std::os::raw::c_char,
+            __n: ::std::os::raw::c_ulong,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strpbrk: Result<
+        unsafe extern "C" fn(
+            __s: *const ::std::os::raw::c_char,
+            __charset: *const ::std::os::raw::c_char,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strrchr: Result<
+        unsafe extern "C" fn(
+            __s: *const ::std::os::raw::c_char,
+            __c: ::std::os::raw::c_int,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strspn: Result<
+        unsafe extern "C" fn(
+            __s: *const ::std::os::raw::c_char,
+            __charset: *const ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_ulong,
+        ::libloading::Error,
+    >,
+    pub strstr: Result<
+        unsafe extern "C" fn(
+            __big: *const ::std::os::raw::c_char,
+            __little: *const ::std::os::raw::c_char,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strtok: Result<
+        unsafe extern "C" fn(
+            __str: *mut ::std::os::raw::c_char,
+            __sep: *const ::std::os::raw::c_char,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strxfrm: Result<
+        unsafe extern "C" fn(
+            __s1: *mut ::std::os::raw::c_char,
+            __s2: *const ::std::os::raw::c_char,
+            __n: ::std::os::raw::c_ulong,
+        ) -> ::std::os::raw::c_ulong,
+        ::libloading::Error,
+    >,
+    pub strtok_r: Result<
+        unsafe extern "C" fn(
+            __str: *mut ::std::os::raw::c_char,
+            __sep: *const ::std::os::raw::c_char,
+            __lasts: *mut *mut ::std::os::raw::c_char,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strerror_r: Result<
+        unsafe extern "C" fn(
+            __errnum: ::std::os::raw::c_int,
+            __strerrbuf: *mut ::std::os::raw::c_char,
+            __buflen: usize,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub strdup: Result<
+        unsafe extern "C" fn(__s1: *const ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub memccpy: Result<
+        unsafe extern "C" fn(
+            __dst: *mut ::std::os::raw::c_void,
+            __src: *const ::std::os::raw::c_void,
+            __c: ::std::os::raw::c_int,
+            __n: ::std::os::raw::c_ulong,
+        ) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub stpcpy: Result<
+        unsafe extern "C" fn(
+            __dst: *mut ::std::os::raw::c_char,
+            __src: *const ::std::os::raw::c_char,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub stpncpy: Result<
+        unsafe extern "C" fn(
+            __dst: *mut ::std::os::raw::c_char,
+            __src: *const ::std::os::raw::c_char,
+            __n: ::std::os::raw::c_ulong,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strndup: Result<
+        unsafe extern "C" fn(
+            __s1: *const ::std::os::raw::c_char,
+            __n: ::std::os::raw::c_ulong,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strnlen: Result<
+        unsafe extern "C" fn(__s1: *const ::std::os::raw::c_char, __n: usize) -> usize,
+        ::libloading::Error,
+    >,
+    pub strsignal: Result<
+        unsafe extern "C" fn(__sig: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub memset_s: Result<
+        unsafe extern "C" fn(
+            __s: *mut ::std::os::raw::c_void,
+            __smax: rsize_t,
+            __c: ::std::os::raw::c_int,
+            __n: rsize_t,
+        ) -> errno_t,
+        ::libloading::Error,
+    >,
+    pub memmem: Result<
+        unsafe extern "C" fn(
+            __big: *const ::std::os::raw::c_void,
+            __big_len: usize,
+            __little: *const ::std::os::raw::c_void,
+            __little_len: usize,
+        ) -> *mut ::std::os::raw::c_void,
+        ::libloading::Error,
+    >,
+    pub memset_pattern4: Result<
+        unsafe extern "C" fn(
+            __b: *mut ::std::os::raw::c_void,
+            __pattern4: *const ::std::os::raw::c_void,
+            __len: usize,
+        ),
+        ::libloading::Error,
+    >,
+    pub memset_pattern8: Result<
+        unsafe extern "C" fn(
+            __b: *mut ::std::os::raw::c_void,
+            __pattern8: *const ::std::os::raw::c_void,
+            __len: usize,
+        ),
+        ::libloading::Error,
+    >,
+    pub memset_pattern16: Result<
+        unsafe extern "C" fn(
+            __b: *mut ::std::os::raw::c_void,
+            __pattern16: *const ::std::os::raw::c_void,
+            __len: usize,
+        ),
+        ::libloading::Error,
+    >,
+    pub strcasestr: Result<
+        unsafe extern "C" fn(
+            __big: *const ::std::os::raw::c_char,
+            __little: *const ::std::os::raw::c_char,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strnstr: Result<
+        unsafe extern "C" fn(
+            __big: *const ::std::os::raw::c_char,
+            __little: *const ::std::os::raw::c_char,
+            __len: usize,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub strlcat: Result<
+        unsafe extern "C" fn(
+            __dst: *mut ::std::os::raw::c_char,
+            __source: *const ::std::os::raw::c_char,
+            __size: ::std::os::raw::c_ulong,
+        ) -> ::std::os::raw::c_ulong,
+        ::libloading::Error,
+    >,
+    pub strlcpy: Result<
+        unsafe extern "C" fn(
+            __dst: *mut ::std::os::raw::c_char,
+            __source: *const ::std::os::raw::c_char,
+            __size: ::std::os::raw::c_ulong,
+        ) -> ::std::os::raw::c_ulong,
+        ::libloading::Error,
+    >,
+    pub strmode: Result<
+        unsafe extern "C" fn(__mode: ::std::os::raw::c_int, __bp: *mut ::std::os::raw::c_char),
+        ::libloading::Error,
+    >,
+    pub strsep: Result<
+        unsafe extern "C" fn(
+            __stringp: *mut *mut ::std::os::raw::c_char,
+            __delim: *const ::std::os::raw::c_char,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub swab: Result<
+        unsafe extern "C" fn(
+            arg1: *const ::std::os::raw::c_void,
+            arg2: *mut ::std::os::raw::c_void,
+            arg3: isize,
+        ),
+        ::libloading::Error,
+    >,
+    pub timingsafe_bcmp: Result<
+        unsafe extern "C" fn(
+            __b1: *const ::std::os::raw::c_void,
+            __b2: *const ::std::os::raw::c_void,
+            __len: usize,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub strsignal_r: Result<
+        unsafe extern "C" fn(
+            __sig: ::std::os::raw::c_int,
+            __strsignalbuf: *mut ::std::os::raw::c_char,
+            __buflen: usize,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub bcmp: Result<
+        unsafe extern "C" fn(
+            arg1: *const ::std::os::raw::c_void,
+            arg2: *const ::std::os::raw::c_void,
+            arg3: ::std::os::raw::c_ulong,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub bcopy: Result<
+        unsafe extern "C" fn(
+            arg1: *const ::std::os::raw::c_void,
+            arg2: *mut ::std::os::raw::c_void,
+            arg3: usize,
+        ),
+        ::libloading::Error,
+    >,
+    pub bzero: Result<
+        unsafe extern "C" fn(arg1: *mut ::std::os::raw::c_void, arg2: ::std::os::raw::c_ulong),
+        ::libloading::Error,
+    >,
+    pub index: Result<
+        unsafe extern "C" fn(
+            arg1: *const ::std::os::raw::c_char,
+            arg2: ::std::os::raw::c_int,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub rindex: Result<
+        unsafe extern "C" fn(
+            arg1: *const ::std::os::raw::c_char,
+            arg2: ::std::os::raw::c_int,
+        ) -> *mut ::std::os::raw::c_char,
+        ::libloading::Error,
+    >,
+    pub ffs: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub strcasecmp: Result<
+        unsafe extern "C" fn(
+            arg1: *const ::std::os::raw::c_char,
+            arg2: *const ::std::os::raw::c_char,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub strncasecmp: Result<
+        unsafe extern "C" fn(
+            arg1: *const ::std::os::raw::c_char,
+            arg2: *const ::std::os::raw::c_char,
+            arg3: ::std::os::raw::c_ulong,
+        ) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub ffsl: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub ffsll: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub fls: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub flsl: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub flsll: Result<
+        unsafe extern "C" fn(arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_int,
+        ::libloading::Error,
+    >,
+    pub OrtGetApiBase: Result<unsafe extern "C" fn() -> *const OrtApiBase, ::libloading::Error>,
+}
+impl onnxruntime {
+    pub unsafe fn new<P>(path: P) -> Result<Self, ::libloading::Error>
+    where
+        P: AsRef<::std::ffi::OsStr>,
+    {
+        let library = ::libloading::Library::new(path)?;
+        Self::from_library(library)
+    }
+    pub unsafe fn from_library<L>(library: L) -> Result<Self, ::libloading::Error>
+    where
+        L: Into<::libloading::Library>,
+    {
+        let __library = library.into();
+        let signal = __library.get(b"signal\0").map(|sym| *sym);
+        let getpriority = __library.get(b"getpriority\0").map(|sym| *sym);
+        let getiopolicy_np = __library.get(b"getiopolicy_np\0").map(|sym| *sym);
+        let getrlimit = __library.get(b"getrlimit\0").map(|sym| *sym);
+        let getrusage = __library.get(b"getrusage\0").map(|sym| *sym);
+        let setpriority = __library.get(b"setpriority\0").map(|sym| *sym);
+        let setiopolicy_np = __library.get(b"setiopolicy_np\0").map(|sym| *sym);
+        let setrlimit = __library.get(b"setrlimit\0").map(|sym| *sym);
+        let wait = __library.get(b"wait\0").map(|sym| *sym);
+        let waitpid = __library.get(b"waitpid\0").map(|sym| *sym);
+        let waitid = __library.get(b"waitid\0").map(|sym| *sym);
+        let wait3 = __library.get(b"wait3\0").map(|sym| *sym);
+        let wait4 = __library.get(b"wait4\0").map(|sym| *sym);
+        let alloca = __library.get(b"alloca\0").map(|sym| *sym);
+        let malloc = __library.get(b"malloc\0").map(|sym| *sym);
+        let calloc = __library.get(b"calloc\0").map(|sym| *sym);
+        let free = __library.get(b"free\0").map(|sym| *sym);
+        let realloc = __library.get(b"realloc\0").map(|sym| *sym);
+        let valloc = __library.get(b"valloc\0").map(|sym| *sym);
+        let aligned_alloc = __library.get(b"aligned_alloc\0").map(|sym| *sym);
+        let posix_memalign = __library.get(b"posix_memalign\0").map(|sym| *sym);
+        let abort = __library.get(b"abort\0").map(|sym| *sym);
+        let abs = __library.get(b"abs\0").map(|sym| *sym);
+        let atexit = __library.get(b"atexit\0").map(|sym| *sym);
+        let atof = __library.get(b"atof\0").map(|sym| *sym);
+        let atoi = __library.get(b"atoi\0").map(|sym| *sym);
+        let atol = __library.get(b"atol\0").map(|sym| *sym);
+        let atoll = __library.get(b"atoll\0").map(|sym| *sym);
+        let bsearch = __library.get(b"bsearch\0").map(|sym| *sym);
+        let div = __library.get(b"div\0").map(|sym| *sym);
+        let exit = __library.get(b"exit\0").map(|sym| *sym);
+        let getenv = __library.get(b"getenv\0").map(|sym| *sym);
+        let labs = __library.get(b"labs\0").map(|sym| *sym);
+        let ldiv = __library.get(b"ldiv\0").map(|sym| *sym);
+        let llabs = __library.get(b"llabs\0").map(|sym| *sym);
+        let lldiv = __library.get(b"lldiv\0").map(|sym| *sym);
+        let mblen = __library.get(b"mblen\0").map(|sym| *sym);
+        let mbstowcs = __library.get(b"mbstowcs\0").map(|sym| *sym);
+        let mbtowc = __library.get(b"mbtowc\0").map(|sym| *sym);
+        let qsort = __library.get(b"qsort\0").map(|sym| *sym);
+        let rand = __library.get(b"rand\0").map(|sym| *sym);
+        let srand = __library.get(b"srand\0").map(|sym| *sym);
+        let strtod = __library.get(b"strtod\0").map(|sym| *sym);
+        let strtof = __library.get(b"strtof\0").map(|sym| *sym);
+        let strtol = __library.get(b"strtol\0").map(|sym| *sym);
+        let strtold = __library.get(b"strtold\0").map(|sym| *sym);
+        let strtoll = __library.get(b"strtoll\0").map(|sym| *sym);
+        let strtoul = __library.get(b"strtoul\0").map(|sym| *sym);
+        let strtoull = __library.get(b"strtoull\0").map(|sym| *sym);
+        let system = __library.get(b"system\0").map(|sym| *sym);
+        let wcstombs = __library.get(b"wcstombs\0").map(|sym| *sym);
+        let wctomb = __library.get(b"wctomb\0").map(|sym| *sym);
+        let _Exit = __library.get(b"_Exit\0").map(|sym| *sym);
+        let a64l = __library.get(b"a64l\0").map(|sym| *sym);
+        let drand48 = __library.get(b"drand48\0").map(|sym| *sym);
+        let ecvt = __library.get(b"ecvt\0").map(|sym| *sym);
+        let erand48 = __library.get(b"erand48\0").map(|sym| *sym);
+        let fcvt = __library.get(b"fcvt\0").map(|sym| *sym);
+        let gcvt = __library.get(b"gcvt\0").map(|sym| *sym);
+        let getsubopt = __library.get(b"getsubopt\0").map(|sym| *sym);
+        let grantpt = __library.get(b"grantpt\0").map(|sym| *sym);
+        let initstate = __library.get(b"initstate\0").map(|sym| *sym);
+        let jrand48 = __library.get(b"jrand48\0").map(|sym| *sym);
+        let l64a = __library.get(b"l64a\0").map(|sym| *sym);
+        let lcong48 = __library.get(b"lcong48\0").map(|sym| *sym);
+        let lrand48 = __library.get(b"lrand48\0").map(|sym| *sym);
+        let mktemp = __library.get(b"mktemp\0").map(|sym| *sym);
+        let mkstemp = __library.get(b"mkstemp\0").map(|sym| *sym);
+        let mrand48 = __library.get(b"mrand48\0").map(|sym| *sym);
+        let nrand48 = __library.get(b"nrand48\0").map(|sym| *sym);
+        let posix_openpt = __library.get(b"posix_openpt\0").map(|sym| *sym);
+        let ptsname = __library.get(b"ptsname\0").map(|sym| *sym);
+        let ptsname_r = __library.get(b"ptsname_r\0").map(|sym| *sym);
+        let putenv = __library.get(b"putenv\0").map(|sym| *sym);
+        let random = __library.get(b"random\0").map(|sym| *sym);
+        let rand_r = __library.get(b"rand_r\0").map(|sym| *sym);
+        let realpath = __library.get(b"realpath\0").map(|sym| *sym);
+        let seed48 = __library.get(b"seed48\0").map(|sym| *sym);
+        let setenv = __library.get(b"setenv\0").map(|sym| *sym);
+        let setkey = __library.get(b"setkey\0").map(|sym| *sym);
+        let setstate = __library.get(b"setstate\0").map(|sym| *sym);
+        let srand48 = __library.get(b"srand48\0").map(|sym| *sym);
+        let srandom = __library.get(b"srandom\0").map(|sym| *sym);
+        let unlockpt = __library.get(b"unlockpt\0").map(|sym| *sym);
+        let unsetenv = __library.get(b"unsetenv\0").map(|sym| *sym);
+        let arc4random = __library.get(b"arc4random\0").map(|sym| *sym);
+        let arc4random_addrandom = __library.get(b"arc4random_addrandom\0").map(|sym| *sym);
+        let arc4random_buf = __library.get(b"arc4random_buf\0").map(|sym| *sym);
+        let arc4random_stir = __library.get(b"arc4random_stir\0").map(|sym| *sym);
+        let arc4random_uniform = __library.get(b"arc4random_uniform\0").map(|sym| *sym);
+        let atexit_b = __library.get(b"atexit_b\0").map(|sym| *sym);
+        let bsearch_b = __library.get(b"bsearch_b\0").map(|sym| *sym);
+        let cgetcap = __library.get(b"cgetcap\0").map(|sym| *sym);
+        let cgetclose = __library.get(b"cgetclose\0").map(|sym| *sym);
+        let cgetent = __library.get(b"cgetent\0").map(|sym| *sym);
+        let cgetfirst = __library.get(b"cgetfirst\0").map(|sym| *sym);
+        let cgetmatch = __library.get(b"cgetmatch\0").map(|sym| *sym);
+        let cgetnext = __library.get(b"cgetnext\0").map(|sym| *sym);
+        let cgetnum = __library.get(b"cgetnum\0").map(|sym| *sym);
+        let cgetset = __library.get(b"cgetset\0").map(|sym| *sym);
+        let cgetstr = __library.get(b"cgetstr\0").map(|sym| *sym);
+        let cgetustr = __library.get(b"cgetustr\0").map(|sym| *sym);
+        let daemon = __library.get(b"daemon\0").map(|sym| *sym);
+        let devname = __library.get(b"devname\0").map(|sym| *sym);
+        let devname_r = __library.get(b"devname_r\0").map(|sym| *sym);
+        let getbsize = __library.get(b"getbsize\0").map(|sym| *sym);
+        let getloadavg = __library.get(b"getloadavg\0").map(|sym| *sym);
+        let getprogname = __library.get(b"getprogname\0").map(|sym| *sym);
+        let setprogname = __library.get(b"setprogname\0").map(|sym| *sym);
+        let heapsort = __library.get(b"heapsort\0").map(|sym| *sym);
+        let heapsort_b = __library.get(b"heapsort_b\0").map(|sym| *sym);
+        let mergesort = __library.get(b"mergesort\0").map(|sym| *sym);
+        let mergesort_b = __library.get(b"mergesort_b\0").map(|sym| *sym);
+        let psort = __library.get(b"psort\0").map(|sym| *sym);
+        let psort_b = __library.get(b"psort_b\0").map(|sym| *sym);
+        let psort_r = __library.get(b"psort_r\0").map(|sym| *sym);
+        let qsort_b = __library.get(b"qsort_b\0").map(|sym| *sym);
+        let qsort_r = __library.get(b"qsort_r\0").map(|sym| *sym);
+        let radixsort = __library.get(b"radixsort\0").map(|sym| *sym);
+        let rpmatch = __library.get(b"rpmatch\0").map(|sym| *sym);
+        let sradixsort = __library.get(b"sradixsort\0").map(|sym| *sym);
+        let sranddev = __library.get(b"sranddev\0").map(|sym| *sym);
+        let srandomdev = __library.get(b"srandomdev\0").map(|sym| *sym);
+        let reallocf = __library.get(b"reallocf\0").map(|sym| *sym);
+        let strtonum = __library.get(b"strtonum\0").map(|sym| *sym);
+        let strtoq = __library.get(b"strtoq\0").map(|sym| *sym);
+        let strtouq = __library.get(b"strtouq\0").map(|sym| *sym);
+        let memchr = __library.get(b"memchr\0").map(|sym| *sym);
+        let memcmp = __library.get(b"memcmp\0").map(|sym| *sym);
+        let memcpy = __library.get(b"memcpy\0").map(|sym| *sym);
+        let memmove = __library.get(b"memmove\0").map(|sym| *sym);
+        let memset = __library.get(b"memset\0").map(|sym| *sym);
+        let strcat = __library.get(b"strcat\0").map(|sym| *sym);
+        let strchr = __library.get(b"strchr\0").map(|sym| *sym);
+        let strcmp = __library.get(b"strcmp\0").map(|sym| *sym);
+        let strcoll = __library.get(b"strcoll\0").map(|sym| *sym);
+        let strcpy = __library.get(b"strcpy\0").map(|sym| *sym);
+        let strcspn = __library.get(b"strcspn\0").map(|sym| *sym);
+        let strerror = __library.get(b"strerror\0").map(|sym| *sym);
+        let strlen = __library.get(b"strlen\0").map(|sym| *sym);
+        let strncat = __library.get(b"strncat\0").map(|sym| *sym);
+        let strncmp = __library.get(b"strncmp\0").map(|sym| *sym);
+        let strncpy = __library.get(b"strncpy\0").map(|sym| *sym);
+        let strpbrk = __library.get(b"strpbrk\0").map(|sym| *sym);
+        let strrchr = __library.get(b"strrchr\0").map(|sym| *sym);
+        let strspn = __library.get(b"strspn\0").map(|sym| *sym);
+        let strstr = __library.get(b"strstr\0").map(|sym| *sym);
+        let strtok = __library.get(b"strtok\0").map(|sym| *sym);
+        let strxfrm = __library.get(b"strxfrm\0").map(|sym| *sym);
+        let strtok_r = __library.get(b"strtok_r\0").map(|sym| *sym);
+        let strerror_r = __library.get(b"strerror_r\0").map(|sym| *sym);
+        let strdup = __library.get(b"strdup\0").map(|sym| *sym);
+        let memccpy = __library.get(b"memccpy\0").map(|sym| *sym);
+        let stpcpy = __library.get(b"stpcpy\0").map(|sym| *sym);
+        let stpncpy = __library.get(b"stpncpy\0").map(|sym| *sym);
+        let strndup = __library.get(b"strndup\0").map(|sym| *sym);
+        let strnlen = __library.get(b"strnlen\0").map(|sym| *sym);
+        let strsignal = __library.get(b"strsignal\0").map(|sym| *sym);
+        let memset_s = __library.get(b"memset_s\0").map(|sym| *sym);
+        let memmem = __library.get(b"memmem\0").map(|sym| *sym);
+        let memset_pattern4 = __library.get(b"memset_pattern4\0").map(|sym| *sym);
+        let memset_pattern8 = __library.get(b"memset_pattern8\0").map(|sym| *sym);
+        let memset_pattern16 = __library.get(b"memset_pattern16\0").map(|sym| *sym);
+        let strcasestr = __library.get(b"strcasestr\0").map(|sym| *sym);
+        let strnstr = __library.get(b"strnstr\0").map(|sym| *sym);
+        let strlcat = __library.get(b"strlcat\0").map(|sym| *sym);
+        let strlcpy = __library.get(b"strlcpy\0").map(|sym| *sym);
+        let strmode = __library.get(b"strmode\0").map(|sym| *sym);
+        let strsep = __library.get(b"strsep\0").map(|sym| *sym);
+        let swab = __library.get(b"swab\0").map(|sym| *sym);
+        let timingsafe_bcmp = __library.get(b"timingsafe_bcmp\0").map(|sym| *sym);
+        let strsignal_r = __library.get(b"strsignal_r\0").map(|sym| *sym);
+        let bcmp = __library.get(b"bcmp\0").map(|sym| *sym);
+        let bcopy = __library.get(b"bcopy\0").map(|sym| *sym);
+        let bzero = __library.get(b"bzero\0").map(|sym| *sym);
+        let index = __library.get(b"index\0").map(|sym| *sym);
+        let rindex = __library.get(b"rindex\0").map(|sym| *sym);
+        let ffs = __library.get(b"ffs\0").map(|sym| *sym);
+        let strcasecmp = __library.get(b"strcasecmp\0").map(|sym| *sym);
+        let strncasecmp = __library.get(b"strncasecmp\0").map(|sym| *sym);
+        let ffsl = __library.get(b"ffsl\0").map(|sym| *sym);
+        let ffsll = __library.get(b"ffsll\0").map(|sym| *sym);
+        let fls = __library.get(b"fls\0").map(|sym| *sym);
+        let flsl = __library.get(b"flsl\0").map(|sym| *sym);
+        let flsll = __library.get(b"flsll\0").map(|sym| *sym);
+        let OrtGetApiBase = __library.get(b"OrtGetApiBase\0").map(|sym| *sym);
+        Ok(onnxruntime {
+            __library,
+            signal,
+            getpriority,
+            getiopolicy_np,
+            getrlimit,
+            getrusage,
+            setpriority,
+            setiopolicy_np,
+            setrlimit,
+            wait,
+            waitpid,
+            waitid,
+            wait3,
+            wait4,
+            alloca,
+            malloc,
+            calloc,
+            free,
+            realloc,
+            valloc,
+            aligned_alloc,
+            posix_memalign,
+            abort,
+            abs,
+            atexit,
+            atof,
+            atoi,
+            atol,
+            atoll,
+            bsearch,
+            div,
+            exit,
+            getenv,
+            labs,
+            ldiv,
+            llabs,
+            lldiv,
+            mblen,
+            mbstowcs,
+            mbtowc,
+            qsort,
+            rand,
+            srand,
+            strtod,
+            strtof,
+            strtol,
+            strtold,
+            strtoll,
+            strtoul,
+            strtoull,
+            system,
+            wcstombs,
+            wctomb,
+            _Exit,
+            a64l,
+            drand48,
+            ecvt,
+            erand48,
+            fcvt,
+            gcvt,
+            getsubopt,
+            grantpt,
+            initstate,
+            jrand48,
+            l64a,
+            lcong48,
+            lrand48,
+            mktemp,
+            mkstemp,
+            mrand48,
+            nrand48,
+            posix_openpt,
+            ptsname,
+            ptsname_r,
+            putenv,
+            random,
+            rand_r,
+            realpath,
+            seed48,
+            setenv,
+            setkey,
+            setstate,
+            srand48,
+            srandom,
+            unlockpt,
+            unsetenv,
+            arc4random,
+            arc4random_addrandom,
+            arc4random_buf,
+            arc4random_stir,
+            arc4random_uniform,
+            atexit_b,
+            bsearch_b,
+            cgetcap,
+            cgetclose,
+            cgetent,
+            cgetfirst,
+            cgetmatch,
+            cgetnext,
+            cgetnum,
+            cgetset,
+            cgetstr,
+            cgetustr,
+            daemon,
+            devname,
+            devname_r,
+            getbsize,
+            getloadavg,
+            getprogname,
+            setprogname,
+            heapsort,
+            heapsort_b,
+            mergesort,
+            mergesort_b,
+            psort,
+            psort_b,
+            psort_r,
+            qsort_b,
+            qsort_r,
+            radixsort,
+            rpmatch,
+            sradixsort,
+            sranddev,
+            srandomdev,
+            reallocf,
+            strtonum,
+            strtoq,
+            strtouq,
+            memchr,
+            memcmp,
+            memcpy,
+            memmove,
+            memset,
+            strcat,
+            strchr,
+            strcmp,
+            strcoll,
+            strcpy,
+            strcspn,
+            strerror,
+            strlen,
+            strncat,
+            strncmp,
+            strncpy,
+            strpbrk,
+            strrchr,
+            strspn,
+            strstr,
+            strtok,
+            strxfrm,
+            strtok_r,
+            strerror_r,
+            strdup,
+            memccpy,
+            stpcpy,
+            stpncpy,
+            strndup,
+            strnlen,
+            strsignal,
+            memset_s,
+            memmem,
+            memset_pattern4,
+            memset_pattern8,
+            memset_pattern16,
+            strcasestr,
+            strnstr,
+            strlcat,
+            strlcpy,
+            strmode,
+            strsep,
+            swab,
+            timingsafe_bcmp,
+            strsignal_r,
+            bcmp,
+            bcopy,
+            bzero,
+            index,
+            rindex,
+            ffs,
+            strcasecmp,
+            strncasecmp,
+            ffsl,
+            ffsll,
+            fls,
+            flsl,
+            flsll,
+            OrtGetApiBase,
+        })
+    }
+    pub unsafe fn signal(
+        &self,
+        arg1: ::std::os::raw::c_int,
+        arg2: ::std::option::Option<unsafe extern "C" fn(arg1: ::std::os::raw::c_int)>,
+    ) -> ::std::option::Option<
+        unsafe extern "C" fn(
+            arg1: ::std::os::raw::c_int,
+            arg2: ::std::option::Option<unsafe extern "C" fn(arg1: ::std::os::raw::c_int)>,
+        ),
+    > {
+        (self.signal.as_ref().expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn getpriority(
+        &self,
+        arg1: ::std::os::raw::c_int,
+        arg2: id_t,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .getpriority
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn getiopolicy_np(
+        &self,
+        arg1: ::std::os::raw::c_int,
+        arg2: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .getiopolicy_np
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn getrlimit(
+        &self,
+        arg1: ::std::os::raw::c_int,
+        arg2: *mut rlimit,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .getrlimit
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn getrusage(
+        &self,
+        arg1: ::std::os::raw::c_int,
+        arg2: *mut rusage,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .getrusage
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn setpriority(
+        &self,
+        arg1: ::std::os::raw::c_int,
+        arg2: id_t,
+        arg3: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .setpriority
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn setiopolicy_np(
+        &self,
+        arg1: ::std::os::raw::c_int,
+        arg2: ::std::os::raw::c_int,
+        arg3: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .setiopolicy_np
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn setrlimit(
+        &self,
+        arg1: ::std::os::raw::c_int,
+        arg2: *const rlimit,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .setrlimit
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn wait(&self, arg1: *mut ::std::os::raw::c_int) -> pid_t {
+        (self.wait.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn waitpid(
+        &self,
+        arg1: pid_t,
+        arg2: *mut ::std::os::raw::c_int,
+        arg3: ::std::os::raw::c_int,
+    ) -> pid_t {
+        (self
+            .waitpid
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn waitid(
+        &self,
+        arg1: idtype_t,
+        arg2: id_t,
+        arg3: *mut siginfo_t,
+        arg4: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int {
+        (self.waitid.as_ref().expect("Expected function, got error."))(arg1, arg2, arg3, arg4)
+    }
+    pub unsafe fn wait3(
+        &self,
+        arg1: *mut ::std::os::raw::c_int,
+        arg2: ::std::os::raw::c_int,
+        arg3: *mut rusage,
+    ) -> pid_t {
+        (self.wait3.as_ref().expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn wait4(
+        &self,
+        arg1: pid_t,
+        arg2: *mut ::std::os::raw::c_int,
+        arg3: ::std::os::raw::c_int,
+        arg4: *mut rusage,
+    ) -> pid_t {
+        (self.wait4.as_ref().expect("Expected function, got error."))(arg1, arg2, arg3, arg4)
+    }
+    pub unsafe fn alloca(&self, arg1: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void {
+        (self.alloca.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn malloc(&self, __size: ::std::os::raw::c_ulong) -> *mut ::std::os::raw::c_void {
+        (self.malloc.as_ref().expect("Expected function, got error."))(__size)
+    }
+    pub unsafe fn calloc(
+        &self,
+        __count: ::std::os::raw::c_ulong,
+        __size: ::std::os::raw::c_ulong,
+    ) -> *mut ::std::os::raw::c_void {
+        (self.calloc.as_ref().expect("Expected function, got error."))(__count, __size)
+    }
+    pub unsafe fn free(&self, arg1: *mut ::std::os::raw::c_void) -> () {
+        (self.free.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn realloc(
+        &self,
+        __ptr: *mut ::std::os::raw::c_void,
+        __size: ::std::os::raw::c_ulong,
+    ) -> *mut ::std::os::raw::c_void {
+        (self
+            .realloc
+            .as_ref()
+            .expect("Expected function, got error."))(__ptr, __size)
+    }
+    pub unsafe fn valloc(&self, arg1: usize) -> *mut ::std::os::raw::c_void {
+        (self.valloc.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn aligned_alloc(
+        &self,
+        __alignment: usize,
+        __size: usize,
+    ) -> *mut ::std::os::raw::c_void {
+        (self
+            .aligned_alloc
+            .as_ref()
+            .expect("Expected function, got error."))(__alignment, __size)
+    }
+    pub unsafe fn posix_memalign(
+        &self,
+        __memptr: *mut *mut ::std::os::raw::c_void,
+        __alignment: usize,
+        __size: usize,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .posix_memalign
+            .as_ref()
+            .expect("Expected function, got error."))(__memptr, __alignment, __size)
+    }
+    pub unsafe fn abort(&self) -> () {
+        (self.abort.as_ref().expect("Expected function, got error."))()
+    }
+    pub unsafe fn abs(&self, arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int {
+        (self.abs.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn atexit(
+        &self,
+        arg1: ::std::option::Option<unsafe extern "C" fn()>,
+    ) -> ::std::os::raw::c_int {
+        (self.atexit.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn atof(&self, arg1: *const ::std::os::raw::c_char) -> f64 {
+        (self.atof.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn atoi(&self, arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int {
+        (self.atoi.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn atol(&self, arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_long {
+        (self.atol.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn atoll(&self, arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_longlong {
+        (self.atoll.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn bsearch(
+        &self,
+        __key: *const ::std::os::raw::c_void,
+        __base: *const ::std::os::raw::c_void,
+        __nel: usize,
+        __width: usize,
+        __compar: ::std::option::Option<
+            unsafe extern "C" fn(
+                arg1: *const ::std::os::raw::c_void,
+                arg2: *const ::std::os::raw::c_void,
+            ) -> ::std::os::raw::c_int,
+        >,
+    ) -> *mut ::std::os::raw::c_void {
+        (self
+            .bsearch
+            .as_ref()
+            .expect("Expected function, got error."))(
+            __key, __base, __nel, __width, __compar
+        )
+    }
+    pub unsafe fn div(&self, arg1: ::std::os::raw::c_int, arg2: ::std::os::raw::c_int) -> div_t {
+        (self.div.as_ref().expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn exit(&self, arg1: ::std::os::raw::c_int) -> () {
+        (self.exit.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn getenv(
+        &self,
+        arg1: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.getenv.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn labs(&self, arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_long {
+        (self.labs.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn ldiv(
+        &self,
+        arg1: ::std::os::raw::c_long,
+        arg2: ::std::os::raw::c_long,
+    ) -> ldiv_t {
+        (self.ldiv.as_ref().expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn llabs(&self, arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_longlong {
+        (self.llabs.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn lldiv(
+        &self,
+        arg1: ::std::os::raw::c_longlong,
+        arg2: ::std::os::raw::c_longlong,
+    ) -> lldiv_t {
+        (self.lldiv.as_ref().expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn mblen(
+        &self,
+        __s: *const ::std::os::raw::c_char,
+        __n: usize,
+    ) -> ::std::os::raw::c_int {
+        (self.mblen.as_ref().expect("Expected function, got error."))(__s, __n)
+    }
+    pub unsafe fn mbstowcs(
+        &self,
+        arg1: *mut wchar_t,
+        arg2: *const ::std::os::raw::c_char,
+        arg3: usize,
+    ) -> usize {
+        (self
+            .mbstowcs
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn mbtowc(
+        &self,
+        arg1: *mut wchar_t,
+        arg2: *const ::std::os::raw::c_char,
+        arg3: usize,
+    ) -> ::std::os::raw::c_int {
+        (self.mbtowc.as_ref().expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn qsort(
+        &self,
+        __base: *mut ::std::os::raw::c_void,
+        __nel: usize,
+        __width: usize,
+        __compar: ::std::option::Option<
+            unsafe extern "C" fn(
+                arg1: *const ::std::os::raw::c_void,
+                arg2: *const ::std::os::raw::c_void,
+            ) -> ::std::os::raw::c_int,
+        >,
+    ) -> () {
+        (self.qsort.as_ref().expect("Expected function, got error."))(
+            __base, __nel, __width, __compar,
+        )
+    }
+    pub unsafe fn rand(&self) -> ::std::os::raw::c_int {
+        (self.rand.as_ref().expect("Expected function, got error."))()
+    }
+    pub unsafe fn srand(&self, arg1: ::std::os::raw::c_uint) -> () {
+        (self.srand.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn strtod(
+        &self,
+        arg1: *const ::std::os::raw::c_char,
+        arg2: *mut *mut ::std::os::raw::c_char,
+    ) -> f64 {
+        (self.strtod.as_ref().expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn strtof(
+        &self,
+        arg1: *const ::std::os::raw::c_char,
+        arg2: *mut *mut ::std::os::raw::c_char,
+    ) -> f32 {
+        (self.strtof.as_ref().expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn strtol(
+        &self,
+        __str: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_long {
+        (self.strtol.as_ref().expect("Expected function, got error."))(__str, __endptr, __base)
+    }
+    pub unsafe fn strtold(
+        &self,
+        arg1: *const ::std::os::raw::c_char,
+        arg2: *mut *mut ::std::os::raw::c_char,
+    ) -> u128 {
+        (self
+            .strtold
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn strtoll(
+        &self,
+        __str: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_longlong {
+        (self
+            .strtoll
+            .as_ref()
+            .expect("Expected function, got error."))(__str, __endptr, __base)
+    }
+    pub unsafe fn strtoul(
+        &self,
+        __str: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_ulong {
+        (self
+            .strtoul
+            .as_ref()
+            .expect("Expected function, got error."))(__str, __endptr, __base)
+    }
+    pub unsafe fn strtoull(
+        &self,
+        __str: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_ulonglong {
+        (self
+            .strtoull
+            .as_ref()
+            .expect("Expected function, got error."))(__str, __endptr, __base)
+    }
+    pub unsafe fn system(&self, arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int {
+        (self.system.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn wcstombs(
+        &self,
+        arg1: *mut ::std::os::raw::c_char,
+        arg2: *const wchar_t,
+        arg3: usize,
+    ) -> usize {
+        (self
+            .wcstombs
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn wctomb(
+        &self,
+        arg1: *mut ::std::os::raw::c_char,
+        arg2: wchar_t,
+    ) -> ::std::os::raw::c_int {
+        (self.wctomb.as_ref().expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn _Exit(&self, arg1: ::std::os::raw::c_int) -> () {
+        (self._Exit.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn a64l(&self, arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_long {
+        (self.a64l.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn drand48(&self) -> f64 {
+        (self
+            .drand48
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn ecvt(
+        &self,
+        arg1: f64,
+        arg2: ::std::os::raw::c_int,
+        arg3: *mut ::std::os::raw::c_int,
+        arg4: *mut ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.ecvt.as_ref().expect("Expected function, got error."))(arg1, arg2, arg3, arg4)
+    }
+    pub unsafe fn erand48(&self, arg1: *mut ::std::os::raw::c_ushort) -> f64 {
+        (self
+            .erand48
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn fcvt(
+        &self,
+        arg1: f64,
+        arg2: ::std::os::raw::c_int,
+        arg3: *mut ::std::os::raw::c_int,
+        arg4: *mut ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.fcvt.as_ref().expect("Expected function, got error."))(arg1, arg2, arg3, arg4)
+    }
+    pub unsafe fn gcvt(
+        &self,
+        arg1: f64,
+        arg2: ::std::os::raw::c_int,
+        arg3: *mut ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.gcvt.as_ref().expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn getsubopt(
+        &self,
+        arg1: *mut *mut ::std::os::raw::c_char,
+        arg2: *const *mut ::std::os::raw::c_char,
+        arg3: *mut *mut ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .getsubopt
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn grantpt(&self, arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int {
+        (self
+            .grantpt
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn initstate(
+        &self,
+        arg1: ::std::os::raw::c_uint,
+        arg2: *mut ::std::os::raw::c_char,
+        arg3: usize,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .initstate
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn jrand48(&self, arg1: *mut ::std::os::raw::c_ushort) -> ::std::os::raw::c_long {
+        (self
+            .jrand48
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn l64a(&self, arg1: ::std::os::raw::c_long) -> *mut ::std::os::raw::c_char {
+        (self.l64a.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn lcong48(&self, arg1: *mut ::std::os::raw::c_ushort) -> () {
+        (self
+            .lcong48
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn lrand48(&self) -> ::std::os::raw::c_long {
+        (self
+            .lrand48
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn mktemp(&self, arg1: *mut ::std::os::raw::c_char) -> *mut ::std::os::raw::c_char {
+        (self.mktemp.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn mkstemp(&self, arg1: *mut ::std::os::raw::c_char) -> ::std::os::raw::c_int {
+        (self
+            .mkstemp
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn mrand48(&self) -> ::std::os::raw::c_long {
+        (self
+            .mrand48
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn nrand48(&self, arg1: *mut ::std::os::raw::c_ushort) -> ::std::os::raw::c_long {
+        (self
+            .nrand48
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn posix_openpt(&self, arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int {
+        (self
+            .posix_openpt
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn ptsname(&self, arg1: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char {
+        (self
+            .ptsname
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn ptsname_r(
+        &self,
+        fildes: ::std::os::raw::c_int,
+        buffer: *mut ::std::os::raw::c_char,
+        buflen: usize,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .ptsname_r
+            .as_ref()
+            .expect("Expected function, got error."))(fildes, buffer, buflen)
+    }
+    pub unsafe fn putenv(&self, arg1: *mut ::std::os::raw::c_char) -> ::std::os::raw::c_int {
+        (self.putenv.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn random(&self) -> ::std::os::raw::c_long {
+        (self.random.as_ref().expect("Expected function, got error."))()
+    }
+    pub unsafe fn rand_r(&self, arg1: *mut ::std::os::raw::c_uint) -> ::std::os::raw::c_int {
+        (self.rand_r.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn realpath(
+        &self,
+        arg1: *const ::std::os::raw::c_char,
+        arg2: *mut ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .realpath
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn seed48(
+        &self,
+        arg1: *mut ::std::os::raw::c_ushort,
+    ) -> *mut ::std::os::raw::c_ushort {
+        (self.seed48.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn setenv(
+        &self,
+        __name: *const ::std::os::raw::c_char,
+        __value: *const ::std::os::raw::c_char,
+        __overwrite: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int {
+        (self.setenv.as_ref().expect("Expected function, got error."))(__name, __value, __overwrite)
+    }
+    pub unsafe fn setkey(&self, arg1: *const ::std::os::raw::c_char) -> () {
+        (self.setkey.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn setstate(
+        &self,
+        arg1: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .setstate
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn srand48(&self, arg1: ::std::os::raw::c_long) -> () {
+        (self
+            .srand48
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn srandom(&self, arg1: ::std::os::raw::c_uint) -> () {
+        (self
+            .srandom
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn unlockpt(&self, arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int {
+        (self
+            .unlockpt
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn unsetenv(&self, arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int {
+        (self
+            .unsetenv
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn arc4random(&self) -> u32 {
+        (self
+            .arc4random
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn arc4random_addrandom(
+        &self,
+        arg1: *mut ::std::os::raw::c_uchar,
+        arg2: ::std::os::raw::c_int,
+    ) -> () {
+        (self
+            .arc4random_addrandom
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn arc4random_buf(&self, __buf: *mut ::std::os::raw::c_void, __nbytes: usize) -> () {
+        (self
+            .arc4random_buf
+            .as_ref()
+            .expect("Expected function, got error."))(__buf, __nbytes)
+    }
+    pub unsafe fn arc4random_stir(&self) -> () {
+        (self
+            .arc4random_stir
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn arc4random_uniform(&self, __upper_bound: u32) -> u32 {
+        (self
+            .arc4random_uniform
+            .as_ref()
+            .expect("Expected function, got error."))(__upper_bound)
+    }
+    pub unsafe fn atexit_b(&self, arg1: *mut ::std::os::raw::c_void) -> ::std::os::raw::c_int {
+        (self
+            .atexit_b
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn bsearch_b(
+        &self,
+        __key: *const ::std::os::raw::c_void,
+        __base: *const ::std::os::raw::c_void,
+        __nel: usize,
+        __width: usize,
+        __compar: *mut ::std::os::raw::c_void,
+    ) -> *mut ::std::os::raw::c_void {
+        (self
+            .bsearch_b
+            .as_ref()
+            .expect("Expected function, got error."))(
+            __key, __base, __nel, __width, __compar
+        )
+    }
+    pub unsafe fn cgetcap(
+        &self,
+        arg1: *mut ::std::os::raw::c_char,
+        arg2: *const ::std::os::raw::c_char,
+        arg3: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .cgetcap
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn cgetclose(&self) -> ::std::os::raw::c_int {
+        (self
+            .cgetclose
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn cgetent(
+        &self,
+        arg1: *mut *mut ::std::os::raw::c_char,
+        arg2: *mut *mut ::std::os::raw::c_char,
+        arg3: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .cgetent
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn cgetfirst(
+        &self,
+        arg1: *mut *mut ::std::os::raw::c_char,
+        arg2: *mut *mut ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .cgetfirst
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn cgetmatch(
+        &self,
+        arg1: *const ::std::os::raw::c_char,
+        arg2: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .cgetmatch
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn cgetnext(
+        &self,
+        arg1: *mut *mut ::std::os::raw::c_char,
+        arg2: *mut *mut ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .cgetnext
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn cgetnum(
+        &self,
+        arg1: *mut ::std::os::raw::c_char,
+        arg2: *const ::std::os::raw::c_char,
+        arg3: *mut ::std::os::raw::c_long,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .cgetnum
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn cgetset(&self, arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int {
+        (self
+            .cgetset
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn cgetstr(
+        &self,
+        arg1: *mut ::std::os::raw::c_char,
+        arg2: *const ::std::os::raw::c_char,
+        arg3: *mut *mut ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .cgetstr
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn cgetustr(
+        &self,
+        arg1: *mut ::std::os::raw::c_char,
+        arg2: *const ::std::os::raw::c_char,
+        arg3: *mut *mut ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .cgetustr
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn daemon(
+        &self,
+        arg1: ::std::os::raw::c_int,
+        arg2: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int {
+        (self.daemon.as_ref().expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn devname(&self, arg1: dev_t, arg2: mode_t) -> *mut ::std::os::raw::c_char {
+        (self
+            .devname
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn devname_r(
+        &self,
+        arg1: dev_t,
+        arg2: mode_t,
+        buf: *mut ::std::os::raw::c_char,
+        len: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .devname_r
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, buf, len)
+    }
+    pub unsafe fn getbsize(
+        &self,
+        arg1: *mut ::std::os::raw::c_int,
+        arg2: *mut ::std::os::raw::c_long,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .getbsize
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn getloadavg(
+        &self,
+        arg1: *mut f64,
+        arg2: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .getloadavg
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn getprogname(&self) -> *const ::std::os::raw::c_char {
+        (self
+            .getprogname
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn setprogname(&self, arg1: *const ::std::os::raw::c_char) -> () {
+        (self
+            .setprogname
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn heapsort(
+        &self,
+        __base: *mut ::std::os::raw::c_void,
+        __nel: usize,
+        __width: usize,
+        __compar: ::std::option::Option<
+            unsafe extern "C" fn(
+                arg1: *const ::std::os::raw::c_void,
+                arg2: *const ::std::os::raw::c_void,
+            ) -> ::std::os::raw::c_int,
+        >,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .heapsort
+            .as_ref()
+            .expect("Expected function, got error."))(__base, __nel, __width, __compar)
+    }
+    pub unsafe fn heapsort_b(
+        &self,
+        __base: *mut ::std::os::raw::c_void,
+        __nel: usize,
+        __width: usize,
+        __compar: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .heapsort_b
+            .as_ref()
+            .expect("Expected function, got error."))(__base, __nel, __width, __compar)
+    }
+    pub unsafe fn mergesort(
+        &self,
+        __base: *mut ::std::os::raw::c_void,
+        __nel: usize,
+        __width: usize,
+        __compar: ::std::option::Option<
+            unsafe extern "C" fn(
+                arg1: *const ::std::os::raw::c_void,
+                arg2: *const ::std::os::raw::c_void,
+            ) -> ::std::os::raw::c_int,
+        >,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .mergesort
+            .as_ref()
+            .expect("Expected function, got error."))(__base, __nel, __width, __compar)
+    }
+    pub unsafe fn mergesort_b(
+        &self,
+        __base: *mut ::std::os::raw::c_void,
+        __nel: usize,
+        __width: usize,
+        __compar: *mut ::std::os::raw::c_void,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .mergesort_b
+            .as_ref()
+            .expect("Expected function, got error."))(__base, __nel, __width, __compar)
+    }
+    pub unsafe fn psort(
+        &self,
+        __base: *mut ::std::os::raw::c_void,
+        __nel: usize,
+        __width: usize,
+        __compar: ::std::option::Option<
+            unsafe extern "C" fn(
+                arg1: *const ::std::os::raw::c_void,
+                arg2: *const ::std::os::raw::c_void,
+            ) -> ::std::os::raw::c_int,
+        >,
+    ) -> () {
+        (self.psort.as_ref().expect("Expected function, got error."))(
+            __base, __nel, __width, __compar,
+        )
+    }
+    pub unsafe fn psort_b(
+        &self,
+        __base: *mut ::std::os::raw::c_void,
+        __nel: usize,
+        __width: usize,
+        __compar: *mut ::std::os::raw::c_void,
+    ) -> () {
+        (self
+            .psort_b
+            .as_ref()
+            .expect("Expected function, got error."))(__base, __nel, __width, __compar)
+    }
+    pub unsafe fn psort_r(
+        &self,
+        __base: *mut ::std::os::raw::c_void,
+        __nel: usize,
+        __width: usize,
+        arg1: *mut ::std::os::raw::c_void,
+        __compar: ::std::option::Option<
+            unsafe extern "C" fn(
+                arg1: *mut ::std::os::raw::c_void,
+                arg2: *const ::std::os::raw::c_void,
+                arg3: *const ::std::os::raw::c_void,
+            ) -> ::std::os::raw::c_int,
+        >,
+    ) -> () {
+        (self
+            .psort_r
+            .as_ref()
+            .expect("Expected function, got error."))(__base, __nel, __width, arg1, __compar)
+    }
+    pub unsafe fn qsort_b(
+        &self,
+        __base: *mut ::std::os::raw::c_void,
+        __nel: usize,
+        __width: usize,
+        __compar: *mut ::std::os::raw::c_void,
+    ) -> () {
+        (self
+            .qsort_b
+            .as_ref()
+            .expect("Expected function, got error."))(__base, __nel, __width, __compar)
+    }
+    pub unsafe fn qsort_r(
+        &self,
+        __base: *mut ::std::os::raw::c_void,
+        __nel: usize,
+        __width: usize,
+        arg1: *mut ::std::os::raw::c_void,
+        __compar: ::std::option::Option<
+            unsafe extern "C" fn(
+                arg1: *mut ::std::os::raw::c_void,
+                arg2: *const ::std::os::raw::c_void,
+                arg3: *const ::std::os::raw::c_void,
+            ) -> ::std::os::raw::c_int,
+        >,
+    ) -> () {
+        (self
+            .qsort_r
+            .as_ref()
+            .expect("Expected function, got error."))(__base, __nel, __width, arg1, __compar)
+    }
+    pub unsafe fn radixsort(
+        &self,
+        __base: *mut *const ::std::os::raw::c_uchar,
+        __nel: ::std::os::raw::c_int,
+        __table: *const ::std::os::raw::c_uchar,
+        __endbyte: ::std::os::raw::c_uint,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .radixsort
+            .as_ref()
+            .expect("Expected function, got error."))(__base, __nel, __table, __endbyte)
+    }
+    pub unsafe fn rpmatch(&self, arg1: *const ::std::os::raw::c_char) -> ::std::os::raw::c_int {
+        (self
+            .rpmatch
+            .as_ref()
+            .expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn sradixsort(
+        &self,
+        __base: *mut *const ::std::os::raw::c_uchar,
+        __nel: ::std::os::raw::c_int,
+        __table: *const ::std::os::raw::c_uchar,
+        __endbyte: ::std::os::raw::c_uint,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .sradixsort
+            .as_ref()
+            .expect("Expected function, got error."))(__base, __nel, __table, __endbyte)
+    }
+    pub unsafe fn sranddev(&self) -> () {
+        (self
+            .sranddev
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn srandomdev(&self) -> () {
+        (self
+            .srandomdev
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
+    pub unsafe fn reallocf(
+        &self,
+        __ptr: *mut ::std::os::raw::c_void,
+        __size: usize,
+    ) -> *mut ::std::os::raw::c_void {
+        (self
+            .reallocf
+            .as_ref()
+            .expect("Expected function, got error."))(__ptr, __size)
+    }
+    pub unsafe fn strtonum(
+        &self,
+        __numstr: *const ::std::os::raw::c_char,
+        __minval: ::std::os::raw::c_longlong,
+        __maxval: ::std::os::raw::c_longlong,
+        __errstrp: *mut *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_longlong {
+        (self
+            .strtonum
+            .as_ref()
+            .expect("Expected function, got error."))(
+            __numstr, __minval, __maxval, __errstrp
+        )
+    }
+    pub unsafe fn strtoq(
+        &self,
+        __str: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_longlong {
+        (self.strtoq.as_ref().expect("Expected function, got error."))(__str, __endptr, __base)
+    }
+    pub unsafe fn strtouq(
+        &self,
+        __str: *const ::std::os::raw::c_char,
+        __endptr: *mut *mut ::std::os::raw::c_char,
+        __base: ::std::os::raw::c_int,
+    ) -> ::std::os::raw::c_ulonglong {
+        (self
+            .strtouq
+            .as_ref()
+            .expect("Expected function, got error."))(__str, __endptr, __base)
+    }
+    pub unsafe fn memchr(
+        &self,
+        __s: *const ::std::os::raw::c_void,
+        __c: ::std::os::raw::c_int,
+        __n: ::std::os::raw::c_ulong,
+    ) -> *mut ::std::os::raw::c_void {
+        (self.memchr.as_ref().expect("Expected function, got error."))(__s, __c, __n)
+    }
+    pub unsafe fn memcmp(
+        &self,
+        __s1: *const ::std::os::raw::c_void,
+        __s2: *const ::std::os::raw::c_void,
+        __n: ::std::os::raw::c_ulong,
+    ) -> ::std::os::raw::c_int {
+        (self.memcmp.as_ref().expect("Expected function, got error."))(__s1, __s2, __n)
+    }
+    pub unsafe fn memcpy(
+        &self,
+        __dst: *mut ::std::os::raw::c_void,
+        __src: *const ::std::os::raw::c_void,
+        __n: ::std::os::raw::c_ulong,
+    ) -> *mut ::std::os::raw::c_void {
+        (self.memcpy.as_ref().expect("Expected function, got error."))(__dst, __src, __n)
+    }
+    pub unsafe fn memmove(
+        &self,
+        __dst: *mut ::std::os::raw::c_void,
+        __src: *const ::std::os::raw::c_void,
+        __len: ::std::os::raw::c_ulong,
+    ) -> *mut ::std::os::raw::c_void {
+        (self
+            .memmove
+            .as_ref()
+            .expect("Expected function, got error."))(__dst, __src, __len)
+    }
+    pub unsafe fn memset(
+        &self,
+        __b: *mut ::std::os::raw::c_void,
+        __c: ::std::os::raw::c_int,
+        __len: ::std::os::raw::c_ulong,
+    ) -> *mut ::std::os::raw::c_void {
+        (self.memset.as_ref().expect("Expected function, got error."))(__b, __c, __len)
+    }
+    pub unsafe fn strcat(
+        &self,
+        __s1: *mut ::std::os::raw::c_char,
+        __s2: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.strcat.as_ref().expect("Expected function, got error."))(__s1, __s2)
+    }
+    pub unsafe fn strchr(
+        &self,
+        __s: *const ::std::os::raw::c_char,
+        __c: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.strchr.as_ref().expect("Expected function, got error."))(__s, __c)
+    }
+    pub unsafe fn strcmp(
+        &self,
+        __s1: *const ::std::os::raw::c_char,
+        __s2: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int {
+        (self.strcmp.as_ref().expect("Expected function, got error."))(__s1, __s2)
+    }
+    pub unsafe fn strcoll(
+        &self,
+        __s1: *const ::std::os::raw::c_char,
+        __s2: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .strcoll
+            .as_ref()
+            .expect("Expected function, got error."))(__s1, __s2)
+    }
+    pub unsafe fn strcpy(
+        &self,
+        __dst: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.strcpy.as_ref().expect("Expected function, got error."))(__dst, __src)
+    }
+    pub unsafe fn strcspn(
+        &self,
+        __s: *const ::std::os::raw::c_char,
+        __charset: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_ulong {
+        (self
+            .strcspn
+            .as_ref()
+            .expect("Expected function, got error."))(__s, __charset)
+    }
+    pub unsafe fn strerror(&self, __errnum: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char {
+        (self
+            .strerror
+            .as_ref()
+            .expect("Expected function, got error."))(__errnum)
+    }
+    pub unsafe fn strlen(&self, __s: *const ::std::os::raw::c_char) -> ::std::os::raw::c_ulong {
+        (self.strlen.as_ref().expect("Expected function, got error."))(__s)
+    }
+    pub unsafe fn strncat(
+        &self,
+        __s1: *mut ::std::os::raw::c_char,
+        __s2: *const ::std::os::raw::c_char,
+        __n: ::std::os::raw::c_ulong,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .strncat
+            .as_ref()
+            .expect("Expected function, got error."))(__s1, __s2, __n)
+    }
+    pub unsafe fn strncmp(
+        &self,
+        __s1: *const ::std::os::raw::c_char,
+        __s2: *const ::std::os::raw::c_char,
+        __n: ::std::os::raw::c_ulong,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .strncmp
+            .as_ref()
+            .expect("Expected function, got error."))(__s1, __s2, __n)
+    }
+    pub unsafe fn strncpy(
+        &self,
+        __dst: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+        __n: ::std::os::raw::c_ulong,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .strncpy
+            .as_ref()
+            .expect("Expected function, got error."))(__dst, __src, __n)
+    }
+    pub unsafe fn strpbrk(
+        &self,
+        __s: *const ::std::os::raw::c_char,
+        __charset: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .strpbrk
+            .as_ref()
+            .expect("Expected function, got error."))(__s, __charset)
+    }
+    pub unsafe fn strrchr(
+        &self,
+        __s: *const ::std::os::raw::c_char,
+        __c: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .strrchr
+            .as_ref()
+            .expect("Expected function, got error."))(__s, __c)
+    }
+    pub unsafe fn strspn(
+        &self,
+        __s: *const ::std::os::raw::c_char,
+        __charset: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_ulong {
+        (self.strspn.as_ref().expect("Expected function, got error."))(__s, __charset)
+    }
+    pub unsafe fn strstr(
+        &self,
+        __big: *const ::std::os::raw::c_char,
+        __little: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.strstr.as_ref().expect("Expected function, got error."))(__big, __little)
+    }
+    pub unsafe fn strtok(
+        &self,
+        __str: *mut ::std::os::raw::c_char,
+        __sep: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.strtok.as_ref().expect("Expected function, got error."))(__str, __sep)
+    }
+    pub unsafe fn strxfrm(
+        &self,
+        __s1: *mut ::std::os::raw::c_char,
+        __s2: *const ::std::os::raw::c_char,
+        __n: ::std::os::raw::c_ulong,
+    ) -> ::std::os::raw::c_ulong {
+        (self
+            .strxfrm
+            .as_ref()
+            .expect("Expected function, got error."))(__s1, __s2, __n)
+    }
+    pub unsafe fn strtok_r(
+        &self,
+        __str: *mut ::std::os::raw::c_char,
+        __sep: *const ::std::os::raw::c_char,
+        __lasts: *mut *mut ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .strtok_r
+            .as_ref()
+            .expect("Expected function, got error."))(__str, __sep, __lasts)
+    }
+    pub unsafe fn strerror_r(
+        &self,
+        __errnum: ::std::os::raw::c_int,
+        __strerrbuf: *mut ::std::os::raw::c_char,
+        __buflen: usize,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .strerror_r
+            .as_ref()
+            .expect("Expected function, got error."))(__errnum, __strerrbuf, __buflen)
+    }
+    pub unsafe fn strdup(
+        &self,
+        __s1: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.strdup.as_ref().expect("Expected function, got error."))(__s1)
+    }
+    pub unsafe fn memccpy(
+        &self,
+        __dst: *mut ::std::os::raw::c_void,
+        __src: *const ::std::os::raw::c_void,
+        __c: ::std::os::raw::c_int,
+        __n: ::std::os::raw::c_ulong,
+    ) -> *mut ::std::os::raw::c_void {
+        (self
+            .memccpy
+            .as_ref()
+            .expect("Expected function, got error."))(__dst, __src, __c, __n)
+    }
+    pub unsafe fn stpcpy(
+        &self,
+        __dst: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.stpcpy.as_ref().expect("Expected function, got error."))(__dst, __src)
+    }
+    pub unsafe fn stpncpy(
+        &self,
+        __dst: *mut ::std::os::raw::c_char,
+        __src: *const ::std::os::raw::c_char,
+        __n: ::std::os::raw::c_ulong,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .stpncpy
+            .as_ref()
+            .expect("Expected function, got error."))(__dst, __src, __n)
+    }
+    pub unsafe fn strndup(
+        &self,
+        __s1: *const ::std::os::raw::c_char,
+        __n: ::std::os::raw::c_ulong,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .strndup
+            .as_ref()
+            .expect("Expected function, got error."))(__s1, __n)
+    }
+    pub unsafe fn strnlen(&self, __s1: *const ::std::os::raw::c_char, __n: usize) -> usize {
+        (self
+            .strnlen
+            .as_ref()
+            .expect("Expected function, got error."))(__s1, __n)
+    }
+    pub unsafe fn strsignal(&self, __sig: ::std::os::raw::c_int) -> *mut ::std::os::raw::c_char {
+        (self
+            .strsignal
+            .as_ref()
+            .expect("Expected function, got error."))(__sig)
+    }
+    pub unsafe fn memset_s(
+        &self,
+        __s: *mut ::std::os::raw::c_void,
+        __smax: rsize_t,
+        __c: ::std::os::raw::c_int,
+        __n: rsize_t,
+    ) -> errno_t {
+        (self
+            .memset_s
+            .as_ref()
+            .expect("Expected function, got error."))(__s, __smax, __c, __n)
+    }
+    pub unsafe fn memmem(
+        &self,
+        __big: *const ::std::os::raw::c_void,
+        __big_len: usize,
+        __little: *const ::std::os::raw::c_void,
+        __little_len: usize,
+    ) -> *mut ::std::os::raw::c_void {
+        (self.memmem.as_ref().expect("Expected function, got error."))(
+            __big,
+            __big_len,
+            __little,
+            __little_len,
+        )
+    }
+    pub unsafe fn memset_pattern4(
+        &self,
+        __b: *mut ::std::os::raw::c_void,
+        __pattern4: *const ::std::os::raw::c_void,
+        __len: usize,
+    ) -> () {
+        (self
+            .memset_pattern4
+            .as_ref()
+            .expect("Expected function, got error."))(__b, __pattern4, __len)
+    }
+    pub unsafe fn memset_pattern8(
+        &self,
+        __b: *mut ::std::os::raw::c_void,
+        __pattern8: *const ::std::os::raw::c_void,
+        __len: usize,
+    ) -> () {
+        (self
+            .memset_pattern8
+            .as_ref()
+            .expect("Expected function, got error."))(__b, __pattern8, __len)
+    }
+    pub unsafe fn memset_pattern16(
+        &self,
+        __b: *mut ::std::os::raw::c_void,
+        __pattern16: *const ::std::os::raw::c_void,
+        __len: usize,
+    ) -> () {
+        (self
+            .memset_pattern16
+            .as_ref()
+            .expect("Expected function, got error."))(__b, __pattern16, __len)
+    }
+    pub unsafe fn strcasestr(
+        &self,
+        __big: *const ::std::os::raw::c_char,
+        __little: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .strcasestr
+            .as_ref()
+            .expect("Expected function, got error."))(__big, __little)
+    }
+    pub unsafe fn strnstr(
+        &self,
+        __big: *const ::std::os::raw::c_char,
+        __little: *const ::std::os::raw::c_char,
+        __len: usize,
+    ) -> *mut ::std::os::raw::c_char {
+        (self
+            .strnstr
+            .as_ref()
+            .expect("Expected function, got error."))(__big, __little, __len)
+    }
+    pub unsafe fn strlcat(
+        &self,
+        __dst: *mut ::std::os::raw::c_char,
+        __source: *const ::std::os::raw::c_char,
+        __size: ::std::os::raw::c_ulong,
+    ) -> ::std::os::raw::c_ulong {
+        (self
+            .strlcat
+            .as_ref()
+            .expect("Expected function, got error."))(__dst, __source, __size)
+    }
+    pub unsafe fn strlcpy(
+        &self,
+        __dst: *mut ::std::os::raw::c_char,
+        __source: *const ::std::os::raw::c_char,
+        __size: ::std::os::raw::c_ulong,
+    ) -> ::std::os::raw::c_ulong {
+        (self
+            .strlcpy
+            .as_ref()
+            .expect("Expected function, got error."))(__dst, __source, __size)
+    }
+    pub unsafe fn strmode(
+        &self,
+        __mode: ::std::os::raw::c_int,
+        __bp: *mut ::std::os::raw::c_char,
+    ) -> () {
+        (self
+            .strmode
+            .as_ref()
+            .expect("Expected function, got error."))(__mode, __bp)
+    }
+    pub unsafe fn strsep(
+        &self,
+        __stringp: *mut *mut ::std::os::raw::c_char,
+        __delim: *const ::std::os::raw::c_char,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.strsep.as_ref().expect("Expected function, got error."))(__stringp, __delim)
+    }
+    pub unsafe fn swab(
+        &self,
+        arg1: *const ::std::os::raw::c_void,
+        arg2: *mut ::std::os::raw::c_void,
+        arg3: isize,
+    ) -> () {
+        (self.swab.as_ref().expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn timingsafe_bcmp(
+        &self,
+        __b1: *const ::std::os::raw::c_void,
+        __b2: *const ::std::os::raw::c_void,
+        __len: usize,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .timingsafe_bcmp
+            .as_ref()
+            .expect("Expected function, got error."))(__b1, __b2, __len)
+    }
+    pub unsafe fn strsignal_r(
+        &self,
+        __sig: ::std::os::raw::c_int,
+        __strsignalbuf: *mut ::std::os::raw::c_char,
+        __buflen: usize,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .strsignal_r
+            .as_ref()
+            .expect("Expected function, got error."))(__sig, __strsignalbuf, __buflen)
+    }
+    pub unsafe fn bcmp(
+        &self,
+        arg1: *const ::std::os::raw::c_void,
+        arg2: *const ::std::os::raw::c_void,
+        arg3: ::std::os::raw::c_ulong,
+    ) -> ::std::os::raw::c_int {
+        (self.bcmp.as_ref().expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn bcopy(
+        &self,
+        arg1: *const ::std::os::raw::c_void,
+        arg2: *mut ::std::os::raw::c_void,
+        arg3: usize,
+    ) -> () {
+        (self.bcopy.as_ref().expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn bzero(
+        &self,
+        arg1: *mut ::std::os::raw::c_void,
+        arg2: ::std::os::raw::c_ulong,
+    ) -> () {
+        (self.bzero.as_ref().expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn index(
+        &self,
+        arg1: *const ::std::os::raw::c_char,
+        arg2: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.index.as_ref().expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn rindex(
+        &self,
+        arg1: *const ::std::os::raw::c_char,
+        arg2: ::std::os::raw::c_int,
+    ) -> *mut ::std::os::raw::c_char {
+        (self.rindex.as_ref().expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn ffs(&self, arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int {
+        (self.ffs.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn strcasecmp(
+        &self,
+        arg1: *const ::std::os::raw::c_char,
+        arg2: *const ::std::os::raw::c_char,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .strcasecmp
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2)
+    }
+    pub unsafe fn strncasecmp(
+        &self,
+        arg1: *const ::std::os::raw::c_char,
+        arg2: *const ::std::os::raw::c_char,
+        arg3: ::std::os::raw::c_ulong,
+    ) -> ::std::os::raw::c_int {
+        (self
+            .strncasecmp
+            .as_ref()
+            .expect("Expected function, got error."))(arg1, arg2, arg3)
+    }
+    pub unsafe fn ffsl(&self, arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_int {
+        (self.ffsl.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn ffsll(&self, arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_int {
+        (self.ffsll.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn fls(&self, arg1: ::std::os::raw::c_int) -> ::std::os::raw::c_int {
+        (self.fls.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn flsl(&self, arg1: ::std::os::raw::c_long) -> ::std::os::raw::c_int {
+        (self.flsl.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn flsll(&self, arg1: ::std::os::raw::c_longlong) -> ::std::os::raw::c_int {
+        (self.flsll.as_ref().expect("Expected function, got error."))(arg1)
+    }
+    pub unsafe fn OrtGetApiBase(&self) -> *const OrtApiBase {
+        (self
+            .OrtGetApiBase
+            .as_ref()
+            .expect("Expected function, got error."))()
+    }
 }
