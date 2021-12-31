@@ -9,7 +9,7 @@ description = "ors-sys - low level onnxruntime bindings for rust"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-bindgen = "0.59.1"
+bindgen = "0.59.2"
 ureq = "2.1"
 
 # Used on Windows

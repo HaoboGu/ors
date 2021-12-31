@@ -54,7 +54,10 @@ impl_type_trait!(
     i64,
     ONNXTensorElementDataType_ONNX_TENSOR_ELEMENT_DATA_TYPE_INT64
 );
-// impl_type_trait!(bool, Bool);
+impl_type_trait!(
+    bool,
+    ONNXTensorElementDataType_ONNX_TENSOR_ELEMENT_DATA_TYPE_BOOL
+);
 // impl_type_trait!(f16, Float16);
 impl_type_trait!(
     f64,
