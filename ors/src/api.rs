@@ -2,6 +2,7 @@ use anyhow::{anyhow, Result};
 use lazy_static::lazy_static;
 use ors_sys::*;
 use std::path::Path;
+use std::ptr::null_mut;
 use std::sync::{atomic::AtomicPtr, Arc, Mutex};
 
 // The instance of onnxruntime api
@@ -21,7 +22,9 @@ lazy_static! {
 #[cfg(feature = "runtime-linking")]
 lazy_static! {
     static ref API: Arc<Mutex<AtomicPtr<OrtApi>>> =
-        Arc::new(Mutex::new(AtomicPtr::new(std::ptr::null_mut())));
+        Arc::new(Mutex::new(AtomicPtr::new(null_mut())));
+    static ref LIB: Arc<Mutex<AtomicPtr<onnxruntime>>> =
+        Arc::new(Mutex::new(AtomicPtr::new(null_mut())));
 }
 #[cfg(feature = "runtime-linking")]
 pub fn load_runtime(path: &Path) -> Result<onnxruntime> {
