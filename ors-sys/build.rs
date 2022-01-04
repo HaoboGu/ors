@@ -34,7 +34,6 @@ const ORT_ENV_GPU: &str = "ORT_USE_CUDA";
 /// Subdirectory (of the 'target' directory) into which to extract the prebuilt library.
 const ORT_PREBUILT_EXTRACT_DIR: &str = "onnxruntime";
 
-// TODO: use libloading to load onnxruntime dynamic library on-the-fly
 fn main() {
     let libort_install_dir = prepare_libort_dir();
 
