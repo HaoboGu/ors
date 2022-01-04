@@ -12,7 +12,7 @@ pub mod types;
 
 #[cfg(test)]
 mod tests {
-    use std::{convert::TryInto, ptr::null, path::Path};
+    use std::{convert::TryInto, path::Path, ptr::null};
 
     use crate::api::{get_api, initialize_runtime};
 

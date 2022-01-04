@@ -253,7 +253,7 @@ mod test {
     use std::time::SystemTime;
 
     use super::*;
-    use crate::{tensor::create_tensor_with_ndarray, api::initialize_runtime};
+    use crate::{api::initialize_runtime, tensor::create_tensor_with_ndarray};
     use ndarray::{ArrayD, IxDyn};
     use tracing_test::traced_test;
 
