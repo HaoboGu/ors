@@ -253,13 +253,15 @@ mod test {
     use std::time::SystemTime;
 
     use super::*;
-    use crate::tensor::create_tensor_with_ndarray;
+    use crate::{tensor::create_tensor_with_ndarray, api::initialize_runtime};
     use ndarray::{ArrayD, IxDyn};
     use tracing_test::traced_test;
 
     #[test]
     #[traced_test]
     fn test_session_run() {
+        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
+            .expect("Failed to load onnxruntime");
         let session_builder = SessionBuilder::new().unwrap();
         let mut session = session_builder
             .graph_optimization_level(SessionGraphOptimizationLevel::All)
@@ -330,6 +332,8 @@ mod test {
     #[test]
     #[traced_test]
     fn test_create_session() {
+        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
+            .expect("Failed to load onnxruntime");
         let session_builder = SessionBuilder::new().unwrap();
         let session = session_builder
             .intra_number_threads(4)
@@ -352,6 +356,8 @@ mod test {
     #[test]
     #[traced_test]
     fn test_session_drop() {
+        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
+            .expect("Failed to load onnxruntime");
         {
             let session_builder = SessionBuilder::new().unwrap();
             let session = session_builder

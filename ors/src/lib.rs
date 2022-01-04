@@ -12,13 +12,14 @@ pub mod types;
 
 #[cfg(test)]
 mod tests {
-    use std::{convert::TryInto, ptr::null};
+    use std::{convert::TryInto, ptr::null, path::Path};
 
-    use crate::api::get_api;
+    use crate::api::{get_api, initialize_runtime};
 
     #[test]
     fn it_works() {
-        // Suppose that onnxruntime's dynamic library has already added in PATH
+        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
+            .expect("Failed to load onnxruntime");
         assert_eq!(8, ors_sys::ORT_API_VERSION);
         println!("onnxruntime api verseion: {}", ors_sys::ORT_API_VERSION);
         let error_code = 1;

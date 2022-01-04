@@ -145,8 +145,8 @@ mod test {
     #[test]
     #[traced_test]
     fn test_tensor_creation() {
-        let path = Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll");
-        let ort = initialize_runtime(path).unwrap();
+        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
+            .expect("Failed to load onnxruntime");
         let path = get_test_model_path();
         let session_builder = SessionBuilder::new().unwrap();
         let session = session_builder.build_with_model_from_file(path).unwrap();
@@ -178,6 +178,8 @@ mod test {
     #[test]
     #[traced_test]
     fn test_tensor_creation_with_memory_info() {
+        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
+            .expect("Failed to load onnxruntime");
         let path = get_test_model_path();
         let session_builder = SessionBuilder::new().unwrap();
         let session = session_builder.build_with_model_from_file(path).unwrap();
