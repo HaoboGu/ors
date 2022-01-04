@@ -39,15 +39,19 @@ impl Drop for MemoryInfo {
 
 #[cfg(test)]
 mod tests {
-    use std::ptr::null_mut;
+    use std::{path::Path, ptr::null_mut};
 
     use tracing_test::traced_test;
+
+    use crate::api::initialize_runtime;
 
     use super::*;
 
     #[test]
     #[traced_test]
     fn test_memory_info_constructor_destructor() {
+        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
+            .expect("Failed to load onnxruntime");
         let memory_info =
             MemoryInfo::new(OrtAllocatorType_OrtArenaAllocator, OrtMemType_OrtMemTypeCPU).unwrap();
         std::mem::drop(memory_info);
@@ -56,6 +60,8 @@ mod tests {
     #[test]
     #[traced_test]
     fn test_drop_empty_memory_info() {
+        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
+            .expect("Failed to load onnxruntime");
         let memory_info = MemoryInfo { ptr: null_mut() };
         std::mem::drop(memory_info);
     }

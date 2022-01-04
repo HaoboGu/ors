@@ -46,10 +46,16 @@ pub(crate) fn check_status(status: *mut OrtStatus) -> Result<()> {
 
 #[cfg(test)]
 mod test {
+    use std::path::Path;
+
+    use crate::api::initialize_runtime;
+
     use super::*;
 
     #[test]
     fn test_ort_status() {
+        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
+            .expect("Failed to load onnxruntime");
         let status = create_status(OrtErrorCode_ORT_MODEL_LOADED, "OKOKOKO".to_string());
         assert_eq!(9, get_error_code(status));
         release_status(status as *mut OrtStatus);

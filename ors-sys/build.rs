@@ -34,6 +34,7 @@ const ORT_ENV_GPU: &str = "ORT_USE_CUDA";
 /// Subdirectory (of the 'target' directory) into which to extract the prebuilt library.
 const ORT_PREBUILT_EXTRACT_DIR: &str = "onnxruntime";
 
+// TODO: use libloading to load onnxruntime dynamic library on-the-fly
 fn main() {
     let libort_install_dir = prepare_libort_dir();
 
@@ -53,7 +54,6 @@ fn main() {
 
     generate_bindings(&include_dir);
 }
-
 fn generate_bindings(include_dir: &Path) {
     let clang_args = &[
         format!("-I{}", include_dir.display()),
@@ -74,7 +74,7 @@ fn generate_bindings(include_dir: &Path) {
     // The bindgen::Builder is the main entry point
     // to bindgen, and lets you build up options for
     // the resulting bindings.
-    let bindings = bindgen::Builder::default()
+    let bindings_builder = bindgen::Builder::default()
         // The input header we would like to generate
         // bindings for.
         .header("wrapper.h")
@@ -86,8 +86,13 @@ fn generate_bindings(include_dir: &Path) {
         // Set `size_t` to be translated to `usize` for win32 compatibility.
         .size_t_is_usize(true)
         // Format using rustfmt
-        .rustfmt_bindings(true)
-        // Finish the builder and generate the bindings.
+        .rustfmt_bindings(true);
+
+    #[cfg(feature = "runtime-linking")]
+    let bindings_builder = bindings_builder.dynamic_library_name("onnxruntime");
+
+    // Finish the builder and generate the bindings.
+    let bindings = bindings_builder
         .generate()
         // Unwrap the Result and panic on failure.
         .expect("Unable to generate bindings");
@@ -105,8 +110,13 @@ fn generate_bindings(include_dir: &Path) {
     println!("cargo:rerun-if-changed={:?}", out_path);
 
     // Write bindings to file
+    #[cfg(not(feature = "runtime-linking"))]
     bindings
         .write_to_file(out_path.join("bindings.rs"))
+        .expect("Couldn't write bindings!");
+    #[cfg(feature = "runtime-linking")]
+    bindings
+        .write_to_file(out_path.join("bindings_dynamic.rs"))
         .expect("Couldn't write bindings!");
 }
 

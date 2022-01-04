@@ -45,13 +45,19 @@ pub(crate) fn get_env_ptr() -> *mut OrtEnv {
 
 #[cfg(test)]
 mod test {
+    use std::path::Path;
+
     use tracing_test::traced_test;
+
+    use crate::api::initialize_runtime;
 
     use super::*;
 
     #[test]
     #[traced_test]
     fn test_env() {
+        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
+            .expect("Failed to load onnxruntime");
         let p = get_env_ptr();
         assert_ne!(p, null_mut());
     }
