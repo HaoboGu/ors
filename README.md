@@ -4,11 +4,24 @@ This project provides Rust bindings of Microsoft's [onnxruntime](https://github.
 Warning: This project is in very early stage and not finished yet. There are still many bugs as far as I know. Don't use it in production.
 
 ## Prerequisites
-This crate requires onnxruntime's C library in version v1.8.1 to be installed on your system's default path. For example, on MacOS you should have `libonnxruntime.1.8.1.dylib` in your `/usr/local/lib`.
+This crate requires you have onnxruntime's C library in version v1.8.1 in your system. You can use `initialize_runtime()` to read the C library:
+
+```rust
+fn setup_runtime() {
+    #[cfg(target_os = "windows")]
+    let path = "/path/to/onnxruntime.dll";
+    #[cfg(target_os = "macos")]
+    let path = "/path/to/libonnxruntime.1.8.1.dylib";
+    #[cfg(target_os = "linux")]
+    let path = "/path/to/libonnxruntime.so";
+    initialize_runtime(Path::new(path)).unwrap();
+}
+```
 
 ## Example
 This crate provides `SessionBuilder` which helps you create your inference session. Your don't need to worry about environment, which is handled by this crate:
 ```rust
+setup_runtime();
 let session_builder = SessionBuilder::new().unwrap();
 
 // Create an inference session from a model 
