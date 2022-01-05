@@ -50,8 +50,7 @@ mod tests {
     #[test]
     #[traced_test]
     fn test_memory_info_constructor_destructor() {
-        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
-            .expect("Failed to load onnxruntime");
+        setup_runtime();
         let memory_info =
             MemoryInfo::new(OrtAllocatorType_OrtArenaAllocator, OrtMemType_OrtMemTypeCPU).unwrap();
         std::mem::drop(memory_info);
@@ -60,9 +59,17 @@ mod tests {
     #[test]
     #[traced_test]
     fn test_drop_empty_memory_info() {
-        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
-            .expect("Failed to load onnxruntime");
+        setup_runtime();
         let memory_info = MemoryInfo { ptr: null_mut() };
         std::mem::drop(memory_info);
+    }
+    fn setup_runtime() {
+        #[cfg(target_os = "windows")]
+        let path = "D:\\Projects\\Rust\\ors\\onnxruntime.dll";
+        #[cfg(target_os = "macos")]
+        let path = "/usr/local/lib/libonnxruntime.1.8.1.dylib";
+        #[cfg(target_os = "linux")]
+        let path = "/usr/local/lib/libonnxruntime.so";
+        initialize_runtime(Path::new(path)).unwrap();
     }
 }

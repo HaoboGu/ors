@@ -145,8 +145,7 @@ mod test {
     #[test]
     #[traced_test]
     fn test_tensor_creation() {
-        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
-            .expect("Failed to load onnxruntime");
+        setup_runtime();
         let path = get_test_model_path();
         let session_builder = SessionBuilder::new().unwrap();
         let session = session_builder.build_with_model_from_file(path).unwrap();
@@ -178,8 +177,7 @@ mod test {
     #[test]
     #[traced_test]
     fn test_tensor_creation_with_memory_info() {
-        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
-            .expect("Failed to load onnxruntime");
+        setup_runtime();
         let path = get_test_model_path();
         let session_builder = SessionBuilder::new().unwrap();
         let session = session_builder.build_with_model_from_file(path).unwrap();
@@ -216,5 +214,15 @@ mod test {
         #[cfg(not(target_family = "windows"))]
         let path = "/Users/haobogu/Projects/rust/ors/ors/sample/gpt2.onnx";
         return path;
+    }
+
+    fn setup_runtime() {
+        #[cfg(target_os = "windows")]
+        let path = "D:\\Projects\\Rust\\ors\\onnxruntime.dll";
+        #[cfg(target_os = "macos")]
+        let path = "/usr/local/lib/libonnxruntime.1.8.1.dylib";
+        #[cfg(target_os = "linux")]
+        let path = "/usr/local/lib/libonnxruntime.so";
+        initialize_runtime(Path::new(path)).unwrap();
     }
 }

@@ -56,9 +56,18 @@ mod test {
     #[test]
     #[traced_test]
     fn test_env() {
-        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
-            .expect("Failed to load onnxruntime");
+        setup_runtime();
         let p = get_env_ptr();
         assert_ne!(p, null_mut());
+    }
+
+    fn setup_runtime() {
+        #[cfg(target_os = "windows")]
+        let path = "D:\\Projects\\Rust\\ors\\onnxruntime.dll";
+        #[cfg(target_os = "macos")]
+        let path = "/usr/local/lib/libonnxruntime.1.8.1.dylib";
+        #[cfg(target_os = "linux")]
+        let path = "/usr/local/lib/libonnxruntime.so";
+        initialize_runtime(Path::new(path)).unwrap();
     }
 }

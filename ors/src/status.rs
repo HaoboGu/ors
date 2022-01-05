@@ -54,10 +54,18 @@ mod test {
 
     #[test]
     fn test_ort_status() {
-        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
-            .expect("Failed to load onnxruntime");
+        setup_runtime();
         let status = create_status(OrtErrorCode_ORT_MODEL_LOADED, "OKOKOKO".to_string());
         assert_eq!(9, get_error_code(status));
         release_status(status as *mut OrtStatus);
+    }
+    fn setup_runtime() {
+        #[cfg(target_os = "windows")]
+        let path = "D:\\Projects\\Rust\\ors\\onnxruntime.dll";
+        #[cfg(target_os = "macos")]
+        let path = "/usr/local/lib/libonnxruntime.1.8.1.dylib";
+        #[cfg(target_os = "linux")]
+        let path = "/usr/local/lib/libonnxruntime.so";
+        initialize_runtime(Path::new(path)).unwrap();
     }
 }

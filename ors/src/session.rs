@@ -255,13 +255,13 @@ mod test {
     use super::*;
     use crate::{api::initialize_runtime, tensor::create_tensor_with_ndarray};
     use ndarray::{ArrayD, IxDyn};
+    use tracing::debug;
     use tracing_test::traced_test;
 
     #[test]
     #[traced_test]
     fn test_session_run() {
-        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
-            .expect("Failed to load onnxruntime");
+        setup_runtime();
         let session_builder = SessionBuilder::new().unwrap();
         let mut session = session_builder
             .graph_optimization_level(SessionGraphOptimizationLevel::All)
@@ -322,8 +322,8 @@ mod test {
         let inference_1_start = SystemTime::now();
         run(&mut session, &inputs, &mut outputs).unwrap();
 
-        println!("inference result: logits: {:?}", outputs[0].data);
-        println!(
+        debug!("inference result: logits: {:?}", outputs[0].data);
+        debug!(
             "inference costs: {:?}",
             SystemTime::now().duration_since(inference_1_start)
         );
@@ -332,8 +332,7 @@ mod test {
     #[test]
     #[traced_test]
     fn test_create_session() {
-        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
-            .expect("Failed to load onnxruntime");
+        setup_runtime();
         let session_builder = SessionBuilder::new().unwrap();
         let session = session_builder
             .intra_number_threads(4)
@@ -356,8 +355,7 @@ mod test {
     #[test]
     #[traced_test]
     fn test_session_drop() {
-        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
-            .expect("Failed to load onnxruntime");
+        setup_runtime();
         {
             let session_builder = SessionBuilder::new().unwrap();
             let session = session_builder
@@ -378,5 +376,15 @@ mod test {
         #[cfg(not(target_family = "windows"))]
         let path = "/Users/haobogu/Projects/rust/ors/ors/sample/gpt2.onnx";
         return path;
+    }
+
+    fn setup_runtime() {
+        #[cfg(target_os = "windows")]
+        let path = "D:\\Projects\\Rust\\ors\\onnxruntime.dll";
+        #[cfg(target_os = "macos")]
+        let path = "/usr/local/lib/libonnxruntime.1.8.1.dylib";
+        #[cfg(target_os = "linux")]
+        let path = "/usr/local/lib/libonnxruntime.so";
+        initialize_runtime(Path::new(path)).unwrap();
     }
 }

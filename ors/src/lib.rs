@@ -18,8 +18,7 @@ mod tests {
 
     #[test]
     fn it_works() {
-        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
-            .expect("Failed to load onnxruntime");
+        setup_runtime();
         assert_eq!(8, ors_sys::ORT_API_VERSION);
         println!("onnxruntime api verseion: {}", ors_sys::ORT_API_VERSION);
         let error_code = 1;
@@ -28,5 +27,14 @@ mod tests {
         let status_ptr = unsafe { create_status_fn(error_code.try_into().unwrap(), msg_ptr) };
         assert_ne!(null(), status_ptr);
         println!("{:?}", status_ptr);
+    }
+    fn setup_runtime() {
+        #[cfg(target_os = "windows")]
+        let path = "D:\\Projects\\Rust\\ors\\onnxruntime.dll";
+        #[cfg(target_os = "macos")]
+        let path = "/usr/local/lib/libonnxruntime.1.8.1.dylib";
+        #[cfg(target_os = "linux")]
+        let path = "/usr/local/lib/libonnxruntime.so";
+        initialize_runtime(Path::new(path)).unwrap();
     }
 }
