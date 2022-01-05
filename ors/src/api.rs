@@ -8,6 +8,7 @@ use std::sync::{
     atomic::{AtomicBool, AtomicPtr, Ordering},
     Arc, Mutex,
 };
+use tracing::debug;
 
 lazy_static! {
     static ref API: Arc<Mutex<AtomicPtr<OrtApi>>> =
@@ -29,27 +30,49 @@ pub fn initialize_runtime(path: &Path) -> Result<()> {
     // If the runtime has been initialized, just return
     let initialized = INITIALIZED.load(Ordering::SeqCst);
     if initialized {
+        debug!("onnxruntime has been initialized");
         return Ok(());
     }
 
     // Otherwise, load onnxruntime shared library
-    let ort = match unsafe { onnxruntime::new(path) } {
-        Ok(ort) => ort,
+    let mut ort = match unsafe { onnxruntime::new(path) } {
+        Ok(ort) => ManuallyDrop::new(ort),
         Err(err) => return Err(anyhow!("Failed to load onnxruntime shared library")),
     };
 
     // Wrap the lib using ManuallyDrop
     // The loaded lib is dropped only when we call drop manually
     let mut lib_ptr = LIB.lock().expect("Failed to get lib");
-    *lib_ptr = AtomicPtr::new(&mut ManuallyDrop::new(ort));
+    *lib_ptr = AtomicPtr::new(&mut ort);
 
     // Set the api entry then
-    let api_base = unsafe { (*(*lib_ptr.get_mut())).OrtGetApiBase() };
+    let api_base = unsafe { ort.OrtGetApiBase() };
     let api: *const OrtApi = unsafe { (&(*api_base).GetApi.unwrap())(ORT_API_VERSION) };
     let mut g_api = API.lock().expect("Failed to get api");
     *g_api = AtomicPtr::new(api as *mut OrtApi);
     let _b = INITIALIZED
         .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |x| Some(true))
+        .unwrap();
+    Ok(())
+}
+
+pub fn drop_lib() -> Result<()> {
+    // If the runtime has not been initialized, just return
+    let initialized = INITIALIZED.load(Ordering::SeqCst);
+    if !initialized {
+        return Ok(());
+    }
+
+    // Set LIB to null ptr and drop the loaded lib
+    let lib_atomic_ptr = LIB.lock().expect("Failed to get lib");
+    let lib_raw_ptr = lib_atomic_ptr
+        .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |m| Some(null_mut()))
+        .map_err(|e| anyhow!("Failed to get library ptr"))?;
+    unsafe { lib_raw_ptr.drop_in_place() };
+
+    // Set initialized to false
+    let _b = INITIALIZED
+        .fetch_update(Ordering::SeqCst, Ordering::SeqCst, |x| Some(false))
         .unwrap();
     Ok(())
 }
@@ -80,7 +103,7 @@ pub(crate) fn get_api() -> OrtApi {
     let initialized = INITIALIZED.load(Ordering::SeqCst);
     // If the library is not initialize, just panic
     if !initialized {
-        panic!("The library has not been initialized, you should initialize it first using load_runtime()");
+        panic!("The library has not been initialized, you should initialize it first using initialize_runtime()");
     }
     let p = *(API.try_lock().unwrap()).get_mut();
     unsafe { *p }
@@ -97,18 +120,24 @@ mod test {
     #[test]
     #[traced_test]
     fn test_get_dynamic_load() {
-        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
-            .expect("Failed to load onnxruntime");
-
+        setup_runtime();
         test_macro();
     }
 
     #[test]
     fn test_initialize_twice() {
-        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
-            .expect("Failed to load onnxruntime");
-        initialize_runtime(Path::new("D:\\Projects\\Rust\\ors\\onnxruntime.dll"))
-            .expect("Failed to load onnxruntime");
+        setup_runtime();
+        setup_runtime();
+        test_macro();
+    }
+
+    #[test]
+    #[traced_test]
+    #[should_panic(expected = "The library has not been initialized, you should initialize it first using initialize_runtime()")]
+    fn test_drop_loaded_lib() {
+        setup_runtime();
+        test_macro();
+        drop_lib().unwrap();
         test_macro();
     }
 
@@ -119,5 +148,15 @@ mod test {
         let status = call_ort!(CreateStatus, OrtErrorCode_ORT_ENGINE_ERROR, msg.as_ptr());
         let error_code = call_ort!(GetErrorCode, status);
         assert_eq!(error_code, 5);
+    }
+
+    fn setup_runtime() {
+        #[cfg(target_os = "windows")]
+        let path = "D:\\Projects\\Rust\\ors\\onnxruntime.dll";
+        #[cfg(target_os = "macos")]
+        let path = "/usr/local/lib/libonnxruntime.1.8.1.dylib";
+        #[cfg(target_os = "linux")]
+        let path = "/usr/local/lib/libonnxruntime.so";
+        initialize_runtime(Path::new(path)).expect("Failed to initialize runtime");
     }
 }
