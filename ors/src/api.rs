@@ -133,7 +133,9 @@ mod test {
 
     #[test]
     #[traced_test]
-    #[should_panic(expected = "The library has not been initialized, you should initialize it first using initialize_runtime()")]
+    #[should_panic(
+        expected = "The library has not been initialized, you should initialize it first using initialize_runtime()"
+    )]
     fn test_drop_loaded_lib() {
         setup_runtime();
         test_macro();
