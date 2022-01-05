@@ -43,10 +43,6 @@ fn main() {
     println!("Include directory: {:?}", include_dir);
     println!("Lib directory: {:?}", lib_dir);
 
-    // Tell cargo to tell rustc to link onnxruntime shared library.
-    println!("cargo:rustc-link-lib=onnxruntime");
-    println!("cargo:rustc-link-search=native={}", lib_dir.display());
-
     println!("cargo:rerun-if-env-changed={}", ORT_ENV_STRATEGY);
     println!("cargo:rerun-if-env-changed={}", ORT_ENV_GPU);
     println!("cargo:rerun-if-env-changed={}", ORT_ENV_SYSTEM_LIB_LOCATION);
