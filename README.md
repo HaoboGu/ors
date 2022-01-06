@@ -7,6 +7,9 @@ Warning: This project is in very early stage and not finished yet. There are sti
 This crate requires you have onnxruntime's C library version v1.8.1 in your system. You can use `initialize_runtime()` to read the C library:
 
 ```rust
+use ors::api::initialize_runtime;
+use std::path::Path;
+
 fn setup_runtime() {
     #[cfg(target_os = "windows")]
     let path = "/path/to/onnxruntime.dll";
@@ -19,8 +22,21 @@ fn setup_runtime() {
 ```
 
 ## Example
+
+First, add this crate to your `cargo.toml`
+
+```toml
+ors = "0.0.7"
+```
+
 This crate provides `SessionBuilder` which helps you create your inference session. Your don't need to create onnxruntime inference environment, which is handled by this crate:
 ```rust
+use ors::{
+  config::SessionGraphOptimizationLevel,
+  session::{SessionBuilder, run},
+  tensor::{create_tensor_with_ndarray, Tensor},
+}
+
 setup_runtime();
 let session_builder = SessionBuilder::new().unwrap();
 
