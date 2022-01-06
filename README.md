@@ -4,7 +4,7 @@ This project provides Rust bindings of Microsoft's [onnxruntime](https://github.
 Warning: This project is in very early stage and not finished yet. There are still many bugs as far as I know. Don't use it in production.
 
 ## Prerequisites
-This crate requires you have onnxruntime's C library in version v1.8.1 in your system. You can use `initialize_runtime()` to read the C library:
+This crate requires you have onnxruntime's C library version v1.8.1 in your system. You can use `initialize_runtime()` to read the C library:
 
 ```rust
 fn setup_runtime() {
@@ -19,7 +19,7 @@ fn setup_runtime() {
 ```
 
 ## Example
-This crate provides `SessionBuilder` which helps you create your inference session. Your don't need to worry about environment, which is handled by this crate:
+This crate provides `SessionBuilder` which helps you create your inference session. Your don't need to create onnxruntime inference environment, which is handled by this crate:
 ```rust
 setup_runtime();
 let session_builder = SessionBuilder::new().unwrap();
