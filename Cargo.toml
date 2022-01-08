@@ -3,3 +3,4 @@ members = [
     "ors-sys",
     "ors",
 ]
+resolver = "2"
