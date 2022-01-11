@@ -35,7 +35,7 @@ fn create_env() -> *mut OrtEnv {
     // panic when failed to create env
     check_status(status).expect("Failed to create inference environment");
 
-    return env_ptr;
+    env_ptr
 }
 
 pub(crate) fn get_env_ptr() -> *mut OrtEnv {

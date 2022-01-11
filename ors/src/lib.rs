@@ -12,7 +12,7 @@ pub mod types;
 
 #[cfg(test)]
 mod tests {
-    use std::{convert::TryInto, path::Path, ptr::null};
+    use std::{path::Path, ptr::null};
 
     use crate::api::{get_api, initialize_runtime};
 
@@ -24,7 +24,7 @@ mod tests {
         let error_code = 1;
         let msg_ptr: *const i8 = std::ptr::null_mut();
         let create_status_fn = get_api().CreateStatus.unwrap();
-        let status_ptr = unsafe { create_status_fn(error_code.try_into().unwrap(), msg_ptr) };
+        let status_ptr = unsafe { create_status_fn(error_code, msg_ptr) };
         assert_ne!(null(), status_ptr);
         println!("{:?}", status_ptr);
     }

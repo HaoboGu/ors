@@ -27,7 +27,7 @@ pub struct Session {
     output_info: Vec<SessionOutputInfo>,
 }
 
-pub fn run(session: &mut Session, inputs: &Vec<Tensor>, outputs: &mut Vec<Tensor>) -> Result<()> {
+pub fn run(session: &mut Session, inputs: &[Tensor], outputs: &mut Vec<Tensor>) -> Result<()> {
     let input_names_ptr: Vec<*const i8> = session
         .input_info
         .iter()
@@ -238,7 +238,7 @@ pub(crate) fn get_default_allocator() -> Result<*mut OrtAllocator> {
 
 pub(crate) fn get_default_memory_info() -> Result<*mut OrtMemoryInfo> {
     let allocator = get_default_allocator()?;
-    return get_allocator_mem_info(allocator);
+    get_allocator_mem_info(allocator)
 }
 
 pub(crate) fn get_allocator_mem_info(allocator: *const OrtAllocator) -> Result<*mut OrtMemoryInfo> {
@@ -375,7 +375,7 @@ mod test {
         let path = "D:\\Projects\\Rust\\ors\\gpt2.onnx";
         #[cfg(not(target_family = "windows"))]
         let path = "/Users/haobogu/Projects/rust/ors/ors/sample/gpt2.onnx";
-        return path;
+        path
     }
 
     fn setup_runtime() {

@@ -213,7 +213,7 @@ mod test {
         let path = "D:\\Projects\\Rust\\ors\\gpt2.onnx";
         #[cfg(not(target_family = "windows"))]
         let path = "/Users/haobogu/Projects/rust/ors/ors/sample/gpt2.onnx";
-        return path;
+        path
     }
 
     fn setup_runtime() {
