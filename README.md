@@ -44,6 +44,7 @@ let session_builder = SessionBuilder::new().unwrap();
 let mut session = session_builder
     .graph_optimization_level(SessionGraphOptimizationLevel::All)
     .unwrap()
+    // Model conversion script can be found here: https://github.com/microsoft/onnxruntime/blob/master/onnxruntime/python/tools/transformers/notebooks/Inference_GPT2_with_OnnxRuntime_on_CPU.ipynb 
     .build_with_model_from_file("./gpt2.onnx")
     .unwrap();
 ```
