@@ -2,6 +2,7 @@
 #![allow(unused_variables)]
 pub mod api;
 pub mod config;
+pub mod cuda;
 pub mod env;
 pub mod log;
 pub mod memory_info;
