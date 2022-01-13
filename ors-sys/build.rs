@@ -83,7 +83,7 @@ fn generate_bindings(include_dir: &Path) {
         // Format using rustfmt
         .rustfmt_bindings(true);
 
-    #[cfg(feature = "runtime-linking")]
+    #[cfg(feature = "dynamic-loading")]
     let bindings_builder = bindings_builder.dynamic_library_name("onnxruntime");
 
     // Finish the builder and generate the bindings.
@@ -105,11 +105,11 @@ fn generate_bindings(include_dir: &Path) {
     println!("cargo:rerun-if-changed={:?}", out_path);
 
     // Write bindings to file
-    #[cfg(not(feature = "runtime-linking"))]
+    #[cfg(not(feature = "dynamic-loading"))]
     bindings
         .write_to_file(out_path.join("bindings.rs"))
         .expect("Couldn't write bindings!");
-    #[cfg(feature = "runtime-linking")]
+    #[cfg(feature = "dynamic-loading")]
     bindings
         .write_to_file(out_path.join("bindings_dynamic.rs"))
         .expect("Couldn't write bindings!");

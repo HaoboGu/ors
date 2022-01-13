@@ -24,4 +24,5 @@ libloading = {version = "0.7.2", optional = true}
 
 [features]
 # Load onnxruntime at runtime, not compile time
-runtime-linking = ["libloading"] 
+default = ["dynamic-loading"]
+dynamic-loading = ["libloading"] 
