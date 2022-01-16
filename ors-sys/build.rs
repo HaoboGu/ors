@@ -297,12 +297,12 @@ struct Triplet {
 impl OnnxPrebuiltArchive for Triplet {
     fn as_onnx_str(&self) -> Cow<str> {
         match (&self.os, &self.arch, &self.accelerator) {
-            // onnxruntime-win-x86-1.8.1.zip
-            // onnxruntime-win-x64-1.8.1.zip
-            // onnxruntime-win-arm-1.8.1.zip
-            // onnxruntime-win-arm64-1.8.1.zip
-            // onnxruntime-linux-x64-1.8.1.tgz
-            // onnxruntime-osx-arm64-1.8.1.tgz
+            // onnxruntime-win-x86-1.10.0.zip
+            // onnxruntime-win-x64-1.10.0.zip
+            // onnxruntime-win-arm-1.10.0.zip
+            // onnxruntime-win-arm64-1.10.0.zip
+            // onnxruntime-linux-x64-1.10.0.tgz
+            // onnxruntime-osx-arm64-1.10.0.tgz
             (Os::Windows, Architecture::X86, Accelerator::None)
             | (Os::Windows, Architecture::X86_64, Accelerator::None)
             | (Os::Windows, Architecture::Arm, Accelerator::None)
@@ -318,17 +318,11 @@ impl OnnxPrebuiltArchive for Triplet {
                 Cow::from(format!("{}-{}", self.os.as_onnx_str(), "x86_64"))
             }
 
-            // onnxruntime-win-gpu-x64-1.8.1.zip
-            // Note how this one is inverted from the linux one next
-            (Os::Windows, Architecture::X86_64, Accelerator::Gpu) => Cow::from(format!(
-                "{}-{}-{}",
-                self.os.as_onnx_str(),
-                self.accelerator.as_onnx_str(),
-                self.arch.as_onnx_str(),
-            )),
-            // onnxruntime-linux-x64-gpu-1.8.1.tgz
+            // onnxruntime-win-gpu-x64-1.10.0.zip
+            // onnxruntime-linux-x64-gpu-1.10.0.tgz
             // Note how this one is inverted from the windows one above
-            (Os::Linux, Architecture::X86_64, Accelerator::Gpu) => Cow::from(format!(
+            (Os::Linux, Architecture::X86_64, Accelerator::Gpu)
+            | (Os::Windows, Architecture::X86_64, Accelerator::Gpu) => Cow::from(format!(
                 "{}-{}-{}",
                 self.os.as_onnx_str(),
                 self.arch.as_onnx_str(),
