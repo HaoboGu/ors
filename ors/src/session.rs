@@ -8,6 +8,7 @@ use crate::status::check_status;
 use crate::tensor::Tensor;
 use anyhow::{anyhow, Result};
 use ors_sys::*;
+use std::collections::HashMap;
 use std::ffi::{c_void, CString};
 use std::path::Path;
 use std::ptr::{null, null_mut};
@@ -225,6 +226,19 @@ impl SessionBuilder {
             let status = call_ort!(EnableMemPattern, self.session_options_ptr);
             check_status(status)?;
         }
+        Ok(self)
+    }
+
+    /// Append Cuda provider
+    /// 
+    /// options holds all cuda options, like gpu_mem_limit, device_id, etc
+    /// For full available options, check https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html#configuration-options
+    pub fn append_cuda_provider(self, _options: HashMap<String, String>) -> Result<SessionBuilder> {
+        // FIXME: update bindings version and use OrtCUDAProviderOptionsV2 instead
+        // TODO: parse given options and create cuda provider options here
+        let cuda_options_ptr: *const OrtCUDAProviderOptions = null();
+        let status = call_ort!(SessionOptionsAppendExecutionProvider_CUDA, self.session_options_ptr, cuda_options_ptr);
+        check_status(status)?;
         Ok(self)
     }
 }
