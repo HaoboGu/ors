@@ -230,14 +230,18 @@ impl SessionBuilder {
     }
 
     /// Append Cuda provider
-    /// 
+    ///
     /// options holds all cuda options, like gpu_mem_limit, device_id, etc
     /// For full available options, check https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html#configuration-options
     pub fn append_cuda_provider(self, _options: HashMap<String, String>) -> Result<SessionBuilder> {
         // FIXME: update bindings version and use OrtCUDAProviderOptionsV2 instead
         // TODO: parse given options and create cuda provider options here
         let cuda_options_ptr: *const OrtCUDAProviderOptions = null();
-        let status = call_ort!(SessionOptionsAppendExecutionProvider_CUDA, self.session_options_ptr, cuda_options_ptr);
+        let status = call_ort!(
+            SessionOptionsAppendExecutionProvider_CUDA,
+            self.session_options_ptr,
+            cuda_options_ptr
+        );
         check_status(status)?;
         Ok(self)
     }
