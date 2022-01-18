@@ -5338,6 +5338,31 @@ fn bindgen_test_layout_OrtCustomOp() {
         )
     );
 }
+pub const kOrtRunOptionsConfigEnableMemoryArenaShrinkage: &[u8; 37usize] =
+    b"memory.enable_memory_arena_shrinkage\0";
+pub const kOrtSessionOptionsConfigDisablePrepacking: &[u8; 27usize] =
+    b"session.disable_prepacking\0";
+pub const kOrtSessionOptionsConfigUseEnvAllocators: &[u8; 27usize] =
+    b"session.use_env_allocators\0";
+pub const kOrtSessionOptionsConfigLoadModelFormat: &[u8; 26usize] = b"session.load_model_format\0";
+pub const kOrtSessionOptionsConfigSaveModelFormat: &[u8; 26usize] = b"session.save_model_format\0";
+pub const kOrtSessionOptionsConfigSetDenormalAsZero: &[u8; 29usize] =
+    b"session.set_denormal_as_zero\0";
+pub const kOrtSessionOptionsDisableQuantQDQ: &[u8; 26usize] = b"session.disable_quant_qdq\0";
+pub const kOrtSessionOptionsEnableGeluApproximation: &[u8; 39usize] =
+    b"optimization.enable_gelu_approximation\0";
+pub const kOrtSessionOptionsUseDeviceAllocatorForInitializers: &[u8; 46usize] =
+    b"session.use_device_allocator_for_initializers\0";
+pub const kOrtSessionOptionsConfigAllowInterOpSpinning: &[u8; 32usize] =
+    b"session.inter_op.allow_spinning\0";
+pub const kOrtSessionOptionsConfigAllowIntraOpSpinning: &[u8; 32usize] =
+    b"session.intra_op.allow_spinning\0";
+pub const kOrtSessionOptionsConfigUseORTModelBytesDirectly: &[u8; 37usize] =
+    b"session.use_ort_model_bytes_directly\0";
+pub const kOrtSessionOptionsConfigSaveRuntimeOptimizations: &[u8; 40usize] =
+    b"optimization.save_runtime_optimizations\0";
+pub const kOrtSessionOptionsConfigNnapiEpPartitioningStopOps: &[u8; 31usize] =
+    b"ep.nnapi.partitioning_stop_ops\0";
 #[repr(C)]
 #[derive(Debug, Copy, Clone)]
 pub struct __crt_locale_data {
@@ -7795,6 +7820,20 @@ pub struct onnxruntime {
         ) -> OrtStatusPtr,
         ::libloading::Error,
     >,
+    pub OrtSessionOptionsAppendExecutionProvider_CPU: Result<
+        unsafe extern "C" fn(
+            options: *mut OrtSessionOptions,
+            use_arena: ::std::os::raw::c_int,
+        ) -> OrtStatusPtr,
+        ::libloading::Error,
+    >,
+    pub OrtSessionOptionsAppendExecutionProvider_Tensorrt: Result<
+        unsafe extern "C" fn(
+            options: *mut OrtSessionOptions,
+            device_id: ::std::os::raw::c_int,
+        ) -> OrtStatusPtr,
+        ::libloading::Error,
+    >,
 }
 impl onnxruntime {
     pub unsafe fn new<P>(path: P) -> Result<Self, ::libloading::Error>
@@ -8203,6 +8242,12 @@ impl onnxruntime {
         let OrtSessionOptionsAppendExecutionProvider_CUDA = __library
             .get(b"OrtSessionOptionsAppendExecutionProvider_CUDA\0")
             .map(|sym| *sym);
+        let OrtSessionOptionsAppendExecutionProvider_CPU = __library
+            .get(b"OrtSessionOptionsAppendExecutionProvider_CPU\0")
+            .map(|sym| *sym);
+        let OrtSessionOptionsAppendExecutionProvider_Tensorrt = __library
+            .get(b"OrtSessionOptionsAppendExecutionProvider_Tensorrt\0")
+            .map(|sym| *sym);
         Ok(onnxruntime {
             __library,
             __va_start,
@@ -8585,6 +8630,8 @@ impl onnxruntime {
             strupr,
             OrtGetApiBase,
             OrtSessionOptionsAppendExecutionProvider_CUDA,
+            OrtSessionOptionsAppendExecutionProvider_CPU,
+            OrtSessionOptionsAppendExecutionProvider_Tensorrt,
         })
     }
     pub unsafe fn __security_init_cookie(&self) -> () {
@@ -12190,6 +12237,26 @@ impl onnxruntime {
     ) -> OrtStatusPtr {
         (self
             .OrtSessionOptionsAppendExecutionProvider_CUDA
+            .as_ref()
+            .expect("Expected function, got error."))(options, device_id)
+    }
+    pub unsafe fn OrtSessionOptionsAppendExecutionProvider_CPU(
+        &self,
+        options: *mut OrtSessionOptions,
+        use_arena: ::std::os::raw::c_int,
+    ) -> OrtStatusPtr {
+        (self
+            .OrtSessionOptionsAppendExecutionProvider_CPU
+            .as_ref()
+            .expect("Expected function, got error."))(options, use_arena)
+    }
+    pub unsafe fn OrtSessionOptionsAppendExecutionProvider_Tensorrt(
+        &self,
+        options: *mut OrtSessionOptions,
+        device_id: ::std::os::raw::c_int,
+    ) -> OrtStatusPtr {
+        (self
+            .OrtSessionOptionsAppendExecutionProvider_Tensorrt
             .as_ref()
             .expect("Expected function, got error."))(options, device_id)
     }
