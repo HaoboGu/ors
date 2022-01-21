@@ -14,7 +14,7 @@ fn setup_runtime() {
     #[cfg(target_os = "windows")]
     let path = "/path/to/onnxruntime.dll";
     #[cfg(target_os = "macos")]
-    let path = "/path/to/libonnxruntime.1.10~~.0~~.dylib";
+    let path = "/path/to/libonnxruntime.1.10.0.dylib";
     #[cfg(target_os = "linux")]
     let path = "/path/to/libonnxruntime.so";
     initialize_runtime(Path::new(path)).unwrap();
