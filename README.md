@@ -4,7 +4,7 @@ This project provides Rust bindings of Microsoft's [onnxruntime](https://github.
 Warning: This project is in very early stage and not finished yet. There are still many bugs as far as I know. Don't use it in production.
 
 ## Prerequisites
-This crate requires you have onnxruntime's C library version v1.8.1 in your system. You can use `initialize_runtime()` to read the C library:
+This crate requires you have onnxruntime's C library version v1.10.0 in your system. You can use `initialize_runtime()` to read the C library:
 
 ```rust
 use ors::api::initialize_runtime;
@@ -14,7 +14,7 @@ fn setup_runtime() {
     #[cfg(target_os = "windows")]
     let path = "/path/to/onnxruntime.dll";
     #[cfg(target_os = "macos")]
-    let path = "/path/to/libonnxruntime.1.8.1.dylib";
+    let path = "/path/to/libonnxruntime.1.10.0.dylib";
     #[cfg(target_os = "linux")]
     let path = "/path/to/libonnxruntime.so";
     initialize_runtime(Path::new(path)).unwrap();
@@ -53,9 +53,9 @@ Create tensor from `ndarray::ArrayD` and add created tensors to model input:
 ```rust
 // Suppose that input_ids, position_ids and attention_mask are all ndarray::ArrayD
 let mut inputs: Vec<Tensor> = vec![];
-let input_ids_tensor = create_tensor_with_ndarray::<i64>(input_ids.view_mut()).unwrap();
-let position_ids_tensor = create_tensor_with_ndarray::<i64>(positions_ids.view_mut()).unwrap();
-let attention_mask_tensor = create_tensor_with_ndarray::<f32>(attension_mask.view_mut()).unwrap();
+let input_ids_tensor = create_tensor_with_ndarray::<i64>(input_ids).unwrap();
+let position_ids_tensor = create_tensor_with_ndarray::<i64>(positions_ids).unwrap();
+let attention_mask_tensor = create_tensor_with_ndarray::<f32>(attension_mask).unwrap();
 inputs.push(input_ids_tensor);
 inputs.push(position_ids_tensor);
 inputs.push(attention_mask_tensor);
@@ -71,7 +71,7 @@ let mut outputs: Vec<Tensor> = vec![];
 let mut logits = ArrayD::<f32>::from_shape_vec(IxDyn(&[2, 9, 50257]), vec![0.0; 2 * 9 * 50257]).unwrap();
 
 // Create tensor from logits and add it to output
-let logits_tensor = create_tensor_with_ndarray::<f32>(logits.view_mut()).unwrap();
+let logits_tensor = create_tensor_with_ndarray::<f32>(logits).unwrap();
 outputs.push(logits_tensor);
 
 // Add other outputs
@@ -83,7 +83,7 @@ Run inference session, the model's output will be wrote to `ndarray::ArrayD` whi
 run(&mut session, &inputs, &mut outputs);
 
 // Check the result
-println!("inference result: logits: {:?}", logits);
+println!("inference result: logits: {:?}", outputs[0]);
 ```
 
 output:
