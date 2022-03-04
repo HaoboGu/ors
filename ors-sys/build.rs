@@ -80,6 +80,7 @@ fn generate_bindings(include_dir: &Path) {
         .parse_callbacks(Box::new(bindgen::CargoCallbacks))
         // Set `size_t` to be translated to `usize` for win32 compatibility.
         .size_t_is_usize(true)
+        .derive_copy(true)
         // Format using rustfmt
         .rustfmt_bindings(true);
 
