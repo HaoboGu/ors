@@ -64,7 +64,7 @@ inputs.push(attention_mask_tensor);
 // ...
 ```
 
-Do same things for creation of model output:
+Do same things for model outputs:
 ```rust
 let mut outputs: Vec<Tensor> = vec![];
 // You should specify the output shape when creating the ndarray
