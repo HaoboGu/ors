@@ -20,7 +20,7 @@ mod tests {
     fn it_works() {
         setup_runtime();
         println!("onnxruntime api verseion: {}", ors_sys::ORT_API_VERSION);
-        assert_eq!(10, ors_sys::ORT_API_VERSION);
+        assert_eq!(11, ors_sys::ORT_API_VERSION);
         let error_code = 1;
         let msg_ptr: *const i8 = std::ptr::null_mut();
         let create_status_fn = get_api().CreateStatus.unwrap();

@@ -302,7 +302,7 @@ impl OnnxPrebuiltArchive for Triplet {
             // onnxruntime-win-x64-1.11.0.zip
             // onnxruntime-win-arm-1.11.0.zip
             // onnxruntime-win-arm64-1.11.0.zip
-            // onnxruntime-linux-x64-1.10.0.tgz
+            // onnxruntime-linux-x64-1.11.0.tgz
             // onnxruntime-osx-arm64-1.11.0.tgz
             (Os::Windows, Architecture::X86, Accelerator::None)
             | (Os::Windows, Architecture::X86_64, Accelerator::None)
