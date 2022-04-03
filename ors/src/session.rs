@@ -230,7 +230,7 @@ impl SessionBuilder {
     }
 
     /// Append Cuda provider
-    ///
+    /// 
     /// options holds all cuda options, like gpu_mem_limit, device_id, etc
     /// For full available options, check https://onnxruntime.ai/docs/execution-providers/CUDA-ExecutionProvider.html#configuration-options
     pub fn append_cuda_provider(self, _options: HashMap<String, String>) -> Result<SessionBuilder> {
