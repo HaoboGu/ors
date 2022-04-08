@@ -9,8 +9,8 @@ use ors::{
     tensor::{create_tensor_with_ndarray, Tensor},
 };
 
-// The model file `gpt2.onnx` can be generated using this script: 
-// https://github.com/microsoft/onnxruntime/blob/master/onnxruntime/python/tools/transformers/notebooks/Inference_GPT2_with_OnnxRuntime_on_CPU.ipynb 
+// The model file `gpt2.onnx` can be generated using this script:
+// https://github.com/microsoft/onnxruntime/blob/master/onnxruntime/python/tools/transformers/notebooks/Inference_GPT2_with_OnnxRuntime_on_CPU.ipynb
 #[test]
 fn test_gpt2_generation() -> Result<()> {
     initialize_runtime(Path::new("path/to/your/onnxruntime.dll"))?;
