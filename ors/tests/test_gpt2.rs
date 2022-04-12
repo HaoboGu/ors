@@ -13,10 +13,10 @@ use ors::{
 // https://github.com/microsoft/onnxruntime/blob/master/onnxruntime/python/tools/transformers/notebooks/Inference_GPT2_with_OnnxRuntime_on_CPU.ipynb
 #[test]
 fn test_gpt2_generation() -> Result<()> {
-    initialize_runtime(Path::new("path/to/your/onnxruntime.dll"))?;
+    initialize_runtime(Path::new("path/to/your/onnxruntime"))?;
     let mut session = SessionBuilder::new()?
         .graph_optimization_level(SessionGraphOptimizationLevel::All)?
-        .build_with_model_from_file("path/to/your/opt2.onnx")?;
+        .build_with_model_from_file("path/to/your/gpt2.onnx")?;
 
     // Input data
     let input_ids = ArrayD::<i64>::from_shape_vec(
