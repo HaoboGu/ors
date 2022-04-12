@@ -1,0 +1,14 @@
+{
+    "terminal.integrated.env.osx": {
+        "ORT_STRATEGY": "system",
+        "ORT_LIB_LOCATION": "/usr/local/lib/onnxruntime-1.11.0",
+    },
+    "rust-analyzer.server.extraEnv": {
+        "ORT_STRATEGY": "system",
+        "ORT_LIB_LOCATION": "/usr/local/lib/onnxruntime-1.11.0",
+    },
+    "rust-analyzer.runnableEnv": {
+        "ORT_STRATEGY": "system",
+        "ORT_LIB_LOCATION": "/usr/local/lib/onnxruntime-1.11.0",
+    },
+}
