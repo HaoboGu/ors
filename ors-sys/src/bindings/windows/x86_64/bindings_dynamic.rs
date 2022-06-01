@@ -17,7 +17,6 @@ pub const _CRT_FUNCTIONS_REQUIRED: u32 = 1;
 pub const _CRT_HAS_CXX17: u32 = 0;
 pub const _ARM_WINAPI_PARTITION_DESKTOP_SDK_AVAILABLE: u32 = 1;
 pub const _CRT_BUILD_DESKTOP_APP: u32 = 1;
-pub const _CRT_INTERNAL_NONSTDC_NAMES: u32 = 1;
 pub const __STDC_SECURE_LIB__: u32 = 200411;
 pub const __GOT_SECURE_LIB__: u32 = 200411;
 pub const __STDC_WANT_SECURE_LIB__: u32 = 1;

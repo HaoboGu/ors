@@ -4,7 +4,7 @@ This project provides Rust bindings of Microsoft's [onnxruntime](https://github.
 Warning: This project is in very early stage and not finished yet. There are still many bugs as far as I know. Don't use it in production.
 
 ## Prerequisites
-This crate requires you have onnxruntime's C library version v1.11.0 in your system. You can use `initialize_runtime()` to read the C library:
+This crate requires you have onnxruntime's C library version v1.11.1 in your system. You can use `initialize_runtime()` to read the C library:
 
 ```rust
 use ors::api::initialize_runtime;
@@ -14,7 +14,7 @@ fn setup_runtime() {
     #[cfg(target_os = "windows")]
     let path = "/path/to/onnxruntime.dll";
     #[cfg(target_os = "macos")]
-    let path = "/path/to/libonnxruntime.1.11.0.dylib";
+    let path = "/path/to/libonnxruntime.1.11.1.dylib";
     #[cfg(target_os = "linux")]
     let path = "/path/to/libonnxruntime.so";
     initialize_runtime(Path::new(path)).unwrap();
