@@ -26,7 +26,7 @@ fn setup_runtime() {
 First, add this crate to your `cargo.toml`
 
 ```toml
-ors = "0.0.7"
+ors = "0.0.9"
 ```
 
 This crate provides `SessionBuilder` which helps you create your inference session. Your don't need to create onnxruntime inference environment, which is handled by this crate:
