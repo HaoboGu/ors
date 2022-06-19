@@ -1,6 +1,6 @@
 [package]
 name = "ors"
-version = "0.0.9"
+version = "0.0.10"
 authors = ["Haobo Gu <haobogu@outlook.com>"]
 edition = "2018"
 readme = "../README.md"
@@ -10,10 +10,10 @@ description = "ors - onnxruntime bindings for rust"
 [dependencies]
 ors-sys = { version = "0.0.6", path = "../ors-sys", features = ["dynamic-loading"]}
 lazy_static = "1.4.0"
-ndarray = "0.15.4"
+ndarray = "0.15"
 tracing = "0.1.29"
 anyhow = "1.0"
-enum-as-inner = "0.4"
+enum-as-inner = "0.5"
 enum_dispatch = "0.3.7"
 
 [dev-dependencies]
