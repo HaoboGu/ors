@@ -16178,7 +16178,10 @@ pub struct onnxruntime {
         ::libloading::Error,
     >,
     pub aligned_alloc: Result<
-        unsafe extern "C" fn(__alignment: usize, __size: usize) -> *mut ::std::os::raw::c_void,
+        unsafe extern "C" fn(
+            __alignment: ::std::os::raw::c_ulong,
+            __size: ::std::os::raw::c_ulong,
+        ) -> *mut ::std::os::raw::c_void,
         ::libloading::Error,
     >,
     pub posix_memalign: Result<
@@ -17768,8 +17771,8 @@ impl onnxruntime {
     }
     pub unsafe fn aligned_alloc(
         &self,
-        __alignment: usize,
-        __size: usize,
+        __alignment: ::std::os::raw::c_ulong,
+        __size: ::std::os::raw::c_ulong,
     ) -> *mut ::std::os::raw::c_void {
         (self
             .aligned_alloc
