@@ -49,6 +49,13 @@ fn main() {
 
     generate_bindings(&include_dir);
 }
+
+#[cfg(not(feature = "generate-bindings"))]
+fn generate_bindings(include_dir: &Path) {
+    println!("Bindings not generated automatically, using committed files instead.");
+}
+
+#[cfg(feature = "regenerate-bindings")]
 fn generate_bindings(include_dir: &Path) {
     let clang_args = &[
         format!("-I{}", include_dir.display()),

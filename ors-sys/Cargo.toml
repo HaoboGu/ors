@@ -26,3 +26,4 @@ libloading = {version = "0.7", optional = true}
 # Load onnxruntime at runtime, not compile time
 default = ["dynamic-loading"]
 dynamic-loading = ["libloading"] 
+generate-bindings = ["generate-bindings"]
