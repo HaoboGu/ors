@@ -9,7 +9,7 @@ description = "ors-sys - low level onnxruntime bindings for rust"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-bindgen = "0.59.2"
+bindgen = "0.60.1"
 ureq = "2.4"
 
 # Used on Windows
@@ -26,4 +26,4 @@ libloading = {version = "0.7", optional = true}
 # Load onnxruntime at runtime, not compile time
 default = ["dynamic-loading"]
 dynamic-loading = ["libloading"] 
-generate-bindings = ["generate-bindings"]
+generate-bindings = []
