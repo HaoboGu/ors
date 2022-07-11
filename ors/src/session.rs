@@ -134,7 +134,14 @@ impl SessionBuilder {
         })
     }
 
-    pub fn build_with_model_in_momory(self, model_bytes: &[u8]) -> Result<Session> {
+    pub fn build_with_model_in_memory<B>(self, model_bytes: B) -> Result<Session>
+    where
+        B: AsRef<[u8]>,
+    {
+        self.create_session_with_model_bytes(model_bytes.as_ref())
+    }
+
+    pub fn create_session_with_model_bytes(self, model_bytes: &[u8]) -> Result<Session> {
         let mut session_ptr: *mut OrtSession = null_mut();
 
         let model = model_bytes.as_ptr() as *const c_void;
