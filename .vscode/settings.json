@@ -1,6 +1,6 @@
 {
     "terminal.integrated.env.osx": {
         "ORT_STRATEGY": "system",
-        "ORT_LIB_LOCATION": "/usr/local/lib/onnxruntime-1.11.1",
+        "ORT_LIB_LOCATION": "/usr/local/lib/onnxruntime-1.12.0",
     },
 }

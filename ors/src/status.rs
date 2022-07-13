@@ -63,7 +63,7 @@ mod test {
         #[cfg(target_os = "windows")]
         let path = "D:\\Projects\\Rust\\ors\\onnxruntime.dll";
         #[cfg(target_os = "macos")]
-        let path = "/usr/local/lib/libonnxruntime.1.11.1.dylib";
+        let path = "/usr/local/lib/libonnxruntime.1.12.0.dylib";
         #[cfg(target_os = "linux")]
         let path = "/usr/local/lib/libonnxruntime.so";
         initialize_runtime(Path::new(path)).unwrap();
