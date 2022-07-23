@@ -59,5 +59,12 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: build
-        args: --all
+        args: --release --features generate-bindings --target=${{ matrix.target }}
+        use-cross: true
+    - name: Update bindings
+      uses: peter-evans/create-pull-request@v4
+      with:
+        add-paths: ors-sys/src/bindings
+        signoff: true
+        
       
