@@ -37,7 +37,7 @@ pub fn initialize_runtime(path: &Path) -> Result<()> {
     // Otherwise, load onnxruntime shared library
     let mut ort = match unsafe { onnxruntime::new(path) } {
         Ok(ort) => ManuallyDrop::new(ort),
-        Err(err) => return Err(anyhow!("Failed to load onnxruntime shared library")),
+        Err(err) => return Err(anyhow!("Failed to load onnxruntime shared library {}", err)),
     };
 
     // Wrap the lib using ManuallyDrop
@@ -156,7 +156,7 @@ mod test {
         #[cfg(target_os = "windows")]
         let path = "D:\\Projects\\Rust\\ors\\onnxruntime.dll";
         #[cfg(target_os = "macos")]
-        let path = "/usr/local/lib/libonnxruntime.1.11.1.dylib";
+        let path = "/usr/local/lib/libonnxruntime.1.12.0.dylib";
         #[cfg(target_os = "linux")]
         let path = "/usr/local/lib/libonnxruntime.so";
         initialize_runtime(Path::new(path)).expect("Failed to initialize runtime");
