@@ -59,5 +59,13 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: build
-        args: --all
-      
+        args: --release --features generate-bindings 
+    - name: Update bindings
+      uses: peter-evans/create-pull-request@v4
+      with:
+        add-paths: ors-sys/src/bindings
+        commit-message: update ${{ matrix.target }} bindings [automated message]
+        branch-suffix: timestamp
+        title: Update bindings for ${{ matrix.target }} - [Automatically created by Github Actions]
+        body: Automated changes by create-pull-request GitHub action
+        signoff: true
