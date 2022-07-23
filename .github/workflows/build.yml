@@ -59,7 +59,7 @@ jobs:
       uses: actions-rs/cargo@v1
       with:
         command: build
-        args: --release --features generate-bindings --target=${{ matrix.target }}
+        args: --release --features generate-bindings 
         use-cross: true
     - name: Update bindings
       uses: peter-evans/create-pull-request@v4
