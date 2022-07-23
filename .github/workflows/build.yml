@@ -60,7 +60,6 @@ jobs:
       with:
         command: build
         args: --release --features generate-bindings 
-        use-cross: true
     - name: Update bindings
       uses: peter-evans/create-pull-request@v4
       with:
