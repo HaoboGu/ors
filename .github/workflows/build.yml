@@ -66,8 +66,6 @@ jobs:
         add-paths: ors-sys/src/bindings
         commit-message: [automated message] update ${{ matrix.target }} bindings
         branch-suffix: timestamp
-        title: [Automated] update bindings for ${{ matrix.target }}
-        body: Automated changes by [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action
+        title: [automated] update bindings for ${{ matrix.target }} 
+        body: Automated changes by create-pull-request GitHub action
         signoff: true
-        
-      
