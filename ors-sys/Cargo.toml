@@ -1,7 +1,7 @@
 [package]
 name = "ors-sys"
 edition = "2018"
-version = "0.0.7"
+version = "0.0.8"
 authors = ["Haobo Gu <haobogu@outlook.com>"]
 links = "onnxruntime"
 license = "MIT OR Apache-2.0"

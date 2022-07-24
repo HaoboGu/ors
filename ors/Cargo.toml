@@ -8,7 +8,7 @@ license = "MIT OR Apache-2.0"
 description = "ors - onnxruntime bindings for rust"
 
 [dependencies]
-ors-sys = { version = "0.0.7", path = "../ors-sys", features = ["dynamic-loading"]}
+ors-sys = { version = "0.0.8", path = "../ors-sys", features = ["dynamic-loading"]}
 lazy_static = "1.4.0"
 ndarray = "0.15"
 tracing = "0.1.29"
