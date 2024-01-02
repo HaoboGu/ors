@@ -1,3 +1,7 @@
+**DEPRECIATED**: You can use the official onnxruntime Rust binding instead: https://github.com/microsoft/onnxruntime/tree/main/rust
+
+---
+
 # ors - onnxruntime bindings for rust
 This project provides Rust bindings of Microsoft's [onnxruntime](https://github.com/microsoft/onnxruntime), which is a machine learning inference and training framework.
 
